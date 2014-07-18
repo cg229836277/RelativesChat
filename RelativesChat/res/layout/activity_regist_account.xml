@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistAccountActivity" >
+
+    <TextView
+        android:id="@+id/introduce_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:text="@string/introduce_text"
+        android:textColor="@color/blue_sky"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/blank_one"
+        android:layout_width="fill_parent"
+        android:layout_height="32dp"
+        android:layout_below="@+id/introduce_text" />
+
+    <EditText
+        android:id="@+id/regist_account_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_one"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/edittext_select_style"
+        android:hint="@string/user_account"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/blank_two"
+        android:layout_width="fill_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/regist_account_edit" />
+
+    <EditText
+        android:id="@+id/regist_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_two"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/edittext_select_style"
+        android:hint="@string/user_password"
+        android:inputType="textPassword"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/blank_three"
+        android:layout_width="fill_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/regist_password" />
+
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_three"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/edittext_select_style"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/blank_three_double"
+        android:layout_width="fill_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/confirm_password" />
+
+    <EditText
+        android:id="@+id/user_email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_three_double"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/edittext_select_style"
+        android:hint="@string/user_email"
+        android:inputType="textEmailAddress"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/blank_four"
+        android:layout_width="fill_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/user_email" />
+
+    <Button
+        android:id="@+id/regist_new_account"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_four"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/login_btn_background"
+        android:text="@string/regist_account"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/blank_five"
+        android:layout_width="fill_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/regist_new_account" />
+
+    <TextView
+        android:id="@+id/items_about_app"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blank_five"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:gravity="center_horizontal"
+        android:text="@string/items_app"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

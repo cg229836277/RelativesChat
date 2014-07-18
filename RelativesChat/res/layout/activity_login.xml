@@ -3,12 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="@color/white_grey"
     tools:context=".LoginActivity" >
     
     <LinearLayout android:id="@+id/login_titile"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:background="#000000">
+        android:background="@color/black">
         
         <ImageView android:id="@+id/icon_view"
             android:layout_width="0dp"
@@ -19,11 +20,12 @@
         <RelativeLayout android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
+            android:layout_marginRight="8dp"
             android:layout_weight="0.5">
             
             <LinearLayout android:layout_width="0.5dp"
                 android:layout_height="35dp"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:layout_toLeftOf="@+id/use_another_account_login"
                 android:layout_centerInParent="true"
@@ -32,12 +34,103 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="fill_parent"
 	            android:gravity="center"	   
-	            android:text="切换账号"
-	            android:textSize="12sp"
-	            android:textColor="#ffffff"
+	            android:text="@string/change_account_login"
+	            android:textSize="14sp"
+	            android:textColor="@color/white"
 	            android:layout_alignParentRight="true"/>
         </RelativeLayout>
    	</LinearLayout>
     
+   <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/login_titile" >
+        
+        <TextView android:id="@+id/blank_text"
+            android:layout_width="fill_parent"
+            android:layout_height="72dp"/>       
+       
+        <ImageView android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user_icon_default"
+            android:layout_below="@+id/blank_text"
+            android:layout_centerHorizontal="true" />
+        
+        <TextView android:id="@+id/user_account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_below="@+id/user_icon"
+            android:layout_centerHorizontal="true"/>
+        
+       	<TextView android:id="@+id/blank_text_one"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/user_account_text"/>
+        
+        <EditText android:id="@+id/user_login_account"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_select_style"
+            android:layout_below="@+id/blank_text_one"
+            android:drawableLeft="@drawable/login_icon_account"
+            android:textSize="20sp"
+            android:hint="@string/user_account" />
+        
+       	<EditText android:id="@+id/user_login_psw"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_select_style"
+            android:layout_below="@+id/user_login_account"
+            android:drawableLeft="@drawable/login_icon_password"
+            android:inputType="textPassword"
+            android:textSize="20sp"
+            android:hint="@string/user_password" />
+       	
+       	<TextView android:id="@+id/blank_text_two"
+            android:layout_width="fill_parent"
+            android:layout_height="32dp"
+            android:layout_below="@+id/user_login_psw"/> 
+            
+       	<Button android:id="@+id/login_btn"
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:background="@drawable/login_btn_background"
+       	    android:text="@string/activity_login"
+       	    android:layout_below="@+id/blank_text_two"
+       	    android:textSize="20sp"
+       	    android:textColor="@color/white"/>
+       	
+       	<TextView android:id="@+id/blank_text_three"
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_alignParentBottom="true"
+       	    android:layout_below="@+id/login_btn"/>
+       	
+       	<Button android:id="@+id/forget_account_btn"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:text="@string/forget_password"
+       	    android:textSize="14sp"
+       	    android:textColor="@color/blue_dodger"
+       	    android:layout_below="@+id/blank_text_three"
+       	    android:layout_alignParentStart="true"
+       	    android:layout_marginTop="-56dp"
+       	    android:layout_marginLeft="12dp"
+       	    android:background="@drawable/login_other_view_background"/>
+       	
+  		<Button android:id="@+id/regist_account_btn"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:text="@string/regist_account"
+       	    android:textSize="14sp"
+       	    android:textColor="@color/blue_dodger"
+       	    android:layout_below="@+id/blank_text_three"
+       	    android:layout_alignParentRight="true"
+       	    android:layout_marginTop="-56dp"
+       	    android:layout_marginRight="12dp"
+       	    android:background="@drawable/login_other_view_background"/>
+           
+    </RelativeLayout>
 
 </RelativeLayout>

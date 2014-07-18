@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    tools:context=".MyDialogActivity" >
+
+    <TextView android:id="@+id/dialog_title_text"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:textSize="24sp"
+        android:background="@color/blue_sky"
+        android:textColor="@color/white"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical|center_horizontal" />
+    
+    <TextView android:id="@+id/dialog_content_text"
+        android:layout_width="fill_parent"
+        android:layout_height="180dp"
+        android:textSize="24sp"
+        android:layout_below="@+id/dialog_title_text"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical|center_horizontal" />
+
+</RelativeLayout>
