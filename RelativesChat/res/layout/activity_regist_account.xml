@@ -39,7 +39,7 @@
         android:layout_below="@+id/regist_account_edit" />
 
     <EditText
-        android:id="@+id/regist_password"
+        android:id="@+id/regist_password_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blank_two"
@@ -55,10 +55,10 @@
         android:id="@+id/blank_three"
         android:layout_width="fill_parent"
         android:layout_height="24dp"
-        android:layout_below="@+id/regist_password" />
+        android:layout_below="@+id/regist_password_edit" />
 
     <EditText
-        android:id="@+id/confirm_password"
+        android:id="@+id/confirm_password_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blank_three"
@@ -74,10 +74,10 @@
         android:id="@+id/blank_three_double"
         android:layout_width="fill_parent"
         android:layout_height="24dp"
-        android:layout_below="@+id/confirm_password" />
+        android:layout_below="@+id/confirm_password_edit" />
 
     <EditText
-        android:id="@+id/user_email"
+        android:id="@+id/user_email_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blank_three_double"
@@ -93,10 +93,10 @@
         android:id="@+id/blank_four"
         android:layout_width="fill_parent"
         android:layout_height="24dp"
-        android:layout_below="@+id/user_email" />
+        android:layout_below="@+id/user_email_edit" />
 
     <Button
-        android:id="@+id/regist_new_account"
+        android:id="@+id/regist_new_account_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blank_four"
@@ -112,7 +112,7 @@
         android:id="@+id/blank_five"
         android:layout_width="fill_parent"
         android:layout_height="24dp"
-        android:layout_below="@+id/regist_new_account" />
+        android:layout_below="@+id/regist_new_account_btn" />
 
     <TextView
         android:id="@+id/items_about_app"

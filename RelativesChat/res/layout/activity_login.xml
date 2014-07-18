@@ -68,7 +68,7 @@
             android:layout_height="48dp"
             android:layout_below="@+id/user_account_text"/>
         
-        <EditText android:id="@+id/user_login_account"
+        <EditText android:id="@+id/user_login_account_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_select_style"
@@ -77,11 +77,11 @@
             android:textSize="20sp"
             android:hint="@string/user_account" />
         
-       	<EditText android:id="@+id/user_login_psw"
+       	<EditText android:id="@+id/user_login_psw_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_select_style"
-            android:layout_below="@+id/user_login_account"
+            android:layout_below="@+id/user_login_account_text"
             android:drawableLeft="@drawable/login_icon_password"
             android:inputType="textPassword"
             android:textSize="20sp"
@@ -90,7 +90,7 @@
        	<TextView android:id="@+id/blank_text_two"
             android:layout_width="fill_parent"
             android:layout_height="32dp"
-            android:layout_below="@+id/user_login_psw"/> 
+            android:layout_below="@+id/user_login_psw_text"/> 
             
        	<Button android:id="@+id/login_btn"
        	    android:layout_width="fill_parent"

@@ -21,5 +21,14 @@
     <string name="hello_world">Hello world!</string>
     <string name="dialog_title_notify">提示</string>
     <string name="dialog_content_notify">使用对话框出错</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_fail">登录失败</string>
+    <string name="regist_success">注册成功</string>
+    <string name="regist_fail">注册失败</string>
+    <string name="network_not_access">没有连接网络</string>
+    <string name="account_or_password_not_complete">请先输入用户名和密码</string>
+    <string name="username_password_incorrect">用户名或密码不正确</string>
+    <string name="password_not_correct_with_former">密码前后不一致</string>
+    <string name="regist_information_not_complete">注册信息不完整</string>
 
 </resources>
