@@ -121,4 +121,10 @@ public class RegistAccountActivity extends Activity {
 			}
 		}.execute();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mToast = null;
+	}
 }
