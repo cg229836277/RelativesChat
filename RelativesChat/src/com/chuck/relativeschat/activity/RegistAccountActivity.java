@@ -6,9 +6,11 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.common.MyDialog;
 import com.chuck.relativeschat.tools.MD5;
 import com.chuck.relativeschat.tools.StringUtils;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -71,27 +73,52 @@ public class RegistAccountActivity extends Activity {
 		});
 	}
 
-	public void registNewAccount() {
-		BmobUser bu = new BmobUser();
-		bu.setUsername(userName);
-		String md5Password;
-		try {
-			md5Password = MD5.getMD5(userPassword);
-			bu.setPassword(md5Password);
-			bu.setEmail(emailStr);
-			bu.signUp(this, new SaveListener() {
-				@Override
-				public void onSuccess() {
-					mToast.showMyToast(getResources().getString(R.string.regist_success),Toast.LENGTH_LONG);
-				}
-
-				@Override
-				public void onFailure(int code, String msg) {
-					mToast.showMyToast(msg,Toast.LENGTH_LONG);
-				}
-			});
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+	public void registNewAccount() {		
+		new AsyncTask<Void, Void, Void>() {
+			
+			MyDialog dialog;
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				
+				dialog = new MyDialog(RegistAccountActivity.this);
+				dialog.show();
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				BmobUser bu = new BmobUser();
+				bu.setUsername(userName);
+				String md5Password;
+//				try {
+//					md5Password = MD5.getMD5(userPassword);
+					bu.setPassword(userPassword);
+					bu.setEmail(emailStr);
+					bu.signUp(RegistAccountActivity.this, new SaveListener() {
+						@Override
+						public void onSuccess() {
+							mToast.showMyToast(getResources().getString(R.string.regist_success),Toast.LENGTH_SHORT);
+						}
+		
+						@Override
+						public void onFailure(int code, String msg) {
+							mToast.showMyToast(msg,Toast.LENGTH_SHORT);
+						}
+					});
+//				} 
+//				catch (NoSuchAlgorithmException e) {
+//					e.printStackTrace();
+//				}
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				dialog.dismiss();
+			}
+		}.execute();
 	}
 }

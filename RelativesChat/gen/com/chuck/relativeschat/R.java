@@ -470,43 +470,49 @@ public final class R {
         public static final int login_icon_account=0x7f02000b;
         public static final int login_icon_password=0x7f02000c;
         public static final int login_other_view_background=0x7f02000d;
-        public static final int off=0x7f02000e;
-        public static final int on=0x7f02000f;
-        public static final int selector_edit_text=0x7f020010;
-        public static final int user_icon_default=0x7f020011;
+        public static final int mydialog_bg=0x7f02000e;
+        public static final int off=0x7f02000f;
+        public static final int on=0x7f020010;
+        public static final int selector_edit_text=0x7f020011;
+        public static final int user_icon_default=0x7f020012;
     }
     public static final class id {
-        public static final int action_settings=0x7f090021;
-        public static final int blank_five=0x7f09001f;
-        public static final int blank_four=0x7f09001d;
+        public static final int action_settings=0x7f090026;
+        public static final int blank_five=0x7f090023;
+        public static final int blank_four=0x7f090021;
         public static final int blank_one=0x7f090000;
         public static final int blank_text=0x7f090009;
         public static final int blank_text_one=0x7f09000c;
         public static final int blank_text_three=0x7f090011;
         public static final int blank_text_two=0x7f09000f;
         public static final int blank_three=0x7f090004;
-        public static final int blank_three_double=0x7f09001b;
+        public static final int blank_three_double=0x7f09001f;
         public static final int blank_two=0x7f090002;
-        public static final int confirm_password_edit=0x7f09001a;
-        public static final int dialog_content_text=0x7f090016;
-        public static final int dialog_title_text=0x7f090015;
+        public static final int confirm_password_edit=0x7f09001e;
+        public static final int dialog_content_text=0x7f09001a;
+        public static final int dialog_progress=0x7f090025;
+        public static final int dialog_title_text=0x7f090019;
         public static final int find_user_password=0x7f090005;
         public static final int forget_account_btn=0x7f090012;
         public static final int forget_account_edit=0x7f090001;
         public static final int forget_email_edit=0x7f090003;
         public static final int icon_view=0x7f090007;
-        public static final int introduce_text=0x7f090017;
-        public static final int items_about_app=0x7f090020;
+        public static final int introduce_text=0x7f09001b;
+        public static final int items_about_app=0x7f090024;
         public static final int login_btn=0x7f090010;
         public static final int login_titile=0x7f090006;
+        public static final int menu_of_main_view=0x7f090014;
+        public static final int more_info_text=0x7f090017;
         public static final int regist_account_btn=0x7f090013;
-        public static final int regist_account_edit=0x7f090018;
-        public static final int regist_new_account_btn=0x7f09001e;
-        public static final int regist_password_edit=0x7f090019;
-        public static final int selfdefine_toast=0x7f090014;
+        public static final int regist_account_edit=0x7f09001c;
+        public static final int regist_new_account_btn=0x7f090022;
+        public static final int regist_password_edit=0x7f09001d;
+        public static final int relatives_friends_activity_text=0x7f090016;
+        public static final int relatives_friends_list_text=0x7f090015;
+        public static final int selfdefine_toast=0x7f090018;
         public static final int use_another_account_login=0x7f090008;
         public static final int user_account_text=0x7f09000b;
-        public static final int user_email_edit=0x7f09001c;
+        public static final int user_email_edit=0x7f090020;
         public static final int user_icon=0x7f09000a;
         public static final int user_login_account_text=0x7f09000d;
         public static final int user_login_psw_text=0x7f09000e;
@@ -514,39 +520,46 @@ public final class R {
     public static final class layout {
         public static final int activity_forget_password=0x7f030000;
         public static final int activity_login=0x7f030001;
-        public static final int activity_my_dialog=0x7f030002;
-        public static final int activity_regist_account=0x7f030003;
-        public static final int main=0x7f030004;
+        public static final int activity_main_menu=0x7f030002;
+        public static final int activity_my_dialog=0x7f030003;
+        public static final int activity_regist_account=0x7f030004;
+        public static final int main=0x7f030005;
+        public static final int mydialog=0x7f030006;
     }
     public static final class menu {
         public static final int forget_password=0x7f080000;
         public static final int login=0x7f080001;
-        public static final int my_dialog=0x7f080002;
-        public static final int regist_account=0x7f080003;
-        public static final int splash=0x7f080004;
+        public static final int main_menu=0x7f080002;
+        public static final int my_dialog=0x7f080003;
+        public static final int regist_account=0x7f080004;
+        public static final int splash=0x7f080005;
     }
     public static final class string {
-        public static final int account_or_password_not_complete=0x7f060019;
+        public static final int account_or_password_not_complete=0x7f06001b;
         public static final int action_settings=0x7f060001;
         public static final int activity_login=0x7f060002;
         public static final int app_name=0x7f060000;
         public static final int change_account_login=0x7f060003;
         public static final int confirm_password=0x7f060006;
-        public static final int dialog_content_notify=0x7f060013;
-        public static final int dialog_title_notify=0x7f060012;
+        public static final int dialog_content_notify=0x7f060015;
+        public static final int dialog_title_notify=0x7f060014;
         public static final int find_password=0x7f06000a;
         public static final int forget_password=0x7f060008;
-        public static final int hello_world=0x7f060011;
         public static final int introduce_text=0x7f06000c;
         public static final int items_app=0x7f06000d;
-        public static final int login_fail=0x7f060015;
-        public static final int login_success=0x7f060014;
-        public static final int network_not_access=0x7f060018;
-        public static final int password_not_correct_with_former=0x7f06001b;
+        public static final int login_fail=0x7f060017;
+        public static final int login_success=0x7f060016;
+        public static final int more_info_text=0x7f060013;
+        public static final int network_not_access=0x7f06001a;
+        public static final int password_not_correct_with_former=0x7f06001d;
+        public static final int please_wait=0x7f06001f;
         public static final int regist_account=0x7f060009;
-        public static final int regist_fail=0x7f060017;
-        public static final int regist_information_not_complete=0x7f06001c;
-        public static final int regist_success=0x7f060016;
+        public static final int regist_fail=0x7f060019;
+        public static final int regist_information_not_complete=0x7f06001e;
+        public static final int regist_success=0x7f060018;
+        public static final int relatives_friends_activity_text=0x7f060012;
+        public static final int relatives_friends_list_text=0x7f060011;
+        public static final int title_activity_main_menu=0x7f060020;
         public static final int title_activity_my_dialog=0x7f060010;
         public static final int title_activity_regist_account=0x7f06000b;
         public static final int user_account=0x7f060004;
@@ -554,7 +567,7 @@ public final class R {
         public static final int user_forget_account=0x7f06000e;
         public static final int user_forget_email=0x7f06000f;
         public static final int user_password=0x7f060005;
-        public static final int username_password_incorrect=0x7f06001a;
+        public static final int username_password_incorrect=0x7f06001c;
     }
     public static final class style {
         /** 
@@ -583,5 +596,6 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        public static final int MyDialog=0x7f070002;
     }
 }

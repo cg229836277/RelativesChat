@@ -6,10 +6,12 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.common.MyDialog;
 import com.chuck.relativeschat.tools.MD5;
 import com.chuck.relativeschat.tools.NetworkTool;
 import com.chuck.relativeschat.tools.StringUtils;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +32,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private String userAccount;
 	private String userPassword;
 	private MyToast mToast;
+	private String loginResult;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +52,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		loginBtn.setOnClickListener(this);
 		userInputAccount = (EditText)findViewById(R.id.user_login_account_text);
 		userInputPassword = (EditText)findViewById(R.id.user_login_psw_text);
+		userInputAccount.setText("chuck");
+		userInputPassword.setText("cg19901018!");
+		userInputAccount.setSingleLine(true);
+		userInputPassword.setSingleLine(true);
+		userInputAccount.setSelection(userInputAccount.getText().toString().length());
+		userInputPassword.setSelection(userInputPassword.getText().toString().length());
 		
 		mToast = new MyToast(getApplicationContext());
 	}
@@ -92,31 +102,61 @@ public class LoginActivity extends Activity implements OnClickListener {
 		return false;
 	}
 	
-	public void loginSystem() throws NoSuchAlgorithmException{
-		BmobUser bu2 = new BmobUser();
-		bu2.setUsername(userAccount);
-		String md5Password = MD5.getMD5(userPassword);
-		bu2.setPassword(md5Password);
-		bu2.login(this, new SaveListener() {
-		    @Override
-		    public void onSuccess() {
-		    	mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_LONG);
-		    }
-		    @Override
-		    public void onFailure(int code, String msg) {
-		    	mToast.showMyToast(getResources().getString(R.string.username_password_incorrect), Toast.LENGTH_LONG);
-		    }
-		});
+	public void loginSystem(){
+		new AsyncTask<Void, Void, String>() {
+			
+			MyDialog dialog;
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				
+				dialog = new MyDialog(LoginActivity.this);
+				dialog.show();
+			}
+			
+			@Override
+			protected String doInBackground(Void... params) {
+			BmobUser bu2 = new BmobUser();
+			bu2.setUsername(userAccount);
+			String md5Password;
+//			try {
+//				md5Password = MD5.getMD5(userPassword);	
+				bu2.setPassword(userPassword);
+				bu2.login(LoginActivity.this, new SaveListener() {
+				    @Override
+				    public void onSuccess() {
+						Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+						startActivity(intent);
+				    	mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
+				    	return;
+				    }
+				    @Override
+				    public void onFailure(int code, String msg) {
+//				    	mToast.showMyToast(getResources().getString(R.string.username_password_incorrect), Toast.LENGTH_LONG);
+				    	mToast.showMyToast("code是" + code + " " + msg, Toast.LENGTH_SHORT);
+				    	loginResult = "fail";
+				    }
+				});
+//				} 
+//			catch (NoSuchAlgorithmException e) {
+//					e.printStackTrace();
+//				}
+				return loginResult;
+			}
+			
+			@Override
+			protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+				dialog.dismiss();
+			}
+		}.execute();
 	}
 	
 	public void getNetworkState(){
 		boolean networkState = NetworkTool.isNetworkConnected(getApplicationContext());
 		if(networkState){
-			try {
-				loginSystem();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
+			loginSystem();
 		}else{
 			mToast.showMyToast(getResources().getString(R.string.network_not_access), Toast.LENGTH_LONG);
 		}
