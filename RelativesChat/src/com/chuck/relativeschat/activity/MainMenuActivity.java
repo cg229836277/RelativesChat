@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +55,8 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	private void bindEvent(){
 		friendsLinearLayout = (LinearLayout)findViewById(R.id.friends_linearlayout);
 		friendsImage = (ImageView)findViewById(R.id.frineds_icon);
+//		friendsImage.setFocusable(true);
+//		friendsImage.setFocusableInTouchMode(true);
 		friendsText = (TextView)findViewById(R.id.friends_list_text);
 		friendsImage.setOnClickListener(this);
 		friendsLinearLayout.setOnClickListener(this);
@@ -72,8 +75,10 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsMoreImage.setOnClickListener(this);
 		friendsMoreLinearLayout.setOnClickListener(this);
 		friendsMoreText.setOnClickListener(this);
-		
+				
 		initViewPager();
+		setViewPageListener();
+		friendsViewPager.setCurrentItem(0);
 	}
 
 	@Override
@@ -119,15 +124,15 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	}
 	
 	public void friendsListClicked(){
-		
+		friendsViewPager.setCurrentItem(0);
 	}
 	
 	public void friendsActivityListClicked(){
-		
+		friendsViewPager.setCurrentItem(1);
 	}
 	
 	public void friendsMoreClicked(){
-		
+		friendsViewPager.setCurrentItem(2);
 	}	
 	
 	public void initViewPager(){
@@ -148,13 +153,10 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		public Fragment getItem(int arg0) {
 			switch (arg0) {
 			case 0:
-				friendsImage.performClick();
 				return listFragment;
 			case 1:	
-				friendsActivityImage.performClick();
 				return activityFragment;
 			case 2:
-				friendsMoreImage.performClick();
 				return moreInfoFragment;
 			default:
 				break;
@@ -165,9 +167,47 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		@Override
 		public int getCount() {
 			return 3;
-		}
-		
-		
-		
+		}		
+	}
+	
+	public void setViewPageListener(){
+		friendsViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				switch (arg0) {
+				case 0:
+//					friendsImage.requestFocus();
+//					friendsImage.requestFocusFromTouch();
+					break;
+				case 1:
+//					friendsImage.clearFocus();
+//					friendsMoreImage.clearFocus();
+//					friendsActivityImage.requestFocus();
+//					friendsActivityImage.requestFocusFromTouch();
+					break;
+				case 2:
+//					friendsMoreImage.requestFocus();
+//					friendsMoreImage.requestFocusFromTouch();
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
