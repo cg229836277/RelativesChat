@@ -19,7 +19,7 @@
     <string name="user_forget_email">你注册账号时的邮箱</string>
     <string name="title_activity_my_dialog">MyDialogActivity</string>
     <string name="relatives_friends_list_text">亲朋列表</string>
-    <string name="relatives_friends_activity_text">亲朋动态</string>
+    <string name="friends_activity_text">亲朋动态</string>
     <string name="more_info_text">更多</string>
     <string name="dialog_title_notify">提示</string>
     <string name="dialog_content_notify">使用对话框出错</string>
