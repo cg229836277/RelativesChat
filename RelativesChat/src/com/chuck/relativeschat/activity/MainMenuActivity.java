@@ -1,20 +1,18 @@
 package com.chuck.relativeschat.activity;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.fragment.FriendsActivityFragment;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
 import com.chuck.relativeschat.fragment.FriendsMoreInfoFragment;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -83,6 +81,9 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 
 	@Override
 	public void onClick(View arg0) {
+		android.app.FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		
 		switch (arg0.getId()) {
 		case R.id.friends_linearlayout:
 			friendsImage.performClick();
@@ -121,6 +122,8 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		default:
 			break;
 		}
+		
+		ft.commit();
 	}
 	
 	public void friendsListClicked(){

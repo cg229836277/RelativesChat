@@ -33,6 +33,7 @@
     <string name="password_not_correct_with_former">密码前后不一致</string>
     <string name="regist_information_not_complete">注册信息不完整</string>
     <string name="please_wait">请稍候...</string>
-    <string name="title_activity_main_menu">MainMenuActivity</string>
+    <string name="no_friends_notify">你现在没有朋友，赶紧去更多选项里面添加好友吧!</string>
+    <string name="add_friends">添加好友</string>
 
 </resources>

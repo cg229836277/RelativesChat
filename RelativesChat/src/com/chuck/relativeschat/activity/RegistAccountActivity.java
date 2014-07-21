@@ -2,17 +2,20 @@ package com.chuck.relativeschat.activity;
 
 import java.security.NoSuchAlgorithmException;
 
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.MyDialog;
+import com.chuck.relativeschat.entity.User;
 import com.chuck.relativeschat.tools.MD5;
 import com.chuck.relativeschat.tools.StringUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -20,7 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegistAccountActivity extends Activity {
+public class RegistAccountActivity extends BaseActivity {
 
 	private EditText userNameEdit;
 	private EditText userPasswordEdit;
@@ -31,15 +34,12 @@ public class RegistAccountActivity extends Activity {
 	private String userPassword;
 	private String confirmUserPassword;
 	private String emailStr;
-	private MyToast mToast;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_regist_account);
-		
-		mToast = new MyToast(getApplicationContext());
 		
 		bindEvent();
 	}
@@ -56,8 +56,7 @@ public class RegistAccountActivity extends Activity {
 			public void onClick(View arg0) {
 				userName = userNameEdit.getText().toString();
 				userPassword = userPasswordEdit.getText().toString();
-				confirmUserPassword = confirmUserPasswordEdit.getText()
-						.toString();
+				confirmUserPassword = confirmUserPasswordEdit.getText().toString();
 				emailStr = emailEdit.getText().toString();
 				if (!StringUtils.isEmpty(userName)&& !StringUtils.isEmpty(userPassword)
 						&& !StringUtils.isEmpty(emailStr) && !StringUtils.isEmpty(confirmUserPassword)) {
@@ -76,19 +75,18 @@ public class RegistAccountActivity extends Activity {
 	public void registNewAccount() {		
 		new AsyncTask<Void, Void, Void>() {
 			
-			MyDialog dialog;
+			
 			
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
 				
-				dialog = new MyDialog(RegistAccountActivity.this);
 				dialog.show();
 			}
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				BmobUser bu = new BmobUser();
+				final User bu = new User();
 				bu.setUsername(userName);
 				String md5Password;
 //				try {
@@ -98,18 +96,22 @@ public class RegistAccountActivity extends Activity {
 					bu.signUp(RegistAccountActivity.this, new SaveListener() {
 						@Override
 						public void onSuccess() {
+							dialog.dismiss();
+							
+							userManager.bindInstallationForRegister(bu.getObjectId());
+							
+							Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+							startActivity(intent); 
+							
 							mToast.showMyToast(getResources().getString(R.string.regist_success),Toast.LENGTH_SHORT);
 						}
 		
 						@Override
 						public void onFailure(int code, String msg) {
+							dialog.dismiss();
 							mToast.showMyToast(msg,Toast.LENGTH_SHORT);
 						}
 					});
-//				} 
-//				catch (NoSuchAlgorithmException e) {
-//					e.printStackTrace();
-//				}
 				
 				return null;
 			}
@@ -117,7 +119,7 @@ public class RegistAccountActivity extends Activity {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				dialog.dismiss();
+				finish();
 			}
 		}.execute();
 	}

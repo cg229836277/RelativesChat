@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/setting_background" >
     
+    <ScrollView android:id="@+id/settings_info_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+	    <LinearLayout android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	    	<include android:id="@+id/current_user_info_layout" 
+	    	    layout="@layout/simple_friends_list"  />
+	    	
+	    	<View android:layout_width="fill_parent"
+	    	    android:layout_height="6dp"/>
+	    	
+	    	<include android:id="@+id/current_add_friends_layout" 
+	    	    layout="@layout/simple_friends_list"  />	    	
+	    	
+	    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
