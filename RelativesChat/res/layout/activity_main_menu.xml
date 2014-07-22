@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     tools:context=".MainMenuActivity" >
 
+    <include layout="@layout/friends_menu_header_layout"/>
+    
     <LinearLayout
         android:id="@+id/menu_of_main_view"
         android:layout_width="fill_parent"
