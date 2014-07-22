@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.fragment;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.common.HeadViewLayout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

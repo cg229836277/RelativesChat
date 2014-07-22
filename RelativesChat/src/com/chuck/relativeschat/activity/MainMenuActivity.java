@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.activity;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.fragment.FriendsActivityFragment;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
 import com.chuck.relativeschat.fragment.FriendsMoreInfoFragment;
@@ -40,6 +41,8 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	private FriendsListFragment listFragment;
 	private FriendsMoreInfoFragment moreInfoFragment;
 	
+	private HeadViewLayout mHeadViewLayout;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +76,8 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsMoreImage.setOnClickListener(this);
 		friendsMoreLinearLayout.setOnClickListener(this);
 		friendsMoreText.setOnClickListener(this);
+		
+		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 				
 		initViewPager();
 		setViewPageListener();
@@ -156,10 +161,13 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		public Fragment getItem(int arg0) {
 			switch (arg0) {
 			case 0:
+				mHeadViewLayout.setTitleText("亲朋列表");
 				return listFragment;
 			case 1:	
+				mHeadViewLayout.setTitleText("亲朋动态");
 				return activityFragment;
 			case 2:
+				mHeadViewLayout.setTitleText("更多");
 				return moreInfoFragment;
 			default:
 				break;
