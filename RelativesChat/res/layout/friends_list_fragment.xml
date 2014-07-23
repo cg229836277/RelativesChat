@@ -4,7 +4,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_background" >    
     
+    <include layout="@layout/friends_menu_header_layout"
+        android:id="@+id/friends_menu_header_list_layout"/>
+    
 	<ListView android:id="@+id/friends_list_view"
+	    android:layout_below="@+id/friends_menu_header_list_layout"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"/>
 </RelativeLayout>

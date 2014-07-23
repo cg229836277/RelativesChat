@@ -61,7 +61,7 @@ public class HeadViewLayout extends LinearLayout {
 		tvTitleText.setText(title);
 	}
 	
-	public void backButtonVisiable(int viewFlag){
+	public void setBackButtonVisiable(int viewFlag){
 		backButton.setVisibility(viewFlag);
 	}
 }

@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FindFriendsActivity" >
+
+    <include
+        android:id="@+id/friend_head_menu_find_friends_layout"
+        layout="@layout/friends_menu_header_layout" />
+
+    <LinearLayout
+        android:id="@+id/find_friends_linearlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/friend_head_menu_find_friends_layout"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <EditText android:id="@+id/find_friend_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:hint="@string/find_friends_name"
+                android:background="@drawable/edittext_select_style" />
+            
+            <View android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.1"/>
+            
+            <Button android:id="@+id/find_friends_button"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_btn_background"
+                android:text="@string/find_friends"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

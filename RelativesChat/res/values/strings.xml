@@ -35,5 +35,8 @@
     <string name="please_wait">请稍候...</string>
     <string name="no_friends_notify">你现在没有朋友，赶紧去更多选项里面添加好友吧!</string>
     <string name="add_friends">添加好友</string>
+    <string name="title_activity_find_friends">FindFriendsActivity</string>
+    <string name="find_friends">查找</string>
+    <string name="find_friends_name">请输入要查找的好友的名字</string>
 
 </resources>

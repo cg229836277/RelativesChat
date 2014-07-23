@@ -1,8 +1,10 @@
 package com.chuck.relativeschat.fragment;
 
+import com.chuck.relativeschat.FindFriendsActivity;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.HeadViewLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private ImageView addFriendsIconImage;
 	private TextView addFriendsText;
 	private TextView addFriendsDetailText;
+	private HeadViewLayout mHeadViewLayout;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -39,6 +42,10 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		addFriendsIconImage.setBackgroundResource(R.drawable.add_user);
 		addFriendsText.setText(getResources().getString(R.string.add_friends));
 		
+		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
+		mHeadViewLayout.setBackButtonVisiable(View.GONE);
+		mHeadViewLayout.setTitleText("更多");
+		
 		return fActivityView;
 	}
 
@@ -46,12 +53,12 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
 		case R.id.current_add_friends_layout:
-			
+			Intent intent = new Intent(getActivity().getApplicationContext() , FindFriendsActivity.class);
+			startActivity(intent);
 			break;
 
 		default:
 			break;
-		}
-		
+		}		
 	}
 }

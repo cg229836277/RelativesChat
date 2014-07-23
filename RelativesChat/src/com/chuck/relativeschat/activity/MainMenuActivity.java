@@ -78,7 +78,9 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsMoreText.setOnClickListener(this);
 		
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
-				
+		mHeadViewLayout.setBackButtonVisiable(View.GONE);
+		mHeadViewLayout.setTitleText("亲朋列表");
+		
 		initViewPager();
 		setViewPageListener();
 		friendsViewPager.setCurrentItem(0);
@@ -132,14 +134,17 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	}
 	
 	public void friendsListClicked(){
+//		setHeaderTitleText(0);
 		friendsViewPager.setCurrentItem(0);
 	}
 	
 	public void friendsActivityListClicked(){
+//		setHeaderTitleText(1);
 		friendsViewPager.setCurrentItem(1);
 	}
 	
 	public void friendsMoreClicked(){
+//		setHeaderTitleText(2);
 		friendsViewPager.setCurrentItem(2);
 	}	
 	
@@ -160,14 +165,11 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		@Override
 		public Fragment getItem(int arg0) {
 			switch (arg0) {
-			case 0:
-				mHeadViewLayout.setTitleText("亲朋列表");
+			case 0:				
 				return listFragment;
-			case 1:	
-				mHeadViewLayout.setTitleText("亲朋动态");
+			case 1:					
 				return activityFragment;
-			case 2:
-				mHeadViewLayout.setTitleText("更多");
+			case 2:				
 				return moreInfoFragment;
 			default:
 				break;
@@ -186,20 +188,15 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 			
 			@Override
 			public void onPageSelected(int arg0) {
-				switch (arg0) {
-				case 0:
-//					friendsImage.requestFocus();
-//					friendsImage.requestFocusFromTouch();
+				
+//				setHeaderTitleText(arg0);
+				
+				switch (arg0) {				
+				case 0:					
 					break;
 				case 1:
-//					friendsImage.clearFocus();
-//					friendsMoreImage.clearFocus();
-//					friendsActivityImage.requestFocus();
-//					friendsActivityImage.requestFocusFromTouch();
 					break;
 				case 2:
-//					friendsMoreImage.requestFocus();
-//					friendsMoreImage.requestFocusFromTouch();
 					break;
 
 				default:

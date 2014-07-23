@@ -21,6 +21,7 @@ public class FriendsListFragment extends Fragment {
 	private View fActivityView;
 	private RelativesChatApplication rcApp;
 	private Map<String, BmobChatUser> chatUserList;
+	private HeadViewLayout mHeadViewLayout;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {			
@@ -32,6 +33,10 @@ public class FriendsListFragment extends Fragment {
 			if(chatUserList != null && chatUserList.size() > 0){
 				LayoutInflater infla = getActivity().getLayoutInflater();
 				fActivityView = infla.inflate(R.layout.friends_list_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
+				
+				mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
+				mHeadViewLayout.setBackButtonVisiable(View.GONE);
+				mHeadViewLayout.setTitleText("亲朋列表");
 				
 			}else{
 				LayoutInflater infla = getActivity().getLayoutInflater();
