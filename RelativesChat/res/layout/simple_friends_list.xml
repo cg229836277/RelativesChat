@@ -11,11 +11,16 @@
 	    <ImageView android:id="@+id/friends_icon_image"
 	        android:layout_width="48dp"
 	        android:layout_height="48dp"
-	        android:layout_gravity="center" />
+	        android:layout_gravity="left|center" />
 	    
-	    <LinearLayout android:layout_width="fill_parent"
+	    <TextView android:layout_width="0dp"
 	        android:layout_height="fill_parent"
-	        android:orientation="vertical">
+	        android:layout_weight="0.1"/>
+	    
+	    <LinearLayout android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:orientation="vertical"
+	        android:layout_weight="0.5">
 	        
 	        <TextView android:id="@+id/friends_name_text"
 	            android:layout_width="fill_parent"
@@ -32,5 +37,17 @@
 	            android:gravity="center"
 	            android:textColor="@color/black"/>
 	    </LinearLayout>
+	    
+	    <Button android:id="@+id/add_as_friends_button"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/login_btn_background"
+	        android:text="@string/add_friends"
+	        android:textColor="@color/white"
+	        android:gravity="center"
+	        android:layout_gravity="center"
+	        android:textSize="18sp"
+	        android:layout_weight="0.3"
+	        android:visibility="gone"/>
 	</LinearLayout>
 </RelativeLayout>

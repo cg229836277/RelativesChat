@@ -1,7 +1,7 @@
 package com.chuck.relativeschat.fragment;
 
-import com.chuck.relativeschat.FindFriendsActivity;
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.common.HeadViewLayout;
 
 import android.content.Intent;
@@ -40,7 +40,7 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		addFriendsDetailText = (TextView)addFriendsLayout.findViewById(R.id.friends_personal_sign_text);
 		addFriendsDetailText.setVisibility(View.GONE);
 		addFriendsIconImage.setBackgroundResource(R.drawable.add_user);
-		addFriendsText.setText(getResources().getString(R.string.add_friends));
+		addFriendsText.setText(getResources().getString(R.string.find_friends));
 		
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
