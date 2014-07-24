@@ -3,9 +3,11 @@ package com.chuck.relativeschat.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.entity.User;
+import com.chuck.relativeschat.tools.SharePreferenceUtil;
 
 import android.app.Application;
 
@@ -50,5 +52,23 @@ public class RelativesChatApplication extends Application {
 			this.contactList.clear();
 		}
 		this.contactList = contactList;
+	}
+	
+	public void logout() {
+		BmobUserManager.getInstance(getApplicationContext()).logout();
+		setContactList(null);
+	}
+	
+	SharePreferenceUtil mSpUtil;
+	public static final String PREFERENCE_NAME = "_sharedinfo";
+
+	public synchronized SharePreferenceUtil getSpUtil() {
+		if (mSpUtil == null) {
+			String currentId = BmobUserManager.getInstance(
+					getApplicationContext()).getCurrentUserObjectId();
+			String sharedName = currentId + PREFERENCE_NAME;
+			mSpUtil = new SharePreferenceUtil(this, sharedName);
+		}
+		return mSpUtil;
 	}
 }

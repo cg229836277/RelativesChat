@@ -56,8 +56,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		loginBtn.setOnClickListener(this);
 		userInputAccount = (EditText)findViewById(R.id.user_login_account_text);
 		userInputPassword = (EditText)findViewById(R.id.user_login_psw_text);
-		userInputAccount.setText("cg229836277");
-		userInputPassword.setText("cg19901018!");
+//		userInputAccount.setText("cg229836277");
+//		userInputPassword.setText("cg19901018!");
+		
+		userInputAccount.setText("rr785753550");
+		userInputPassword.setText("qinyanhui172587");
 		userInputAccount.setSingleLine(true);
 		userInputPassword.setSingleLine(true);
 		userInputAccount.setSelection(userInputAccount.getText().toString().length());

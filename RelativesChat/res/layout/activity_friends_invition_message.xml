@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FriendsInvitionMessageActivity" >
+
+        <include 
+        android:id="@+id/head_menu_layout_more"
+        layout="@layout/friends_menu_header_layout"/>
+        
+            <ListView
+        android:id="@+id/list_newfriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/head_menu_layout_more"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="#00000000"
+        android:descendantFocusability="afterDescendants"
+        android:divider="@drawable/base_horizontal_line"
+        android:dividerHeight="1dp"
+        android:fastScrollEnabled="false" />
+    
+</RelativeLayout>

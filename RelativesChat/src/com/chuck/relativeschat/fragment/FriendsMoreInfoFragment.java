@@ -2,6 +2,7 @@ package com.chuck.relativeschat.fragment;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
+import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.common.HeadViewLayout;
 
 import android.content.Intent;
@@ -19,10 +20,16 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private View fActivityView;
 	private RelativeLayout currentUserLayout;
 	private RelativeLayout addFriendsLayout;
+	private RelativeLayout addFriendsMessageLayout;
 	
 	private ImageView addFriendsIconImage;
 	private TextView addFriendsText;
 	private TextView addFriendsDetailText;
+	
+	private ImageView addFriendsMessageIconImage;
+	private TextView addFriendsMessageText;
+	private TextView addFriendsMessageDetailText;
+	
 	private HeadViewLayout mHeadViewLayout;
 	
 	@Override
@@ -31,9 +38,37 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		LayoutInflater infla = getActivity().getLayoutInflater();
 		fActivityView = infla.inflate(R.layout.friends_more_info_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
 		
+		initView();
+		
+		return fActivityView;
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		Intent intent = null;
+		switch (arg0.getId()) {
+		case R.id.current_add_friends_layout:
+			intent = new Intent(getActivity().getApplicationContext() , FindFriendsActivity.class);			
+			break;
+		case R.id.add_friends_message_layout:
+			intent = new Intent(getActivity().getApplicationContext() , FriendsInvitionMessageActivity.class);
+			break;
+		default:
+			break;
+		}	
+		
+		if(intent != null){
+			startActivity(intent);
+		}
+	}
+	
+	public void initView(){
 		currentUserLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_user_info_layout);
 		addFriendsLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_add_friends_layout);
 		addFriendsLayout.setOnClickListener(this);
+		
+		addFriendsMessageLayout = (RelativeLayout)fActivityView.findViewById(R.id.add_friends_message_layout);
+		addFriendsMessageLayout.setOnClickListener(this);
 		
 		addFriendsIconImage = (ImageView)addFriendsLayout.findViewById(R.id.friends_icon_image);
 		addFriendsText = (TextView)addFriendsLayout.findViewById(R.id.friends_name_text);
@@ -42,23 +77,15 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		addFriendsIconImage.setBackgroundResource(R.drawable.add_user);
 		addFriendsText.setText(getResources().getString(R.string.find_friends));
 		
+		addFriendsMessageIconImage = (ImageView)addFriendsMessageLayout.findViewById(R.id.friends_icon_image);
+		addFriendsMessageText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_name_text);
+		addFriendsMessageDetailText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_personal_sign_text);
+		addFriendsMessageDetailText.setVisibility(View.GONE);
+		addFriendsMessageIconImage.setBackgroundResource(R.drawable.add_user_message);
+		addFriendsMessageText.setText(getResources().getString(R.string.invite_friends));
+		
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
 		mHeadViewLayout.setTitleText("更多");
-		
-		return fActivityView;
-	}
-
-	@Override
-	public void onClick(View arg0) {
-		switch (arg0.getId()) {
-		case R.id.current_add_friends_layout:
-			Intent intent = new Intent(getActivity().getApplicationContext() , FindFriendsActivity.class);
-			startActivity(intent);
-			break;
-
-		default:
-			break;
-		}		
 	}
 }

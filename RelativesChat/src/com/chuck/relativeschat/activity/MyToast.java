@@ -1,9 +1,13 @@
 package com.chuck.relativeschat.activity;
 
+import java.io.IOException;
+
 import com.chuck.relativeschat.R;
 import android.app.Activity;
 import android.content.Context;
+import android.inputmethodservice.Keyboard.Key;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -30,5 +34,12 @@ public class MyToast {
 		toast.setView(layout);
 		toast.setGravity(Gravity.CENTER, Gravity.CENTER, Gravity.CENTER);
 		toast.show();
+		
+		Runtime run = Runtime.getRuntime();
+		try {
+			run.exec("input keyevent" + KeyEvent.KEYCODE_FORWARD);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

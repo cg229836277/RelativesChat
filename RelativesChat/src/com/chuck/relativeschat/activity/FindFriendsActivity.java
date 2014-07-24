@@ -1,27 +1,22 @@
 package com.chuck.relativeschat.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.inteface.MsgTag;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.PushListener;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.R.id;
-import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.User;
 import com.chuck.relativeschat.tools.StringUtils;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -102,6 +97,15 @@ public class FindFriendsActivity extends BaseActivity {
 				addFriendsButton.setVisibility(View.VISIBLE);
 				addFriendsButton.setTag(userData);
 				
+				addFriendsButton.setOnClickListener(new OnClickListener() {					
+					@Override
+					public void onClick(View arg0) {
+						if(arg0.getTag() instanceof User){
+							addFriend((User)arg0.getTag());
+						}
+					}
+				});
+				
 				if(!StringUtils.isEmpty(userData.getUsername())){
 					friendsNameText.setText(userData.getUsername());					
 				}
@@ -120,18 +124,16 @@ public class FindFriendsActivity extends BaseActivity {
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
 		//发送tag请求
-		userManager.getInstance(this).sendTagMessage(MsgTag.ADD_CONTACT, friendsInfo.getObjectId(),new PushListener() {
+		BmobChatManager.getInstance(this).sendTagMessage(MsgTag.ADD_CONTACT, friendsInfo.getObjectId(),new PushListener() {
 			
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
 				progress.dismiss();
 				mToast.showMyToast("发送请求成功，等待对方验证！" , Toast.LENGTH_SHORT);
 			}
 			
 			@Override
 			public void onFailure(int arg0, final String arg1) {
-				// TODO Auto-generated method stub
 				progress.dismiss();
 				mToast.showMyToast("发送请求失败:"+arg1 , Toast.LENGTH_SHORT);
 			}

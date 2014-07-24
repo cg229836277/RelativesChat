@@ -38,5 +38,6 @@
     <string name="find_friends">查找好友</string>
     <string name="find_friends_name">请输入要查找的好友的名字</string>
     <string name="add_friends">加为好友</string>
-
+    <string name="invite_friends">好友验证消息</string>
+	<string name="agree_add_friends">同意</string>
 </resources>

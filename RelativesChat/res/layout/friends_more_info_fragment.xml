@@ -22,7 +22,13 @@
 	    	    android:layout_height="6dp"/>
 	    	
 	    	<include android:id="@+id/current_add_friends_layout" 
-	    	    layout="@layout/simple_friends_list"  />	    	
+	    	    layout="@layout/simple_friends_list"  />	
+	    	    
+	    	<View android:layout_width="fill_parent"
+	    	    android:layout_height="6dp"/>
+	    	
+	    	<include android:id="@+id/add_friends_message_layout" 
+	    	    layout="@layout/simple_friends_list"  />	
 	    	
 	    </LinearLayout>
     </ScrollView>
