@@ -8,7 +8,7 @@
         android:id="@+id/head_menu_layout_more"
         layout="@layout/friends_menu_header_layout"/>
         
-            <ListView
+        <ListView
         android:id="@+id/list_newfriend"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,8 +1,15 @@
 package com.chuck.relativeschat.fragment;
 
+
+import java.util.List;
+
+import cn.bmob.im.bean.BmobInvitation;
+import cn.bmob.im.db.BmobDB;
+
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
+import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 
 import android.content.Intent;
@@ -31,12 +38,16 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private TextView addFriendsMessageDetailText;
 	
 	private HeadViewLayout mHeadViewLayout;
+	private ImageView messageTipsImage;
+	
+	private  RelativesChatApplication rcApp;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
 		LayoutInflater infla = getActivity().getLayoutInflater();
 		fActivityView = infla.inflate(R.layout.friends_more_info_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
+		rcApp = (RelativesChatApplication)getActivity().getApplication();
 		
 		initView();
 		
@@ -80,12 +91,19 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		addFriendsMessageIconImage = (ImageView)addFriendsMessageLayout.findViewById(R.id.friends_icon_image);
 		addFriendsMessageText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_name_text);
 		addFriendsMessageDetailText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_personal_sign_text);
+		messageTipsImage = (ImageView)addFriendsMessageLayout.findViewById(R.id.msg_tips_image);
 		addFriendsMessageDetailText.setVisibility(View.GONE);
 		addFriendsMessageIconImage.setBackgroundResource(R.drawable.add_user_message);
 		addFriendsMessageText.setText(getResources().getString(R.string.invite_friends));
+		
+		if(rcApp.getIsExistMoreInfoMessage()){
+			//有消息的时候就显示小红点
+			messageTipsImage.setVisibility(View.VISIBLE);
+		}
 		
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
 		mHeadViewLayout.setTitleText("更多");
 	}
+	
 }

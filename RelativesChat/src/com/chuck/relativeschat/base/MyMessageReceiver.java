@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.MainMenuActivity;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
 import com.chuck.relativeschat.tools.CollectionUtils;
@@ -94,7 +95,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 						}
 					}else{
 						if(tag.equals(BmobConfig.TAG_ADD_CONTACT)){//添加对话
-							BmobInvitation message =BmobInvitation.createReceiverInvitation(json);
+							BmobInvitation message = BmobInvitation.createReceiverInvitation(json);
 							BmobDB.create(context,toId).saveInviteMessage(message);
 							if(toId.equals(currentUser.getObjectId())){
 								if (ehList.size() > 0) {
@@ -106,7 +107,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 									boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
 									if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
 										String tickerText = message.getFromname()+"";
-										BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),FriendsListFragment.class);
+										BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),FriendsInvitionMessageActivity.class);
 									}
 								}
 							}

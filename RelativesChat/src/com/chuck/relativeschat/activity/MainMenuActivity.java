@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.activity;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.fragment.FriendsActivityFragment;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
@@ -42,12 +43,15 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	private FriendsMoreInfoFragment moreInfoFragment;
 	
 	private HeadViewLayout mHeadViewLayout;
+	private ImageView messageTipsImage;
+	private RelativesChatApplication rcApp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main_menu);
+		rcApp = (RelativesChatApplication)getApplication();
 		
 		bindEvent();
 
@@ -76,6 +80,11 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsMoreImage.setOnClickListener(this);
 		friendsMoreLinearLayout.setOnClickListener(this);
 		friendsMoreText.setOnClickListener(this);
+		
+		messageTipsImage = (ImageView)findViewById(R.id.message_red_dot_image);
+		if(rcApp.getIsExistMoreInfoMessage()){
+			messageTipsImage.setVisibility(View.VISIBLE);
+		}
 		
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);

@@ -5,6 +5,7 @@ import java.util.List;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.ViewHolder;
+import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,13 +34,13 @@ import android.widget.TextView;
  * @version 1.0
  * @param <E>
  */
-public class FriendsInvitationMessageAdapter<E> extends FriendsBaseListAdapter<E> {
+public class FriendsInvitationMessageAdapter extends FriendsBaseListAdapter<BmobInvitation> {
 
 	/**
 	 * @param context
 	 * @param list
 	 */
-	public FriendsInvitationMessageAdapter(Context context, List<E> list) {
+	public FriendsInvitationMessageAdapter(Context context, List<BmobInvitation> list) {
 		super(context, list);
 	}
 
@@ -96,7 +97,8 @@ public class FriendsInvitationMessageAdapter<E> extends FriendsBaseListAdapter<E
 					btn_add.setTextColor(mContext.getResources().getColor(R.color.black));
 					btn_add.setEnabled(false);
 					//添加好友到会话列表
-					RelativesChatApplication.getInstance().setContactList(com.chuck.relativeschat.tools.CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
+					RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));
+					
 				}
 				
 				@Override

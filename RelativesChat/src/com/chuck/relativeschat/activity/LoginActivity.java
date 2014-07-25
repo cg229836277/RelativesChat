@@ -1,5 +1,9 @@
 package com.chuck.relativeschat.activity;
 
+import java.util.List;
+
+import cn.bmob.im.bean.BmobInvitation;
+import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
@@ -34,6 +38,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private String loginResult;
 	private MyHandler mHandler;
 	private RelativesChatApplication rcApp;
+	private  List<BmobInvitation> inviteList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +163,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				userManager.login(userAccount , userPassword, new SaveListener() {
 				    @Override
 				    public void onSuccess() {
+				    	
+				    	inviteList = BmobDB.create(getApplicationContext()).queryBmobInviteList();
+						if(inviteList != null && inviteList.size() > 0){
+							//有消息的时候就显示小红点
+							rcApp = (RelativesChatApplication)getApplication();
+							rcApp.setExistMoreInfoMessage(true);
+						}else{
+							rcApp.setExistMoreInfoMessage(false);
+						}
 				    	
 						rcApp.setCurrentUser(userManager.getCurrentUser());
 						updateUserInfos();

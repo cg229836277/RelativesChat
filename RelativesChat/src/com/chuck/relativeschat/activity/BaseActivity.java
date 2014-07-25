@@ -41,9 +41,9 @@ public class BaseActivity extends Activity {
 	
 	public void updateUserInfos(){
 		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
-
 			@Override
 			public void onError(int arg0, String arg1) {
+				
 			}
 
 			@Override

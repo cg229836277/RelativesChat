@@ -23,6 +23,7 @@ public class RelativesChatApplication extends Application {
 	private static RelativesChatApplication mInstance;
 	public BmobChatUser currentUser;
 	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();
+	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
 	
 	@Override
 	public void onCreate() {
@@ -70,5 +71,13 @@ public class RelativesChatApplication extends Application {
 			mSpUtil = new SharePreferenceUtil(this, sharedName);
 		}
 		return mSpUtil;
+	}
+
+	public boolean getIsExistMoreInfoMessage() {
+		return isExistMoreInfoMessage;
+	}
+
+	public void setExistMoreInfoMessage(boolean isExistMoreInfoMessage) {
+		this.isExistMoreInfoMessage = isExistMoreInfoMessage;
 	}
 }

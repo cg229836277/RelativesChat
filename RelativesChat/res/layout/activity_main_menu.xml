@@ -69,13 +69,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3333"
             android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/frineds_more_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/linearlayout_friends_more_select_style" />
+            
+			<RelativeLayout android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+			    android:layout_gravity="center">
+	            <ImageView
+	                android:id="@+id/frineds_more_image"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerInParent="true"
+	                android:background="@drawable/linearlayout_friends_more_select_style" />
+	            <ImageView android:id="@+id/message_red_dot_image"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_toRightOf="@+id/frineds_more_image"
+	                android:src="@drawable/msg_tips"
+	                android:visibility="gone"/>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/friends_more_text"

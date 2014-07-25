@@ -10,5 +10,9 @@
 	<ListView android:id="@+id/friends_list_view"
 	    android:layout_below="@+id/friends_menu_header_list_layout"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"/>
+	    android:layout_height="fill_parent"
+	    android:descendantFocusability="afterDescendants"
+        android:divider="@drawable/base_horizontal_line"
+        android:dividerHeight="1dp"
+        android:fastScrollEnabled="false"/>
 </RelativeLayout>
