@@ -3,6 +3,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
     
+    <include layout="@layout/friends_menu_header_layout"
+        android:id="@+id/bank_menu_header_list_layout"/>
+    
 	<LinearLayout android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"

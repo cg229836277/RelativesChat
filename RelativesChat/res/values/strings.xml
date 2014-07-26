@@ -39,6 +39,18 @@
     <string name="find_friends_name">请输入要查找的好友的名字</string>
     <string name="add_friends">加为好友</string>
     <string name="invite_friends">好友验证消息</string>
-	<string name="agree_add_friends">同意</string>
-	<string name="add_avator">头像</string>
+    <string name="agree_add_friends">同意</string>
+    <string name="add_avator">头像</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载&#8230;</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="longclick_speak">长按说话</string>
+    <string name="picture">照片</string>
+    <string name="camera">拍摄</string>
+    <string name="location">位置</string>
+    <string name="voice_up_tips">手指上滑,取消发送</string>
+
 </resources>

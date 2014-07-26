@@ -8,9 +8,6 @@ import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.biz.impl.LoginSystemBizImpl;
-import com.chuck.relativeschat.common.MyDialog;
-import com.chuck.relativeschat.entity.User;
 import com.chuck.relativeschat.tools.NetworkTool;
 import com.chuck.relativeschat.tools.StringUtils;
 
@@ -21,7 +18,6 @@ import android.os.Message;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -174,7 +170,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 						}
 				    	
 						rcApp.setCurrentUser(userManager.getCurrentUser());
-						updateUserInfos();
+//						updateUserInfos();
 				    	
 				    	dialog.dismiss();
 						Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);

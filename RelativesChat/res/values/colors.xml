@@ -146,5 +146,8 @@
 <color name="navy">#000080</color><!--海军色 -->
 <color name="black">#000000</color><!--黑色 -->
 <color name="dialog_color_title">#f82c22</color>
+<color name="base_bg">#f4f6f6</color>
+<color name="transparent">#00000000</color>
 <color name="base_color_text_black">#3e3e39</color>
+<color name="msg_emote_divider">#ffa1a1a1</color>
 </resources>

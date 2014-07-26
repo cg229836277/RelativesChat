@@ -7,11 +7,11 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="14" />
-    
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
-        android:normalScreens="false"
+        android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true" />
 
@@ -77,7 +77,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        
+
         <service
             android:name="cn.bmob.push.lib.service.PushService"
             android:exported="true"
@@ -91,7 +91,8 @@
 
         <receiver android:name="cn.bmob.push.PushReceiver" >
             <intent-filter android:priority="2147483647" >
- <!-- 优先级加最高 -->
+
+                <!-- 优先级加最高 -->
                 <!-- 系统启动完成后会调用 -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <!-- 解锁完成后会调用 -->
@@ -108,7 +109,7 @@
 
         <activity
             android:name="com.chuck.relativeschat.activity.FriendsInvitionMessageActivity"
-  			android:screenOrientation="portrait"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
@@ -118,6 +119,11 @@
         </activity>
         <activity
             android:name="com.chuck.relativeschat.activity.FindFriendsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.chuck.relativeschat.UserChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>

@@ -42,6 +42,9 @@ public class FriendsChatListAdapter extends FriendsBaseListAdapter<BmobChatUser>
 		TextView nameText = ViewHolder.get(convertView, R.id.friends_name_text);
 		//用户个性签名
 		TextView personalSignText = ViewHolder.get(convertView, R.id.friends_personal_sign_text);
+		
+		nameText.setText(msg.getUsername()); 
+		
 		//用户图像
 		ImageView iv_avatar = ViewHolder.get(convertView, R.id.friends_icon_image);
 
@@ -52,7 +55,7 @@ public class FriendsChatListAdapter extends FriendsBaseListAdapter<BmobChatUser>
 		} else {
 			iv_avatar.setImageResource(R.drawable.default_head);
 		}
-		return null;
+		return convertView;
 	}
 
 }
