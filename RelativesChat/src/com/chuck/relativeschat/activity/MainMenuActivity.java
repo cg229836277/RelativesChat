@@ -1,11 +1,19 @@
 package com.chuck.relativeschat.activity;
 
+import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.BmobNotifyManager;
+import cn.bmob.im.bean.BmobInvitation;
+import cn.bmob.im.bean.BmobMsg;
+import cn.bmob.im.inteface.EventListener;
+
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.base.MyMessageReceiver;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.fragment.FriendsActivityFragment;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
 import com.chuck.relativeschat.fragment.FriendsMoreInfoFragment;
+import com.chuck.relativeschat.tools.NetworkTool;
 
 import android.os.Bundle;
 import android.app.FragmentTransaction;
@@ -21,8 +29,9 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainMenuActivity extends FragmentActivity implements OnClickListener{
+public class MainMenuActivity extends FragmentActivity implements OnClickListener , EventListener{
 
 	private LinearLayout friendsLinearLayout;
 	private ImageView friendsImage;
@@ -46,6 +55,8 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	private ImageView messageTipsImage;
 	private RelativesChatApplication rcApp;
 	
+	private int currentTabIndex = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,14 +65,11 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		rcApp = (RelativesChatApplication)getApplication();
 		
 		bindEvent();
-
 	}
 	
 	private void bindEvent(){
 		friendsLinearLayout = (LinearLayout)findViewById(R.id.friends_linearlayout);
 		friendsImage = (ImageView)findViewById(R.id.frineds_icon);
-//		friendsImage.setFocusable(true);
-//		friendsImage.setFocusableInTouchMode(true);
 		friendsText = (TextView)findViewById(R.id.friends_list_text);
 		friendsImage.setOnClickListener(this);
 		friendsLinearLayout.setOnClickListener(this);
@@ -143,17 +151,17 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	}
 	
 	public void friendsListClicked(){
-//		setHeaderTitleText(0);
+		currentTabIndex = 0;
 		friendsViewPager.setCurrentItem(0);
 	}
 	
 	public void friendsActivityListClicked(){
-//		setHeaderTitleText(1);
+		currentTabIndex = 1;
 		friendsViewPager.setCurrentItem(1);
 	}
 	
 	public void friendsMoreClicked(){
-//		setHeaderTitleText(2);
+		currentTabIndex = 2;
 		friendsViewPager.setCurrentItem(2);
 	}	
 	
@@ -196,10 +204,7 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
-			public void onPageSelected(int arg0) {
-				
-//				setHeaderTitleText(arg0);
-				
+			public void onPageSelected(int arg0) {				
 				switch (arg0) {				
 				case 0:					
 					break;
@@ -216,15 +221,64 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 			
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
+	}
+
+	@Override
+	public void onAddUser(BmobInvitation arg0) {
+		boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
+		
+		if(isAllow){
+//			RelativesChatApplication.getInstance().getMediaPlayer().start();
+		}
+		
+		String tickerText = arg0.getFromname()+"请求添加你为好友";
+		boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
+		BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, arg0.getFromname(), tickerText.toString(),FriendsInvitionMessageActivity.class);
+		
+	}
+
+	@Override
+	public void onMessage(BmobMsg arg0) {
+		BmobChatManager.getInstance(this).saveReceiveMessage(true,arg0);		
+	}
+
+	@Override
+	public void onNetChange(boolean arg0) {
+		if (NetworkTool.isNetworkConnected(getApplicationContext())) {
+			Toast.makeText(this , "请先连接网络", Toast.LENGTH_SHORT).show();
+		}	
+	}
+
+	@Override
+	public void onOffline() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onReaded(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MyMessageReceiver.ehList.add(this);//
+		MyMessageReceiver.mNewNum=0;
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MyMessageReceiver.ehList.remove(this);//
 	}
 }

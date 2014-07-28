@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-        <include 
+    <include
         android:id="@+id/head_menu_layout_chat"
-        layout="@layout/friends_menu_header_layout"/>
+        layout="@layout/friends_menu_header_layout" />
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -31,9 +31,9 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:visibility="invisible"
             android:background="@drawable/chat_top_voice_bg"
-            android:padding="10dp" >
+            android:padding="10dp"
+            android:visibility="invisible" >
 
             <ImageView
                 android:id="@+id/iv_record"

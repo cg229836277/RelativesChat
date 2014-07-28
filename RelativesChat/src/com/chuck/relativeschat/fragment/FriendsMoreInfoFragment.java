@@ -3,8 +3,10 @@ package com.chuck.relativeschat.fragment;
 
 import java.util.List;
 
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
+import cn.bmob.v3.BmobUser;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
@@ -29,6 +31,10 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private RelativeLayout addFriendsLayout;
 	private RelativeLayout addFriendsMessageLayout;
 	
+	private ImageView myIconImage;
+	private TextView myNameText;
+	private TextView myDetailText;
+	
 	private ImageView addFriendsIconImage;
 	private TextView addFriendsText;
 	private TextView addFriendsDetailText;
@@ -40,6 +46,8 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private HeadViewLayout mHeadViewLayout;
 	private ImageView messageTipsImage;
 	
+	private BmobChatUser currentUser;
+	
 	private  RelativesChatApplication rcApp;
 	
 	@Override
@@ -48,6 +56,8 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		LayoutInflater infla = getActivity().getLayoutInflater();
 		fActivityView = infla.inflate(R.layout.friends_more_info_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
 		rcApp = (RelativesChatApplication)getActivity().getApplication();
+		
+		currentUser = rcApp.getCurrentUser();
 		
 		initView();
 		
@@ -77,6 +87,12 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		currentUserLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_user_info_layout);
 		addFriendsLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_add_friends_layout);
 		addFriendsLayout.setOnClickListener(this);
+		myIconImage = (ImageView)currentUserLayout.findViewById(R.id.friends_icon_image);
+		myNameText = (TextView)currentUserLayout.findViewById(R.id.friends_name_text);
+		myDetailText = (TextView)currentUserLayout.findViewById(R.id.friends_personal_sign_text);
+		myDetailText.setVisibility(View.GONE);
+		myIconImage.setBackgroundResource(R.drawable.default_head);
+		myNameText.setText(currentUser.getUsername());
 		
 		addFriendsMessageLayout = (RelativeLayout)fActivityView.findViewById(R.id.add_friends_message_layout);
 		addFriendsMessageLayout.setOnClickListener(this);

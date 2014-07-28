@@ -8,26 +8,30 @@ import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.adapter.FriendsChatListAdapter;
+import com.chuck.relativeschat.activity.UserChatActivity;
+import com.chuck.relativeschat.adapter.FriendsListAdapter;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.CollectionUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class FriendsListFragment extends Fragment {
+public class FriendsListFragment extends Fragment implements OnItemClickListener{
 	private View fActivityView;
 	private RelativesChatApplication rcApp;
 	private Map<String, BmobChatUser> chatUserMap;
 	private HeadViewLayout mHeadViewLayout;
 	private ListView friendsListView;
-	private FriendsChatListAdapter adapter;
+	private FriendsListAdapter adapter;
 	private List<BmobChatUser> chatUserList;
 	public BmobUserManager userManager;
 	private LayoutInflater infla;
@@ -42,6 +46,7 @@ public class FriendsListFragment extends Fragment {
 		infla = getActivity().getLayoutInflater();
 		fActivityView = infla.inflate(R.layout.friends_list_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);			
 		friendsListView = (ListView)fActivityView.findViewById(R.id.friends_list_view);
+		friendsListView.setOnItemClickListener(this);
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);	
 		initHeadTitle();			
 		//本地有朋友列表
@@ -57,7 +62,7 @@ public class FriendsListFragment extends Fragment {
 	}
 	
 	public void initChatUserList(){		
-		adapter = new FriendsChatListAdapter(getActivity().getApplicationContext(),chatUserList);
+		adapter = new FriendsListAdapter(getActivity().getApplicationContext(),chatUserList);
 		friendsListView.setAdapter(adapter);
 		if(adapter != null && adapter.getCount() > 0){
 			friendsListView.setSelection(adapter.getCount());
@@ -91,5 +96,15 @@ public class FriendsListFragment extends Fragment {
 	public void initHeadTitle(){
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
 		mHeadViewLayout.setTitleText("亲朋列表");
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		if(adapter.getItem(arg2) instanceof BmobChatUser){
+			BmobChatUser chatUser = (BmobChatUser)adapter.getItem(arg2);
+			Intent intent = new Intent(getActivity() , UserChatActivity.class);
+			intent.putExtra("user", chatUser);
+			startActivity(intent);
+		}
 	}
 }
