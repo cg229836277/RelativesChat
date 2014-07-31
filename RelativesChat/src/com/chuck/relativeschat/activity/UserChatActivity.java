@@ -1,5 +1,6 @@
 package com.chuck.relativeschat.activity;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cn.bmob.im.BmobChatManager;
@@ -11,10 +12,13 @@ import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.inteface.EventListener;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.adapter.FriendsChatListAdapter;
 import com.chuck.relativeschat.base.MyMessageReceiver;
+import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.EmoticonsEditText;
@@ -23,6 +27,7 @@ import com.chuck.relativeschat.tools.XListView;
 import com.chuck.relativeschat.tools.XListView.IXListViewListener;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +48,8 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	
 	private BmobChatUser currentChatUser;
 	
+	private RelativesChatApplication rcApp;
+	
 	private XListView chatListView;
 	
 	private static int MsgPagerNum;
@@ -61,12 +68,14 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_chat);
 		
+		rcApp = (RelativesChatApplication)getApplication();
+		
 		chatManager = BmobChatManager.getInstance(this);
 		
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		
-		MsgPagerNum = 0;
+		MsgPagerNum = 1;
 		
 		currentChatUser = (BmobChatUser) getIntent().getSerializableExtra("user");
 		if(currentChatUser != null){
@@ -91,7 +100,6 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 		chatListView.pullRefreshing();
 		chatListView.setDividerHeight(0);
 		initOrUpdateChatList();
-		chatListView.setSelection(chatListAdapter.getCount() - 1);
 		chatListView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -120,27 +128,63 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	
 	public void initOrUpdateChatList(){
 		if (chatListAdapter != null) {
-			if (MyMessageReceiver.mNewNum != 0) {//新的消息数目不为0
-				int news=  MyMessageReceiver.mNewNum;//
-				int size = initMsgData().size();
-				for(int i=(news-1);i>=0;i--){
-					chatListAdapter.add(initMsgData().get(size-(i+1)));//
-				}
-				chatListView.setSelection(chatListAdapter.getCount() - 1);
-			} else {
-				chatListAdapter.notifyDataSetChanged();
+			int chatMsgCount = chatListAdapter.getCount();
+			if(chatMsgCount > 0){
+				initMsgData(chatMsgCount / 10 , false);
 			}
 		} else {
-			chatListAdapter = new FriendsChatListAdapter(this, initMsgData());
-			chatListView.setAdapter(chatListAdapter);
+			initMsgData(1 , true);
 		}
 	}
 	
-	private List<BmobMsg> initMsgData() {
-		int msgCount = BmobDB.create(this).getUnreadCount(chatUserId);
-		System.out.println("当前聊天用户未读消息的条数是" + msgCount);
-		List<BmobMsg> list = BmobDB.create(this).queryMessages(chatUserId,MsgPagerNum);
-		return list;
+	private void initMsgData(int pageIndex , final boolean isInit) {
+		
+		String systemUserId = rcApp.getCurrentUser().getObjectId();
+		String chatUserId = currentChatUser.getObjectId();
+		String mixConversationStr1 = systemUserId + "&" + chatUserId;
+		String mixConversationStr2 = chatUserId + "&" + systemUserId;
+		String[] conversationList = {mixConversationStr1 , mixConversationStr2};
+		
+		BmobQuery<BmobMsg> msgQuery = new BmobQuery<BmobMsg>();
+		if(pageIndex >= 0){
+			msgQuery.setLimit(pageIndex * 10);
+		}
+		msgQuery.addWhereContainedIn("conversationId", Arrays.asList(conversationList));
+		msgQuery.order("-createdAt");
+		msgQuery.addWhereEqualTo("msgType", 1);
+		msgQuery.findObjects(getApplicationContext(), new FindListener<BmobMsg>() {
+			
+			@Override
+			public void onSuccess(List<BmobMsg> arg0) {
+				if(arg0 != null && arg0.size() > 0){
+					
+					int currents = 0;
+					
+					if(chatListAdapter != null){
+						currents = chatListAdapter.getCount();
+					}
+					
+					if(arg0.size() < currents){
+						mToast.showMyToast("没有更多消息", Toast.LENGTH_SHORT);
+						return;
+					}
+					if(!isInit){
+						chatListAdapter.setList(arg0);
+						chatListView.setSelection(chatListAdapter.getCount() - currents - 1);
+						chatListAdapter.notifyDataSetChanged();
+					}else{
+						chatListAdapter = new FriendsChatListAdapter(UserChatActivity.this, arg0);
+						chatListView.setAdapter(chatListAdapter);
+						chatListView.setSelection(chatListAdapter.getCount() - 1);
+					}
+				}
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+				mToast.showMyToast("请求消息出错", Toast.LENGTH_SHORT);
+			}
+		});
 	}
 	
 	public void initSendMessageView(){
@@ -294,15 +338,7 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 			@Override
 			public void run() {
 				MsgPagerNum++;
-				int total = BmobDB.create(getApplicationContext()).queryChatTotalCount(chatUserId);
-				int currents = chatListAdapter.getCount();
-				if (total <= currents) {
-					mToast.showMyToast("没有更多消息!" , Toast.LENGTH_SHORT);
-				} else {
-					List<BmobMsg> msgList = initMsgData();
-					chatListAdapter.setList(msgList);
-					chatListView.setSelection(chatListAdapter.getCount() - currents - 1);
-				}
+				initMsgData(MsgPagerNum , false);
 				chatListView.stopRefresh();
 			}
 		}, 1000);

@@ -51,8 +51,7 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 		initHeadTitle();			
 		//本地有朋友列表
 		if(chatUserMap != null && chatUserMap.size() > 0){
-			chatUserList = CollectionUtils.map2list(chatUserMap);
-			
+			chatUserList = CollectionUtils.map2list(chatUserMap);			
 			initChatUserList();		
 		}else{
 			updateUserInfos();
@@ -61,7 +60,15 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 		return fActivityView;
 	}
 	
-	public void initChatUserList(){		
+	public void initChatUserList(){
+		
+		for(int i = 0 ; i < chatUserList.size() ; i++){
+			if(chatUserList.get(i).getObjectId().equals(rcApp.getCurrentUser().getObjectId())){
+				chatUserList.remove(i);//从列表中删除自己
+				break;
+			}
+		}
+		
 		adapter = new FriendsListAdapter(getActivity().getApplicationContext(),chatUserList);
 		friendsListView.setAdapter(adapter);
 		if(adapter != null && adapter.getCount() > 0){

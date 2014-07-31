@@ -66,6 +66,7 @@ public class FriendsChatListAdapter extends FriendsBaseListAdapter<BmobMsg> {
 	@Override
 	public View bindView(int position, View convertView, ViewGroup parent) {
 		final BmobMsg item = list.get(position);
+		
 		if (convertView == null) {
 			convertView = createViewByType(item, position);
 		}
