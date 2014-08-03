@@ -8,6 +8,7 @@ import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.BmobUser;
 
+import com.chuck.relativeschat.ModefyUserInfoActivity;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
@@ -74,6 +75,9 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		case R.id.add_friends_message_layout:
 			intent = new Intent(getActivity().getApplicationContext() , FriendsInvitionMessageActivity.class);
 			break;
+		case R.id.current_user_info_layout:
+			intent = new Intent(getActivity().getApplicationContext() , ModefyUserInfoActivity.class);
+			break;
 		default:
 			break;
 		}	
@@ -85,6 +89,7 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	
 	public void initView(){
 		currentUserLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_user_info_layout);
+		currentUserLayout.setOnClickListener(this);
 		addFriendsLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_add_friends_layout);
 		addFriendsLayout.setOnClickListener(this);
 		myIconImage = (ImageView)currentUserLayout.findViewById(R.id.friends_icon_image);

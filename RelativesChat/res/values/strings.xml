@@ -52,5 +52,7 @@
     <string name="camera">拍摄</string>
     <string name="location">位置</string>
     <string name="voice_up_tips">手指上滑,取消发送</string>
-
+	<string name="modefy_user_image">修改我的图像</string>
+	<string name="modefy_user_state">修改我的状态</string>
+	<string name="commit">确认</string>
 </resources>

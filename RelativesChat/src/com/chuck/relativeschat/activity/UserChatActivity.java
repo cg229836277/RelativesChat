@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.activity;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.im.BmobChatManager;
@@ -159,6 +160,8 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 				if(arg0 != null && arg0.size() > 0){
 					
 					int currents = 0;
+					
+					Collections.reverse(arg0);
 					
 					if(chatListAdapter != null){
 						currents = chatListAdapter.getCount();

@@ -84,7 +84,7 @@ public class FriendsChatListAdapter extends FriendsBaseListAdapter<BmobMsg> {
 //		if(avatar!=null && !avatar.equals("")){
 //			ImageLoader.getInstance().displayImage(avatar, iv_avatar, ImageLoadOptions.getOptions(),animateFirstListener);
 //		}else{
-		iv_avatar.setImageResource(R.drawable.chat_default);
+//		iv_avatar.setImageResource(R.drawable.chat_default);
 //		}
 		
 		tv_time.setText(TimeUtil.getChatTime(Long.parseLong(item.getMsgTime())));
