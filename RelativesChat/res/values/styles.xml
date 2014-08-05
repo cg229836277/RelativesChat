@@ -111,5 +111,12 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
     </style>
+    
+    <style name="Animations" />
+    
+    <style name="Animations.GrowFromBottom">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>
 
 </resources>

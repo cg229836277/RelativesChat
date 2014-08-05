@@ -1,5 +1,6 @@
 package com.chuck.relativeschat.bean;
 
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobObject;
 
 /**
@@ -9,28 +10,36 @@ import cn.bmob.v3.BmobObject;
  * @author chengang
  * @version 1.0
  */
-public class PersonBean extends BmobObject {
+public class PersonBean extends BmobChatUser {
 	
-	private String name;
+	private String nickName;
     private String address;
     private String userId;
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    private String userState;
+    
+	public String getNickName() {
+		return nickName;
+	}
+	public String getAddress() {
+		return address;
+	}
 	public String getUserId() {
 		return userId;
+	}
+	public String getUserState() {
+		return userState;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	public void setUserState(String userState) {
+		this.userState = userState;
+	}
+
 }

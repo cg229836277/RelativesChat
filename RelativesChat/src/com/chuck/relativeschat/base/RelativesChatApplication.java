@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
+import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.entity.User;
 import com.chuck.relativeschat.tools.SharePreferenceUtil;
 
@@ -22,6 +23,7 @@ public class RelativesChatApplication extends Application {
 	
 	private static RelativesChatApplication mInstance;
 	public BmobChatUser currentUser;
+	public PersonBean personDetailData;
 	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();
 	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
 	
@@ -79,5 +81,13 @@ public class RelativesChatApplication extends Application {
 
 	public void setExistMoreInfoMessage(boolean isExistMoreInfoMessage) {
 		this.isExistMoreInfoMessage = isExistMoreInfoMessage;
+	}
+
+	public PersonBean getPersonDetailData() {
+		return personDetailData;
+	}
+
+	public void setPersonDetailData(PersonBean personDetailData) {
+		this.personDetailData = personDetailData;
 	}
 }

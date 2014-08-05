@@ -172,7 +172,7 @@
         </receiver>
 
         <activity
-            android:name="com.chuck.relativeschat.ModefyUserInfoActivity"
+            android:name="com.chuck.relativeschat.activity.ModefyUserInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>

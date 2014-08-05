@@ -4,10 +4,13 @@ import java.util.List;
 
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.tools.NetworkTool;
 import com.chuck.relativeschat.tools.StringUtils;
 
@@ -170,9 +173,23 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 						}
 				    	
 						rcApp.setCurrentUser(userManager.getCurrentUser());
-//						updateUserInfos();
+						
+						BmobQuery<PersonBean> beanQuery = new BmobQuery<PersonBean>();
+						beanQuery.addWhereEqualTo("objectId", userManager.getCurrentUser().getObjectId());
+						beanQuery.findObjects(getApplicationContext(), new FindListener<PersonBean>() {
+							
+							@Override
+							public void onSuccess(List<PersonBean> arg0) {
+								rcApp.setPersonDetailData(arg0.get(0));
+							}
+							
+							@Override
+							public void onError(int arg0, String arg1) {
+								System.out.println("初始化用户详细信息失败");
+							}
+						});
 				    	
-				    	dialog.dismiss();
+						dialog.dismiss();
 						Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
 						startActivity(intent);  	
 						

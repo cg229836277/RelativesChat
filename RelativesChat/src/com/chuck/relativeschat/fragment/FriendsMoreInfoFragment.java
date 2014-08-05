@@ -8,12 +8,16 @@ import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.BmobUser;
 
-import com.chuck.relativeschat.ModefyUserInfoActivity;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
+import com.chuck.relativeschat.activity.ModefyUserInfoActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.tools.ImageLoadOptions;
+import com.chuck.relativeschat.tools.StringUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,6 +81,8 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 			break;
 		case R.id.current_user_info_layout:
 			intent = new Intent(getActivity().getApplicationContext() , ModefyUserInfoActivity.class);
+			startActivityForResult(intent, 0);
+			intent = null;
 			break;
 		default:
 			break;
@@ -94,10 +100,8 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		addFriendsLayout.setOnClickListener(this);
 		myIconImage = (ImageView)currentUserLayout.findViewById(R.id.friends_icon_image);
 		myNameText = (TextView)currentUserLayout.findViewById(R.id.friends_name_text);
-		myDetailText = (TextView)currentUserLayout.findViewById(R.id.friends_personal_sign_text);
-		myDetailText.setVisibility(View.GONE);
-		myIconImage.setBackgroundResource(R.drawable.default_head);
-		myNameText.setText(currentUser.getUsername());
+		myDetailText = (TextView)currentUserLayout.findViewById(R.id.friends_personal_sign_text);		
+		updateUserInfo();
 		
 		addFriendsMessageLayout = (RelativeLayout)fActivityView.findViewById(R.id.add_friends_message_layout);
 		addFriendsMessageLayout.setOnClickListener(this);
@@ -125,6 +129,35 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
 		mHeadViewLayout.setTitleText("更多");
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		updateUserInfo();		
+	}
+	
+	public void updateUserInfo(){
+		if(rcApp.getPersonDetailData() != null){
+			PersonBean currentUser  = rcApp.getPersonDetailData();
+			myNameText.getPaint().setFakeBoldText(true);//加粗
+			if(!StringUtils.isEmpty(currentUser.getNickName())){
+				myNameText.setText(currentUser.getNickName());
+			}else{
+				myNameText.setText(currentUser.getUsername());
+			}
+			if(!StringUtils.isEmpty(currentUser.getUserState())){
+				myDetailText.setVisibility(View.VISIBLE);
+				myDetailText.setText(currentUser.getUserState());
+			}else{
+				myDetailText.setVisibility(View.GONE);
+			}
+			if(!StringUtils.isEmpty(currentUser.getAvatar())){
+				ImageLoader.getInstance().displayImage(currentUser.getAvatar(), myIconImage, ImageLoadOptions.getOptions());
+			}else{
+				myIconImage.setBackgroundResource(R.drawable.default_head);
+			}
+		}
 	}
 	
 }

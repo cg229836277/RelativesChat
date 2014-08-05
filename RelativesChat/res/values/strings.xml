@@ -55,4 +55,7 @@
 	<string name="modefy_user_image">修改我的图像</string>
 	<string name="modefy_user_state">修改我的状态</string>
 	<string name="commit">确认</string>
+	<string name="modefy_user_nick">修改我的昵称</string>
+	<string name="pop_photo">拍照</string>
+    <string name="pop_choose">从手机相册选中</string>
 </resources>
