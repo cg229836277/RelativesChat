@@ -2,6 +2,7 @@ package com.chuck.relativeschat.activity;
 
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
+import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.bean.BmobMsg;
 import cn.bmob.im.inteface.EventListener;
@@ -9,6 +10,7 @@ import cn.bmob.im.inteface.EventListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.MyMessageReceiver;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.fragment.FriendsActivityFragment;
 import com.chuck.relativeschat.fragment.FriendsListFragment;
@@ -17,12 +19,14 @@ import com.chuck.relativeschat.tools.NetworkTool;
 
 import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -280,5 +284,35 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 	protected void onPause() {
 		super.onPause();
 		MyMessageReceiver.ehList.remove(this);//
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			DialogTips dialog = new DialogTips(MainMenuActivity.this, "提示", "退出系统!", "确认", true, true);
+			dialog.SetOnSuccessListener(new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					logoutSystem();
+					finish();
+				}				
+			});
+			
+			dialog.show();
+			dialog = null;
+			
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void logoutSystem(){
+		BmobUserManager.getInstance(getApplicationContext()).logout();
+		rcApp.setContactList(null);
+		rcApp.setCurrentUser(null);
+		rcApp.setPersonDetailData(null);
 	}
 }

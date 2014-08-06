@@ -8,6 +8,7 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.tools.FaceTextUtils;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
+import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.TimeUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -81,11 +82,11 @@ public class FriendsChatListAdapter extends FriendsBaseListAdapter<BmobMsg> {
 		TextView tv_location = ViewHolder.get(convertView, R.id.tv_location);	
 		
 		String avatar = item.getBelongAvatar();
-//		if(avatar!=null && !avatar.equals("")){
-//			ImageLoader.getInstance().displayImage(avatar, iv_avatar, ImageLoadOptions.getOptions(),animateFirstListener);
-//		}else{
-//		iv_avatar.setImageResource(R.drawable.chat_default);
-//		}
+		if(!StringUtils.isEmpty(avatar)){
+			ImageLoader.getInstance().displayImage(avatar, iv_avatar, ImageLoadOptions.getOptions(),animateFirstListener);
+		}else{
+			iv_avatar.setImageResource(R.drawable.default_head);
+		}
 		
 		tv_time.setText(TimeUtil.getChatTime(Long.parseLong(item.getMsgTime())));
 		

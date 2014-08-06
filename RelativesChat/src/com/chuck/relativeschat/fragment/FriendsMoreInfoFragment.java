@@ -18,8 +18,11 @@ import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -152,12 +155,18 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 			}else{
 				myDetailText.setVisibility(View.GONE);
 			}
+			
 			if(!StringUtils.isEmpty(currentUser.getAvatar())){
-				ImageLoader.getInstance().displayImage(currentUser.getAvatar(), myIconImage, ImageLoadOptions.getOptions());
+				System.out.println("主页面的图像地址是" + currentUser.getAvatar());
+				if(currentUser.getAvatar().contains("sdcard")){
+					Bitmap image = BitmapFactory.decodeFile(currentUser.getAvatar());
+					myIconImage.setImageBitmap(image);
+				}else{
+					ImageLoader.getInstance().displayImage(currentUser.getAvatar(), myIconImage, ImageLoadOptions.getOptions());
+				}
 			}else{
 				myIconImage.setBackgroundResource(R.drawable.default_head);
 			}
-		}
-	}
-	
+		} 
+	}	
 }

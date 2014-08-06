@@ -20,10 +20,12 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.adapter.FriendsChatListAdapter;
 import com.chuck.relativeschat.base.MyMessageReceiver;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.EmoticonsEditText;
 import com.chuck.relativeschat.tools.NetworkTool;
+import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.XListView;
 import com.chuck.relativeschat.tools.XListView.IXListViewListener;
 
@@ -63,6 +65,7 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	private FriendsChatListAdapter chatListAdapter;
 	public static final int NEW_MESSAGE = 0x001;//新消息
 	private boolean isNetConnected;//网络连接情况
+	private PersonBean beanData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +82,14 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 		MsgPagerNum = 1;
 		
 		currentChatUser = (BmobChatUser) getIntent().getSerializableExtra("user");
+		
 		if(currentChatUser != null){
-			mHeadViewLayout.setTitleText("与" + currentChatUser.getUsername() + "聊天");
 			chatUserId = currentChatUser.getObjectId();
+			if(!StringUtils.isEmpty(currentChatUser.getNick())){
+				mHeadViewLayout.setTitleText("与" + currentChatUser.getNick() + "聊天");		
+			}else{
+				mHeadViewLayout.setTitleText("与" + currentChatUser.getUsername() + "聊天");		
+			}
 		}
 		initView();
 	}

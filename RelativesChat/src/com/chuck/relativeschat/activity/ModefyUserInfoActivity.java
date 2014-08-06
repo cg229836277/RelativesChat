@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -99,7 +100,7 @@ public class ModefyUserInfoActivity extends BaseActivity {
 		}
 		if(!StringUtils.isEmpty(userDataBean.getAvatar())){
 			avatarPath = userDataBean.getAvatar();
-			refreshAvatar(userDataBean.getAvatar());
+			refreshAvatar(avatarPath);
 		}else{
 			userIconImage.setImageResource(R.drawable.default_head);
 		}
@@ -138,7 +139,9 @@ public class ModefyUserInfoActivity extends BaseActivity {
 			@Override
 			protected Void doInBackground(Void... params) {
 				userDataBean.setNickName(nickStr);
+				userDataBean.setNick(nickStr);
 				userDataBean.setUserState(stateStr);
+				System.out.println("更新时的图片地址是" + avatarPath);
 				updateUserAvatar(avatarPath);
 				userDataBean.update(getApplicationContext(), new UpdateListener(){
 
@@ -306,11 +309,13 @@ public class ModefyUserInfoActivity extends BaseActivity {
 			@Override
 			public void onSuccess() {
 				avatarPath = bmobFile.getFileUrl();
+				userDataBean.setAvatar(avatarPath);
+				System.out.println("上传时的路径是" + avatarPath);
 			}
 			
 			@Override
 			public void onProgress(Integer arg0) {
-				
+				System.out.println("上传进度是" + arg0);
 			}
 			
 			@Override
@@ -320,7 +325,6 @@ public class ModefyUserInfoActivity extends BaseActivity {
 	}
 	
 	private void updateUserAvatar(final String url){
-		userDataBean.setAvatar(url);
 		userDataBean.update(this, new UpdateListener() {
 		    @Override
 		    public void onSuccess() {
@@ -344,6 +348,7 @@ public class ModefyUserInfoActivity extends BaseActivity {
 				userIconImage.setImageBitmap(bitmap);
 				String filename = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
 				avatarFilePath = BmobConstants.MyAvatarDir + filename;
+				System.out.println("保存到本地的文件的路径是" + avatarFilePath);
 				PhotoUtil.saveBitmap(BmobConstants.MyAvatarDir, filename,bitmap, true);
 				if (bitmap != null && bitmap.isRecycled()) {
 					bitmap.recycle();
@@ -354,9 +359,14 @@ public class ModefyUserInfoActivity extends BaseActivity {
 	
 	private void refreshAvatar(String avatar){
 		if (!StringUtils.isEmpty(avatar)) {
-			ImageLoader.getInstance().displayImage(avatar, userIconImage, ImageLoadOptions.getOptions());
-		} else {
+			if(avatar.contains("sdcard")){
+				Bitmap image = BitmapFactory.decodeFile(avatar);
+				userIconImage.setImageBitmap(image);
+			}else{
+				ImageLoader.getInstance().displayImage(avatar, userIconImage, ImageLoadOptions.getOptions());
+			}
+		}else {
 			userIconImage.setImageResource(R.drawable.default_head);
 		}
-	}
+	} 
 }

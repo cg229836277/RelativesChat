@@ -11,6 +11,7 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.UserChatActivity;
 import com.chuck.relativeschat.adapter.FriendsListAdapter;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.CollectionUtils;
 
@@ -35,6 +36,7 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 	private List<BmobChatUser> chatUserList;
 	public BmobUserManager userManager;
 	private LayoutInflater infla;
+	private List<PersonBean> userFriendsDataList;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {			
@@ -42,6 +44,7 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 		rcApp = (RelativesChatApplication)getActivity().getApplication();
 		userManager = BmobUserManager.getInstance(this.getActivity().getApplicationContext());
 		chatUserMap = rcApp.getContactList();
+		userFriendsDataList = rcApp.getMyFriendsDataBean();
 		
 		infla = getActivity().getLayoutInflater();
 		fActivityView = infla.inflate(R.layout.friends_list_fragment, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);			
@@ -69,7 +72,7 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 			}
 		}
 		
-		adapter = new FriendsListAdapter(getActivity().getApplicationContext(),chatUserList);
+		adapter = new FriendsListAdapter(getActivity().getApplicationContext() ,chatUserList, userFriendsDataList);
 		friendsListView.setAdapter(adapter);
 		if(adapter != null && adapter.getCount() > 0){
 			friendsListView.setSelection(adapter.getCount());

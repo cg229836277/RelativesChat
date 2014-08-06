@@ -60,38 +60,39 @@ public abstract class DialogBase extends Dialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-    	setContentView(R.layout.v2_dialog_base);
+    	setContentView(R.layout.activity_my_dialog);
 		this.onBuilding();
 		//
-		LinearLayout dialog_top = (LinearLayout)findViewById(R.id.dialog_top);
+//		TextView dialog_top = (TextView)findViewById(R.id.dialog_title_text);
 		View title_red_line = (View)findViewById(R.id.title_red_line);
 		
 		//
-		if(hasTitle){
-			dialog_top.setVisibility(View.VISIBLE);
-			title_red_line.setVisibility(View.VISIBLE);
-		}else{
-			dialog_top.setVisibility(View.GONE);
-			title_red_line.setVisibility(View.GONE);
-		}
-		TextView titleTextView = (TextView)findViewById(R.id.dialog_title);
+//		if(hasTitle){
+//			dialog_top.setVisibility(View.VISIBLE);
+////			title_red_line.setVisibility(View.VISIBLE);
+//		}else{
+//			dialog_top.setVisibility(View.GONE);
+////			title_red_line.setVisibility(View.GONE);
+//		}
+		TextView titleTextView = (TextView)findViewById(R.id.dialog_title_text);
 		titleTextView.setText(this.getTitle());
-		TextView messageTextView = (TextView)findViewById(R.id.dialog_message);
+		TextView messageTextView = (TextView)findViewById(R.id.dialog_content_text);
 		messageTextView.setText(this.getMessage());
 		
-		if (view != null) {
-			FrameLayout custom = (FrameLayout) findViewById(R.id.dialog_custom);
-			custom.addView(view, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
-			findViewById(R.id.dialog_contentPanel).setVisibility(View.GONE);
-		} else {
-			findViewById(R.id.dialog_customPanel).setVisibility(View.GONE);
-		}
+//		if (view != null) {
+//			FrameLayout custom = (FrameLayout) findViewById(R.id.dialog_custom);
+//			custom.addView(view, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+//			findViewById(R.id.dialog_contentPanel).setVisibility(View.GONE);
+//		} else {
+//			findViewById(R.id.dialog_customPanel).setVisibility(View.GONE);
+//		}
 
 		//
-		positiveButton = (Button)findViewById(R.id.dialog_positivebutton);
-		negativeButton = (Button)findViewById(R.id.dialog_negativebutton);
+		positiveButton = (Button)findViewById(R.id.commit_dialog_button);
+		negativeButton = (Button)findViewById(R.id.cancle_dialog_button);
 		if(namePositiveButton != null && namePositiveButton.length()>0){
 			positiveButton.setText(namePositiveButton);
+			positiveButton.setVisibility(View.VISIBLE);
 			positiveButton.setOnClickListener(GetPositiveButtonOnClickListener());
 		} else {
 			positiveButton.setVisibility(View.GONE);
@@ -100,27 +101,28 @@ public abstract class DialogBase extends Dialog {
 		}
 		if(nameNegativeButton != null && nameNegativeButton.length()>0){
 			negativeButton.setText(nameNegativeButton);
+			negativeButton.setVisibility(View.VISIBLE);
 			negativeButton.setOnClickListener(GetNegativeButtonOnClickListener());
 		} else {
 			negativeButton.setVisibility(View.GONE);
 		}
 		
 		//
-		LayoutParams params = this.getWindow().getAttributes();  
-		if(this.getWidth()>0)
-			params.width = this.getWidth();  
-		if(this.getHeight()>0)
-			params.height = this.getHeight();  
-		if(this.getX()>0)
-			params.width = this.getX();  
-		if(this.getY()>0)
-			params.height = this.getY();  
-		
-		//
-		if(isFullScreen) {
-			params.width = WindowManager.LayoutParams.MATCH_PARENT;
-			params.height = WindowManager.LayoutParams.MATCH_PARENT;
-		}
+//		LayoutParams params = this.getWindow().getAttributes();  
+//		if(this.getWidth()>0)
+//			params.width = this.getWidth();  
+//		if(this.getHeight()>0)
+//			params.height = this.getHeight();  
+//		if(this.getX()>0)
+//			params.width = this.getX();  
+//		if(this.getY()>0)
+//			params.height = this.getY();  
+//		
+//		//
+//		if(isFullScreen) {
+//			params.width = WindowManager.LayoutParams.MATCH_PARENT;
+//			params.height = WindowManager.LayoutParams.MATCH_PARENT;
+//		}
 		
 		//
 		if(isCancel){
@@ -130,7 +132,7 @@ public abstract class DialogBase extends Dialog {
 			setCanceledOnTouchOutside(false);
 			setCancelable(false);
 		}
-	    getWindow().setAttributes(params);  
+//	    getWindow().setAttributes(params);  
 		this.setOnDismissListener(GetOnDismissListener());
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 	}

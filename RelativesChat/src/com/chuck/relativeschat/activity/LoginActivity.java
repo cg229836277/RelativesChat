@@ -11,18 +11,28 @@ import cn.bmob.v3.listener.SaveListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.PersonBean;
+import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.NetworkTool;
 import com.chuck.relativeschat.tools.StringUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
@@ -38,13 +48,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private MyHandler mHandler;
 	private RelativesChatApplication rcApp;
 	private  List<BmobInvitation> inviteList;
+	private ImageView userIconView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);		
-		setContentView(R.layout.activity_login);
-		
+		super.onCreate(savedInstanceState);			
+		setContentView(R.layout.activity_login);		
 		mHandler = new MyHandler();
 		rcApp = (RelativesChatApplication) getApplication();
 		
@@ -62,13 +71,43 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		userInputPassword = (EditText)findViewById(R.id.user_login_psw_text);
 //		userInputAccount.setText("cg229836277");
 //		userInputPassword.setText("cg19901018!");
-		
+		userIconView = (ImageView)findViewById(R.id.user_icon);
 		userInputAccount.setText("rr785753550");
 		userInputPassword.setText("qinyanhui172587");
 		userInputAccount.setSingleLine(true);
 		userInputPassword.setSingleLine(true);
 		userInputAccount.setSelection(userInputAccount.getText().toString().length());
 		userInputPassword.setSelection(userInputPassword.getText().toString().length());
+		
+		dealUserNameAndUserIcon();
+	}
+	
+	public void dealUserNameAndUserIcon(){
+		if(!StringUtils.isEmpty(userInputAccount.getText().toString())){
+			setUserIcon();	
+		}
+	}
+	
+	public void setUserIcon(){
+		BmobQuery<PersonBean> userBean = new BmobQuery<PersonBean>();
+		userBean.addWhereEqualTo("username", userInputAccount.getText().toString());
+		userBean.findObjects(getApplicationContext(), new FindListener<PersonBean>() {
+
+			@Override
+			public void onError(int arg0, String arg1) {
+				
+			}
+
+			@Override
+			public void onSuccess(List<PersonBean> arg0) {
+				String avatar = arg0.get(0).getAvatar();
+				if(StringUtils.isEmpty(avatar)){
+					userIconView.setImageResource(R.drawable.default_head);
+				}else{
+					ImageLoader.getInstance().displayImage(avatar, userIconView, ImageLoadOptions.getOptions());
+				}							
+			}
+		});
 	}
 	
 	@Override
@@ -112,8 +151,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	public void loginSystem(){
-//		LoginSystemBizImpl loginImpl = new LoginSystemBizImpl(LoginActivity.this, mHandler);
-//		loginImpl.begainLoginSystem(userAccount, userPassword);
 		begainLoginSystem();
 	}
 	
@@ -175,12 +212,20 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 						rcApp.setCurrentUser(userManager.getCurrentUser());
 						
 						BmobQuery<PersonBean> beanQuery = new BmobQuery<PersonBean>();
-						beanQuery.addWhereEqualTo("objectId", userManager.getCurrentUser().getObjectId());
+						beanQuery.setLimit(100);
+//						beanQuery.addWhereEqualTo("objectId", userManager.getCurrentUser().getObjectId());
 						beanQuery.findObjects(getApplicationContext(), new FindListener<PersonBean>() {
 							
 							@Override
 							public void onSuccess(List<PersonBean> arg0) {
-								rcApp.setPersonDetailData(arg0.get(0));
+								rcApp.setMyFriendsDataBean(arg0);
+								System.out.println("总共有很多好友" + arg0.size());
+								for(PersonBean data : arg0){
+									if(data.getObjectId().equals(userManager.getCurrentUser().getObjectId())){
+										rcApp.setPersonDetailData(data);
+										break;
+									}
+								}
 							}
 							
 							@Override
@@ -191,7 +236,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				    	
 						dialog.dismiss();
 						Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-						startActivity(intent);  	
+						startActivityForResult(intent , 0);  	
 						
 						mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
 						
@@ -211,6 +256,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				super.onPostExecute(result);
 			}
 		}.execute();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		setUserIcon();
 	}
 }
 
