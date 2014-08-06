@@ -54,11 +54,12 @@ public class BaseActivity extends Activity {
 		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
 			@Override
 			public void onError(int arg0, String arg1) {
-				
+				System.out.println("父活动中的数目是" + arg1);
 			}
 
 			@Override
 			public void onSuccess(List<BmobChatUser> arg0) {
+				System.out.println("父活动中的数目是" + arg0.size());
 				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));
 			}
 		});

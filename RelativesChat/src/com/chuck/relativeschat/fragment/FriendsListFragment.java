@@ -83,7 +83,7 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
 			@Override
 			public void onError(int arg0, String arg1) {
-				
+				System.out.println("初始化好友的错误是" + arg1);
 			}
 
 			@Override

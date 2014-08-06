@@ -55,10 +55,11 @@ public class RelativesChatApplication extends Application {
 	}
 
 	public void setContactList(Map<String, BmobChatUser> contactList) {
-		if (this.contactList != null) {
+		if (this.contactList != null && contactList.size() > 0) {
 			this.contactList.clear();
+			this.contactList.putAll(contactList);
 		}
-		this.contactList = contactList;
+//		this.contactList = contactList;
 	}
 	
 	public void logout() {

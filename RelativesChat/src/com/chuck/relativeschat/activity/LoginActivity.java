@@ -2,6 +2,7 @@ package com.chuck.relativeschat.activity;
 
 import java.util.List;
 
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.BmobQuery;
@@ -72,8 +73,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 //		userInputAccount.setText("cg229836277");
 //		userInputPassword.setText("cg19901018!");
 		userIconView = (ImageView)findViewById(R.id.user_icon);
-		userInputAccount.setText("rr785753550");
-		userInputPassword.setText("qinyanhui172587");
+//		userInputAccount.setText("rr785753550");
+//		userInputPassword.setText("qinyanhui172587");
+		userInputAccount.setText("cg2542903208");
+		userInputPassword.setText("cg19901018!");
 		userInputAccount.setSingleLine(true);
 		userInputPassword.setSingleLine(true);
 		userInputAccount.setSelection(userInputAccount.getText().toString().length());
@@ -219,6 +222,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							@Override
 							public void onSuccess(List<PersonBean> arg0) {
 								rcApp.setMyFriendsDataBean(arg0);
+								updateUserInfos();
 								System.out.println("总共有很多好友" + arg0.size());
 								for(PersonBean data : arg0){
 									if(data.getObjectId().equals(userManager.getCurrentUser().getObjectId())){
@@ -226,6 +230,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 										break;
 									}
 								}
+								
+								dialog.dismiss();
+								Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+								startActivityForResult(intent , 0);  	
+								
+								mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
 							}
 							
 							@Override
@@ -233,13 +243,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 								System.out.println("初始化用户详细信息失败");
 							}
 						});
-				    	
-						dialog.dismiss();
-						Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-						startActivityForResult(intent , 0);  	
-						
-						mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
-						
 				    	return;
 				    }
 				    @Override
