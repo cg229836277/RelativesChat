@@ -9,7 +9,7 @@ import cn.bmob.v3.listener.PushListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.HeadViewLayout;
-import com.chuck.relativeschat.entity.User;
+import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.StringUtils;
 
 import android.os.Bundle;
@@ -32,7 +32,7 @@ public class FindFriendsActivity extends BaseActivity {
 	private View simpleFriendView;
 	private TextView friendsNameText;
 	private TextView friendsPersonalSignText;
-	private List<User> tempUser;
+	private List<PersonBean> tempUser;
 	private Button addFriendsButton;
 	
 	@Override
@@ -60,7 +60,7 @@ public class FindFriendsActivity extends BaseActivity {
 	public void findFriends(){
 		String searchUserName = searchFriendsEdit.getText().toString();
 		if(!StringUtils.isEmpty(searchUserName)){
-			userManager.queryUserInfo(searchUserName, new FindListener<User>() {
+			userManager.queryUserInfo(searchUserName, new FindListener<PersonBean>() {
 
 				@Override
 				public void onError(int arg0, String arg1) {
@@ -68,7 +68,7 @@ public class FindFriendsActivity extends BaseActivity {
 				}
 
 				@Override
-				public void onSuccess(List<User> arg0) {
+				public void onSuccess(List<PersonBean> arg0) {
 					if(arg0 != null && arg0.size() > 0){
 						getFriendsResult(arg0);
 						tempUser = arg0;
@@ -78,12 +78,12 @@ public class FindFriendsActivity extends BaseActivity {
 		}
 	}
 	
-	public void getFriendsResult(List<User> resultList){
+	public void getFriendsResult(List<PersonBean> resultList){
 		LayoutInflater infla = getLayoutInflater();
-		for(User userData : resultList){
+		for(PersonBean userData : resultList){
 			if(userData != null){
 				if(tempUser != null && tempUser.size() > 0){
-					for(User tempData : tempUser){
+					for(PersonBean tempData : tempUser){
 						if(tempData.getObjectId().equals(userData.getObjectId())){
 							return;
 						}
@@ -100,8 +100,8 @@ public class FindFriendsActivity extends BaseActivity {
 				addFriendsButton.setOnClickListener(new OnClickListener() {					
 					@Override
 					public void onClick(View arg0) {
-						if(arg0.getTag() instanceof User){
-							addFriend((User)arg0.getTag());
+						if(arg0.getTag() instanceof PersonBean){
+							addFriend((PersonBean)arg0.getTag());
 						}
 					}
 				});
@@ -109,8 +109,8 @@ public class FindFriendsActivity extends BaseActivity {
 				if(!StringUtils.isEmpty(userData.getUsername())){
 					friendsNameText.setText(userData.getUsername());					
 				}
-				if(!StringUtils.isEmpty(userData.getPersonalSign())){
-					friendsPersonalSignText.setText(userData.getPersonalSign());
+				if(!StringUtils.isEmpty(userData.getUserState())){
+					friendsPersonalSignText.setText(userData.getUserState());
 				}
 				
 				friendsResultLayout.addView(simpleFriendView);
@@ -118,7 +118,7 @@ public class FindFriendsActivity extends BaseActivity {
 		}
 	}
 	
-	private void addFriend(User friendsInfo){
+	private void addFriend(PersonBean friendsInfo){
 		final ProgressDialog progress = new ProgressDialog(this);
 		progress.setMessage("正在添加...");
 		progress.setCanceledOnTouchOutside(false);

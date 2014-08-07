@@ -11,7 +11,8 @@ import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.bean.PersonBean;
+import com.chuck.relativeschat.entity.PersonBean;
+import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.NetworkTool;
 import com.chuck.relativeschat.tools.StringUtils;
@@ -75,7 +76,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		userIconView = (ImageView)findViewById(R.id.user_icon);
 //		userInputAccount.setText("rr785753550");
 //		userInputPassword.setText("qinyanhui172587");
-		userInputAccount.setText("cg2542903208");
+//		userInputAccount.setText("cg2542903208");
+//		userInputPassword.setText("cg19901018!");
+		userInputAccount.setText("cg1301958187");
 		userInputPassword.setText("cg19901018!");
 		userInputAccount.setSingleLine(true);
 		userInputPassword.setSingleLine(true);
@@ -214,35 +217,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				    	
 						rcApp.setCurrentUser(userManager.getCurrentUser());
 						
-						BmobQuery<PersonBean> beanQuery = new BmobQuery<PersonBean>();
-						beanQuery.setLimit(100);
-//						beanQuery.addWhereEqualTo("objectId", userManager.getCurrentUser().getObjectId());
-						beanQuery.findObjects(getApplicationContext(), new FindListener<PersonBean>() {
-							
-							@Override
-							public void onSuccess(List<PersonBean> arg0) {
-								rcApp.setMyFriendsDataBean(arg0);
-								updateUserInfos();
-								System.out.println("总共有很多好友" + arg0.size());
-								for(PersonBean data : arg0){
-									if(data.getObjectId().equals(userManager.getCurrentUser().getObjectId())){
-										rcApp.setPersonDetailData(data);
-										break;
-									}
-								}
-								
-								dialog.dismiss();
-								Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-								startActivityForResult(intent , 0);  	
-								
-								mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
-							}
-							
-							@Override
-							public void onError(int arg0, String arg1) {
-								System.out.println("初始化用户详细信息失败");
-							}
-						});
+						updateUserData();
+						
 				    	return;
 				    }
 				    @Override
@@ -259,6 +235,55 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				super.onPostExecute(result);
 			}
 		}.execute();
+	}
+	
+	public void updateUserData(){
+		BmobQuery<PersonBean> beanQuery = new BmobQuery<PersonBean>();
+		beanQuery.setLimit(100);
+		beanQuery.findObjects(getApplicationContext(), new FindListener<PersonBean>() {
+			
+			@Override
+			public void onSuccess(List<PersonBean> arg0) {
+				rcApp.setMyFriendsDataBean(arg0);
+				updateUserInfos();
+				System.out.println("总共有很多好友" + arg0.size());
+				for(PersonBean dataBean : arg0){
+					if(dataBean != null){
+						if(dataBean.getUsername().equals(userAccount)){
+							rcApp.setPersonDetailData(dataBean);
+							break;
+						}
+					}
+				}
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+//				System.out.println("初始化用户详细信息失败");
+				dialog.dismiss();
+		    	mToast.showMyToast(getResources().getString(R.string.login_fail), Toast.LENGTH_SHORT);
+			}
+		});
+	}
+	
+	public void updateUserInfos(){
+		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
+			@Override
+			public void onError(int arg0, String arg1) {
+				System.out.println("父活动中的数目是" + arg1);
+			}
+
+			@Override
+			public void onSuccess(List<BmobChatUser> arg0) {
+				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));
+				
+				dialog.dismiss();
+				Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+				startActivityForResult(intent , 0);  	
+				
+				mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
+			}
+		});
 	}
 	
 	@Override

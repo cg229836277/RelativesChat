@@ -20,8 +20,8 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.adapter.FriendsChatListAdapter;
 import com.chuck.relativeschat.base.MyMessageReceiver;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.bean.PersonBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.EmoticonsEditText;
 import com.chuck.relativeschat.tools.NetworkTool;
@@ -180,7 +180,6 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 						return;
 					}
 					if(!isInit){
-						chatListAdapter.setList(arg0);
 						chatListView.setSelection(chatListAdapter.getCount() - currents - 1);
 						chatListAdapter.notifyDataSetChanged();
 					}else{
@@ -188,7 +187,13 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 						chatListView.setAdapter(chatListAdapter);
 						chatListView.setSelection(chatListAdapter.getCount() - 1);
 					}
+				}else{
+					chatListAdapter = new FriendsChatListAdapter(UserChatActivity.this, arg0);
+					chatListView.setAdapter(chatListAdapter);
+					chatListView.setSelection(chatListAdapter.getCount() - 1);
 				}
+				
+				chatListAdapter.setList(arg0);
 			}
 			
 			@Override
@@ -251,7 +256,9 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
 		case R.id.edit_user_comment://发送文字消息
-			chatListView.setSelection(chatListAdapter.getCount() - 1);
+			if(chatListAdapter != null){
+				chatListView.setSelection(chatListAdapter.getCount() - 1);
+			}
 			if (layout_more.getVisibility() == View.VISIBLE) {
 				layout_add.setVisibility(View.GONE);
 				layout_emo.setVisibility(View.GONE);

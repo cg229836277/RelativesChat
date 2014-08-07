@@ -1,5 +1,6 @@
 package com.chuck.relativeschat.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,13 @@ import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.activity.MyToast;
 import com.chuck.relativeschat.activity.UserChatActivity;
 import com.chuck.relativeschat.adapter.FriendsListAdapter;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.bean.PersonBean;
+import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.CollectionUtils;
 
 import android.content.Intent;
@@ -25,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FriendsListFragment extends Fragment implements OnItemClickListener{
 	private View fActivityView;
@@ -37,9 +41,28 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 	public BmobUserManager userManager;
 	private LayoutInflater infla;
 	private List<PersonBean> userFriendsDataList;
+	private List<UserBean> userBeanList = new ArrayList<UserBean>();
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {			
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {		
+		
+//		if(chatUserList != null){
+//			chatUserList.clear();
+//			chatUserList = null;
+//		}
+//		if(chatUserMap != null){
+//			chatUserMap.clear();
+//			chatUserMap = null;
+//		}
+		
+//		if(userFriendsDataList != null){
+//			userFriendsDataList.clear();
+//			userFriendsDataList = null;
+//		}
+		
+		if(userBeanList != null){
+			userBeanList.clear();
+		}
 
 		rcApp = (RelativesChatApplication)getActivity().getApplication();
 		userManager = BmobUserManager.getInstance(this.getActivity().getApplicationContext());
@@ -72,7 +95,25 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 			}
 		}
 		
-		adapter = new FriendsListAdapter(getActivity().getApplicationContext() ,chatUserList, userFriendsDataList);
+		for(BmobChatUser userData : chatUserList){
+			if(userData != null){
+				UserBean data = new UserBean();
+				for(PersonBean personData : userFriendsDataList){
+					if(personData != null){
+						if(personData.getObjectId().equals(userData.getObjectId())){
+							data.setUserState(personData.getUserState());
+							break;
+						}
+					}
+				}
+				data.setChatUserData(userData);
+				userBeanList.add(data);
+			}
+		}
+		
+		System.out.println("" + userBeanList.size());
+		
+		adapter = new FriendsListAdapter(getActivity().getApplicationContext() , userBeanList);
 		friendsListView.setAdapter(adapter);
 		if(adapter != null && adapter.getCount() > 0){
 			friendsListView.setSelection(adapter.getCount());
@@ -80,27 +121,29 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 	}
 	
 	public void updateUserInfos(){
-		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
-			@Override
-			public void onError(int arg0, String arg1) {
-				System.out.println("初始化好友的错误是" + arg1);
-			}
-
-			@Override
-			public void onSuccess(List<BmobChatUser> arg0) {
-				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));
-				chatUserList = arg0;
-				if(chatUserList != null && chatUserList.size() > 0){
-					initChatUserList();
-				}else{
-					fActivityView = infla.inflate(R.layout.blank_layout, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
-					TextView blankRemarkText = (TextView)fActivityView.findViewById(R.id.content_empty_text);
-					blankRemarkText.setText(getActivity().getResources().getString(R.string.no_friends_notify));
-					mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.bank_menu_header_list_layout);	
-					initHeadTitle();
-				}
-			}
-		});
+//		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
+//			@Override
+//			public void onError(int arg0, String arg1) {
+//				System.out.println("初始化好友的错误是" + arg1);
+//			}
+//
+//			@Override
+//			public void onSuccess(List<BmobChatUser> arg0) {
+//				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));			
+//				chatUserList = arg0;
+//				if(chatUserList != null && chatUserList.size() > 0){
+//					initChatUserList();
+//				}else{
+//					fActivityView = infla.inflate(R.layout.blank_layout, (ViewGroup)getActivity().findViewById(R.id.friends_info_viewpage),false);
+//					TextView blankRemarkText = (TextView)fActivityView.findViewById(R.id.content_empty_text);
+//					blankRemarkText.setText(getActivity().getResources().getString(R.string.no_friends_notify));
+//					mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.bank_menu_header_list_layout);	
+//					initHeadTitle();
+//				}
+//			}
+//		});
+		MyToast toast = new MyToast(getActivity().getApplicationContext());
+		toast.showMyToast("初始化好友列表出错", Toast.LENGTH_SHORT);
 	}
 	
 	public void initHeadTitle(){
@@ -110,11 +153,11 @@ public class FriendsListFragment extends Fragment implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		if(adapter.getItem(arg2) instanceof BmobChatUser){
-			BmobChatUser chatUser = (BmobChatUser)adapter.getItem(arg2);
+		if(adapter.getItem(arg2) instanceof UserBean){
+			UserBean chatUser = (UserBean)adapter.getItem(arg2);
 			Intent intent = new Intent(getActivity() , UserChatActivity.class);
-			intent.putExtra("user", chatUser);
+			intent.putExtra("user", chatUser.getChatUserData());
 			startActivity(intent);
 		}
-	}
+	}	
 }

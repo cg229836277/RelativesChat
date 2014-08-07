@@ -49,19 +49,4 @@ public class BaseActivity extends Activity {
 		mScreenWidth = metric.widthPixels;
 		mScreenHeight = metric.heightPixels;
 	}
-	
-	public void updateUserInfos(){
-		userManager.queryCurrentContactList(new FindListener<BmobChatUser>() {
-			@Override
-			public void onError(int arg0, String arg1) {
-				System.out.println("父活动中的数目是" + arg1);
-			}
-
-			@Override
-			public void onSuccess(List<BmobChatUser> arg0) {
-				System.out.println("父活动中的数目是" + arg0.size());
-				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));
-			}
-		});
-	}
 }

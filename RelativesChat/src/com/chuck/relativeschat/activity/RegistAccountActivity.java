@@ -1,24 +1,16 @@
 package com.chuck.relativeschat.activity;
 
-import java.security.NoSuchAlgorithmException;
-
-import cn.bmob.im.bean.BmobChatUser;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.common.MyDialog;
-import com.chuck.relativeschat.entity.User;
-import com.chuck.relativeschat.tools.MD5;
+import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.StringUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -86,7 +78,7 @@ public class RegistAccountActivity extends BaseActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				final User bu = new User();
+				final PersonBean bu = new PersonBean();
 				bu.setUsername(userName);
 				String md5Password;
 //				try {

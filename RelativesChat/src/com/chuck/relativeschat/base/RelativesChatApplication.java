@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
-import com.chuck.relativeschat.bean.PersonBean;
-import com.chuck.relativeschat.entity.User;
+import com.chuck.relativeschat.bean.UserBean;
+import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.SharePreferenceUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 
@@ -27,14 +28,14 @@ public class RelativesChatApplication extends Application {
 	private static RelativesChatApplication mInstance;
 	public BmobChatUser currentUser;
 	public PersonBean personDetailData;
-	public List<PersonBean> myFriendsDataBean = new ArrayList<PersonBean>();
-	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();
+	public List<PersonBean> myFriendsDataBean/* = new ArrayList<PersonBean>()*/;
+	private Map<String, BmobChatUser> contactList /*= new HashMap<String, BmobChatUser>()*/;
 	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
 	}
 	
@@ -55,11 +56,17 @@ public class RelativesChatApplication extends Application {
 	}
 
 	public void setContactList(Map<String, BmobChatUser> contactList) {
-		if (this.contactList != null && contactList.size() > 0) {
+		if (this.contactList != null) {
 			this.contactList.clear();
-			this.contactList.putAll(contactList);
 		}
-//		this.contactList = contactList;
+		
+//		if (contactList != null) {
+//			if(contactList.size() > 0){
+//				this.contactList.clear();
+//				this.contactList.putAll(contactList);
+//			}
+//		}
+		this.contactList = contactList;
 	}
 	
 	public void logout() {
@@ -101,8 +108,8 @@ public class RelativesChatApplication extends Application {
 	}
 
 	public void setMyFriendsDataBean(List<PersonBean> myFriendsDataBean) {
-//		this.myFriendsDataBean = myFriendsDataBean;
-		this.myFriendsDataBean.addAll(myFriendsDataBean);
+		this.myFriendsDataBean = myFriendsDataBean;
+//		this.myFriendsDataBean.addAll(myFriendsDataBean);
 	}
 	
 	public PersonBean getMyChatUser(String chatUserId){
