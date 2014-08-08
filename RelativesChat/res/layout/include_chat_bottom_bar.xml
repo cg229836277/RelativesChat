@@ -23,14 +23,14 @@
             android:gravity="center"
             android:onClick="toAction" />
 
-        <Button
+      <!--  <Button
             android:id="@+id/btn_chat_emo"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="6dp"
             android:background="@drawable/btn_chat_emo_selector"
             android:gravity="center"
-            android:onClick="toAction" />
+            android:onClick="toAction" /> --> 
 
         <com.chuck.relativeschat.tools.EmoticonsEditText
             android:id="@+id/edit_user_comment"
@@ -44,7 +44,7 @@
             android:minHeight="@dimen/tab_padding_left_right"
             android:padding="5dp" />
 
-        <Button
+     <!--   <Button
             android:id="@+id/btn_speak"
             style="@style/Smile.TextView._Black"
             android:layout_width="0dp"
@@ -65,7 +65,7 @@
             android:background="@drawable/btn_chat_voice_selector"
             android:gravity="center"
             android:textColor="@color/base_color_text_black" >
-        </Button>
+        </Button> --> 
         
         <Button
             android:id="@+id/btn_chat_keyboard"
@@ -83,7 +83,7 @@
             android:layout_height="30dp"
             android:background="@drawable/btn_chat_send_selector"
             android:gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/base_color_text_black" >
         </Button>
         

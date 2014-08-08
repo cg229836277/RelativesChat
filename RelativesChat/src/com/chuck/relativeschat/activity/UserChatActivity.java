@@ -57,7 +57,9 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	
 	private static int MsgPagerNum;
 	private LinearLayout layout_more, layout_emo, layout_add;
-	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_speak, btn_chat_voice;
+	private Button btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_speak;
+//	private Button btn_chat_emo;
+//	private Button btn_chat_voice;
 	private EmoticonsEditText edit_user_comment;
 	
 	private String chatUserId;//聊天对象的id
@@ -65,7 +67,7 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 	private FriendsChatListAdapter chatListAdapter;
 	public static final int NEW_MESSAGE = 0x001;//新消息
 	private boolean isNetConnected;//网络连接情况
-	private PersonBean beanData;
+//	private PersonBean beanData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				layout_more.setVisibility(View.GONE);
 				layout_add.setVisibility(View.GONE);
-				btn_chat_voice.setVisibility(View.VISIBLE);
+//				btn_chat_voice.setVisibility(View.VISIBLE);
 				btn_chat_keyboard.setVisibility(View.GONE);
 				btn_chat_send.setVisibility(View.GONE);
 				return false;
@@ -208,18 +210,19 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 		layout_emo = (LinearLayout) findViewById(R.id.layout_emo);
 		layout_add = (LinearLayout) findViewById(R.id.layout_add);
 		btn_chat_add = (Button) findViewById(R.id.btn_chat_add);
-		btn_chat_emo = (Button) findViewById(R.id.btn_chat_emo);
+//		btn_chat_emo = (Button) findViewById(R.id.btn_chat_emo);
 		btn_chat_add.setOnClickListener(this);
-		btn_chat_emo.setOnClickListener(this);
+//		btn_chat_emo.setOnClickListener(this);
 
 		btn_chat_keyboard = (Button) findViewById(R.id.btn_chat_keyboard);
-		btn_chat_voice = (Button) findViewById(R.id.btn_chat_voice);
-		btn_chat_voice.setOnClickListener(this);
+//		btn_chat_voice = (Button) findViewById(R.id.btn_chat_voice);
+//		btn_chat_voice.setOnClickListener(this);
 		btn_chat_keyboard.setOnClickListener(this);
 		btn_chat_send = (Button) findViewById(R.id.btn_chat_send);
 		btn_chat_send.setOnClickListener(this);
+		btn_chat_send.setVisibility(View.VISIBLE);
 
-		btn_speak = (Button) findViewById(R.id.btn_speak);
+//		btn_speak = (Button) findViewById(R.id.btn_speak);
 		
 		edit_user_comment = (EmoticonsEditText) findViewById(R.id.edit_user_comment);
 		edit_user_comment.setOnClickListener(this);
@@ -228,16 +231,17 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,int count) {
 				if (!TextUtils.isEmpty(s)) {
-					btn_chat_send.setVisibility(View.VISIBLE);
+//					btn_chat_send.setVisibility(View.VISIBLE);
 					btn_chat_keyboard.setVisibility(View.GONE);
-					btn_chat_voice.setVisibility(View.GONE);
-				} else {
-					if (btn_chat_voice.getVisibility() != View.VISIBLE) {
-						btn_chat_voice.setVisibility(View.VISIBLE);
-						btn_chat_send.setVisibility(View.GONE);
-						btn_chat_keyboard.setVisibility(View.GONE);
-					}
+//					btn_chat_voice.setVisibility(View.GONE);
 				}
+//				else {
+//					if (btn_chat_voice.getVisibility() != View.VISIBLE) {
+////						btn_chat_voice.setVisibility(View.VISIBLE);
+//						btn_chat_send.setVisibility(View.VISIBLE);
+//						btn_chat_keyboard.setVisibility(View.GONE);
+//					}
+//				}
 			}
 
 			@Override

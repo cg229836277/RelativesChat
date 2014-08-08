@@ -31,7 +31,4 @@ public class MyDialog extends Dialog {
     public void setTitle(CharSequence title) {
     	super.setTitle("请稍候...");
     }
-    
-    
-
 }

@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffe1e0de" >
+    
+    <include
+		android:id="@+id/scan_and_generate_layout"
+		layout="@layout/friends_menu_header_layout" />
+
+    <LinearLayout android:id="@+id/view1"
+        android:layout_below="@+id/scan_and_generate_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal">
+	    <Button
+	        android:id="@+id/button1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="扫描二维码" 
+	        android:textColor="#63B8FF"
+	        android:layout_weight="0.5"
+	        android:background="@drawable/login_btn_background"/>
+	    <Button
+	        android:id="@+id/generateBtn"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="生成二维码" 
+	        android:textColor="#63B8FF"
+	        android:layout_weight="0.5"
+	        android:background="@drawable/login_btn_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:lines="2"
+        android:height="42dp"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"  
+        android:layout_marginTop="24dp"/>
+<!--         android:autoLink="all" -->
+
+    <ImageView
+        android:id="@+id/qrcode_bitmap"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/result"/>
+</RelativeLayout>

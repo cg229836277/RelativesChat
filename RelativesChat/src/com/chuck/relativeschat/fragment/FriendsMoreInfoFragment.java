@@ -1,14 +1,8 @@
 package com.chuck.relativeschat.fragment;
 
-
-import java.util.List;
-
 import cn.bmob.im.bean.BmobChatUser;
-import cn.bmob.im.bean.BmobInvitation;
-import cn.bmob.im.db.BmobDB;
-import cn.bmob.v3.BmobUser;
-
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.ModefyUserInfoActivity;
@@ -18,8 +12,6 @@ import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,21 +27,22 @@ import android.widget.TextView;
 
 public class FriendsMoreInfoFragment extends Fragment implements OnClickListener{
 	private View fActivityView;
-	private RelativeLayout currentUserLayout;
-	private RelativeLayout addFriendsLayout;
-	private RelativeLayout addFriendsMessageLayout;
-	
+//	private RelativeLayout currentUserLayout;
+//	private RelativeLayout addFriendsLayout;
+//	private RelativeLayout addFriendsMessageLayout;
+//	
+	private RelativeLayout childViewLayout;
 	private ImageView myIconImage;
 	private TextView myNameText;
 	private TextView myDetailText;
-	
-	private ImageView addFriendsIconImage;
-	private TextView addFriendsText;
-	private TextView addFriendsDetailText;
-	
-	private ImageView addFriendsMessageIconImage;
-	private TextView addFriendsMessageText;
-	private TextView addFriendsMessageDetailText;
+//	
+//	private ImageView addFriendsIconImage;
+//	private TextView addFriendsText;
+//	private TextView addFriendsDetailText;
+//	
+//	private ImageView addFriendsMessageIconImage;
+//	private TextView addFriendsMessageText;
+//	private TextView addFriendsMessageDetailText;
 	
 	private HeadViewLayout mHeadViewLayout;
 	private ImageView messageTipsImage;
@@ -57,6 +50,13 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	private BmobChatUser currentUser;
 	
 	private  RelativesChatApplication rcApp;
+//	private RelativeLayout[] relativesLayout = {currentUserLayout , addFriendsLayout , addFriendsMessageLayout};
+//	private ImageView[] mImageViews = {myIconImage , addFriendsIconImage , addFriendsMessageIconImage};
+//	private TextView[] mNameTextViews = {myNameText , addFriendsText , addFriendsMessageText};
+//	private TextView[] mNameDetailTextViews = {myDetailText , addFriendsDetailText , addFriendsMessageDetailText};
+	private int[] childViewIds = {R.id.friends_icon_image , R.id.friends_name_text , R.id.friends_personal_sign_text};
+	private int[] viewIds = {R.id.current_user_info_layout , R.id.current_add_friends_layout , R.id.add_friends_message_layout , R.id.two_dimensional_scan_layout};
+	public static final int VIEWCOUNT = 3; 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		
 		currentUser = rcApp.getCurrentUser();
 		
-		initView();
+		initView(false);
 		
 		return fActivityView;
 	}
@@ -87,6 +87,9 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 			startActivityForResult(intent, 0);
 			intent = null;
 			break;
+		case R.id.two_dimensional_scan_layout:
+			intent = new Intent(getActivity().getApplicationContext() , QrCodeScanActivity.class);
+			break;
 		default:
 			break;
 		}	
@@ -96,37 +99,39 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 		}
 	}
 	
-	public void initView(){
-		currentUserLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_user_info_layout);
-		currentUserLayout.setOnClickListener(this);
-		addFriendsLayout = (RelativeLayout)fActivityView.findViewById(R.id.current_add_friends_layout);
-		addFriendsLayout.setOnClickListener(this);
-		myIconImage = (ImageView)currentUserLayout.findViewById(R.id.friends_icon_image);
-		myNameText = (TextView)currentUserLayout.findViewById(R.id.friends_name_text);
-		myDetailText = (TextView)currentUserLayout.findViewById(R.id.friends_personal_sign_text);		
-		updateUserInfo();
+	public void initView(boolean isUpdate){
 		
-		addFriendsMessageLayout = (RelativeLayout)fActivityView.findViewById(R.id.add_friends_message_layout);
-		addFriendsMessageLayout.setOnClickListener(this);
-		
-		addFriendsIconImage = (ImageView)addFriendsLayout.findViewById(R.id.friends_icon_image);
-		addFriendsText = (TextView)addFriendsLayout.findViewById(R.id.friends_name_text);
-		addFriendsDetailText = (TextView)addFriendsLayout.findViewById(R.id.friends_personal_sign_text);
-		addFriendsDetailText.setVisibility(View.GONE);
-		addFriendsIconImage.setBackgroundResource(R.drawable.add_user);
-		addFriendsText.setText(getResources().getString(R.string.find_friends));
-		
-		addFriendsMessageIconImage = (ImageView)addFriendsMessageLayout.findViewById(R.id.friends_icon_image);
-		addFriendsMessageText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_name_text);
-		addFriendsMessageDetailText = (TextView)addFriendsMessageLayout.findViewById(R.id.friends_personal_sign_text);
-		messageTipsImage = (ImageView)addFriendsMessageLayout.findViewById(R.id.msg_tips_image);
-		addFriendsMessageDetailText.setVisibility(View.GONE);
-		addFriendsMessageIconImage.setBackgroundResource(R.drawable.add_user_message);
-		addFriendsMessageText.setText(getResources().getString(R.string.invite_friends));
+		for(int i = 0 ; i < viewIds.length ; i++){
+			childViewLayout = (RelativeLayout)fActivityView.findViewById(viewIds[i]);
+			childViewLayout.setOnClickListener(this);
+			for(int j = 0 ; j < childViewIds.length ; j++){
+				if(j == 0){
+					myIconImage = (ImageView)childViewLayout.findViewById(childViewIds[j]);
+				}else if(j == 1){
+					myNameText = (TextView)childViewLayout.findViewById(childViewIds[j]);
+				}else{
+					myDetailText = (TextView)childViewLayout.findViewById(childViewIds[j]);
+				}
+			}	
+			if(i == 0){
+				updateCurrentUserInfo(myIconImage , myNameText , myDetailText);
+				if(isUpdate){
+					break;
+				}
+			}else if(i == 1){
+				setAddFriendsDetail(myIconImage , myNameText , myDetailText);
+			}else if(i == 2){
+				messageTipsImage = (ImageView)childViewLayout.findViewById(R.id.msg_tips_image);
+				setFriendsInvitationMessage(myIconImage , myNameText , myDetailText);
+			}else{
+				setTwoDimenDetail(myIconImage , myNameText , myDetailText);
+			}
+		}	
 		
 		if(rcApp.getIsExistMoreInfoMessage()){
 			//有消息的时候就显示小红点
 			messageTipsImage.setVisibility(View.VISIBLE);
+			rcApp.setExistMoreInfoMessage(false);
 		}
 		
 		mHeadViewLayout = (HeadViewLayout)fActivityView.findViewById(R.id.title_menu_layout);
@@ -137,36 +142,54 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		updateUserInfo();		
+		initView(true);		
 	}
 	
-	public void updateUserInfo(){
+	public void updateCurrentUserInfo(ImageView mImage , TextView nameText , TextView nameDetailText){
 		if(rcApp.getPersonDetailData() != null){
 			PersonBean currentUser  = rcApp.getPersonDetailData();
-			myNameText.getPaint().setFakeBoldText(true);//加粗
+			nameText.getPaint().setFakeBoldText(true);//加粗
 			if(!StringUtils.isEmpty(currentUser.getNickName())){
-				myNameText.setText(currentUser.getNickName());
+				nameText.setText(currentUser.getNickName());
 			}else{
-				myNameText.setText(currentUser.getUsername());
+				nameText.setText(currentUser.getUsername());
 			}
 			if(!StringUtils.isEmpty(currentUser.getUserState())){
-				myDetailText.setVisibility(View.VISIBLE);
-				myDetailText.setText(currentUser.getUserState());
+				nameDetailText.setVisibility(View.VISIBLE);
+				nameDetailText.setText(currentUser.getUserState());
 			}else{
-				myDetailText.setVisibility(View.GONE);
+				nameDetailText.setVisibility(View.GONE);
 			}
 			
 			if(!StringUtils.isEmpty(currentUser.getAvatar())){
 				System.out.println("主页面的图像地址是" + currentUser.getAvatar());
 				if(currentUser.getAvatar().contains("sdcard")){
 					Bitmap image = BitmapFactory.decodeFile(currentUser.getAvatar());
-					myIconImage.setImageBitmap(image);
+					mImage.setImageBitmap(image);
 				}else{
-					ImageLoader.getInstance().displayImage(currentUser.getAvatar(), myIconImage, ImageLoadOptions.getOptions());
+					ImageLoader.getInstance().displayImage(currentUser.getAvatar(), mImage, ImageLoadOptions.getOptions());
 				}
 			}else{
-				myIconImage.setBackgroundResource(R.drawable.default_head);
+				mImage.setBackgroundResource(R.drawable.default_head);
 			}
 		} 
-	}	
+	}
+	
+	public void setAddFriendsDetail(ImageView mImage , TextView nameText , TextView nameDetailText){
+		nameDetailText.setVisibility(View.GONE);
+		mImage.setBackgroundResource(R.drawable.add_user);
+		nameText.setText(getResources().getString(R.string.find_friends));
+	}
+	
+	public void setFriendsInvitationMessage(ImageView mImage , TextView nameText , TextView nameDetailText){
+		nameDetailText.setVisibility(View.GONE);
+		mImage.setBackgroundResource(R.drawable.add_user_message);
+		nameText.setText(getResources().getString(R.string.invite_friends));
+	}
+	
+	public void setTwoDimenDetail(ImageView mImage , TextView nameText , TextView nameDetailText){
+		nameDetailText.setVisibility(View.GONE);
+		mImage.setBackgroundResource(R.drawable.qr_code);
+		nameText.setText(getResources().getString(R.string.qr_code));
+	}
 }

@@ -94,9 +94,7 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		friendsMoreText.setOnClickListener(this);
 		
 		messageTipsImage = (ImageView)findViewById(R.id.message_red_dot_image);
-		if(rcApp.getIsExistMoreInfoMessage()){
-			messageTipsImage.setVisibility(View.VISIBLE);
-		}
+		setTipShowable();
 		
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.GONE);
@@ -105,6 +103,14 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		initViewPager();
 		setViewPageListener();
 		friendsViewPager.setCurrentItem(0);
+	}
+	
+	public void setTipShowable(){
+		if(rcApp.getIsExistMoreInfoMessage()){
+			messageTipsImage.setVisibility(View.VISIBLE);
+		}else{
+			messageTipsImage.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -278,6 +284,7 @@ public class MainMenuActivity extends FragmentActivity implements OnClickListene
 		super.onResume();
 		MyMessageReceiver.ehList.add(this);//
 		MyMessageReceiver.mNewNum=0;
+		setTipShowable();
 	}
 	
 	@Override

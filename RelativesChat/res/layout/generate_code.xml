@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GenerateQRCodeActivity" >
+    
+   	<include
+		android:id="@+id/generate_qrcode_layout"
+		layout="@layout/friends_menu_header_layout" />
+    
+    <LinearLayout
+        android:id="@+id/content_input_generate_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/generate_qrcode_layout"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/qr_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center_vertical"
+            android:hint="请输入你的名字" />
+
+        <Button
+            android:id="@+id/generate"
+            android:layout_width="0dp"
+            android:layout_height="84dp"
+            android:text="生成二维码" 
+            android:layout_weight="0.2"
+            android:textColor="@color/black"
+            android:background="@drawable/login_btn_background"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/qr_image"
+        android:layout_below="@+id/content_input_generate_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/app_icon" />
+</RelativeLayout>
