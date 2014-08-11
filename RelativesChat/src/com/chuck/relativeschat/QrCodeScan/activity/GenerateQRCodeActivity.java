@@ -186,15 +186,17 @@ public class GenerateQRCodeActivity extends BaseActivity {
 		// 头像图片的大小
 		int portrait_W = userIconBitmap.getWidth();
 		int portrait_H = userIconBitmap.getHeight();
-		
-		int QRCODE_SIZE = qrSourceBitmap.getHeight();
+		int QRCODE_SIZE_W = qrSourceBitmap.getWidth();
+		int QRCODE_SIZE_H = qrSourceBitmap.getHeight();
 
 		// 设置头像要显示的位置，即居中显示
-		int left = (QRCODE_SIZE - portrait_W) / 2;
-		int top = (QRCODE_SIZE - portrait_H) / 2;
+		int left = (QRCODE_SIZE_W - portrait_W) / 2;
+		int top = (QRCODE_SIZE_H - portrait_H) / 2;
 		int right = left + portrait_W;
 		int bottom = top + portrait_H;
 		Rect rect1 = new Rect(left, top, right, bottom);
+		
+		System.out.println("左" + left + "上" + top + "右" + right + "下" + bottom);
 
 		// 取得qr二维码图片上的画笔，即要在二维码图片上绘制我们的头像
 		Canvas canvas = new Canvas(qrSourceBitmap);

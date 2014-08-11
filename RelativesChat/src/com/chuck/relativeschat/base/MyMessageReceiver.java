@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.MainMenuActivity;
-import com.chuck.relativeschat.fragment.FriendsListFragment;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.NetworkTool;
 
@@ -79,35 +78,44 @@ public class MyMessageReceiver extends BroadcastReceiver {
 				if(fromId!=null && !BmobDB.create(context,toId).isBlackUser(fromId)){
 					if(TextUtils.isEmpty(tag)){
 						BmobMsg msg =BmobMsg.createReceiveMsg(context,json);
-						if(toId.equals(currentUser.getObjectId())){
-							if (ehList.size() > 0) {
-								for (int i = 0; i < ehList.size(); i++) {
-									((EventListener) ehList.get(i)).onMessage(msg);
+						if(currentUser!=null){//当前用户不为空
+							if( toId.equals(currentUser.getObjectId())){//判断是当前用户发的消息
+								if (ehList.size() > 0) {//
+									for (int i = 0; i < ehList.size(); i++) {
+										((EventListener) ehList.get(i)).onMessage(msg);
+									}
+								} else {
+									//保存接收到的消息
+									BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
+									boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
+									if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){//��ǰ��½�û����ڲ���Ҳ���ڽ��շ�id
+										mNewNum++;
+										showNotification(context,msg);
+									}
 								}
-							} else {
+							}else{//保存接收到的消息
 								BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
-								boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
-								if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
-									mNewNum++;
-									showNotification(context,msg);
-								}
 							}
+						}else{//保存接收到的消息
+							BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
 						}
 					}else{
 						if(tag.equals(BmobConfig.TAG_ADD_CONTACT)){//添加对话
 							BmobInvitation message = BmobInvitation.createReceiverInvitation(json);
 							BmobDB.create(context,toId).saveInviteMessage(message);
-							if(toId.equals(currentUser.getObjectId())){
-								if (ehList.size() > 0) {
-									for (EventListener handler : ehList)
-										handler.onAddUser(message);
-								}else{
-									boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
-									boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
-									boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
-									if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
-										String tickerText = message.getFromname()+"";
-										BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),FriendsInvitionMessageActivity.class);
+							if(currentUser!=null){//
+								if(toId.equals(currentUser.getObjectId())){
+									if (ehList.size() > 0) {//
+										for (EventListener handler : ehList)
+											handler.onAddUser(message);
+									}else{
+										boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
+										boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
+										boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
+										if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
+											String tickerText = message.getFromname()+"";
+											BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),FriendsInvitionMessageActivity.class);
+										}
 									}
 								}
 							}
@@ -138,12 +146,13 @@ public class MyMessageReceiver extends BroadcastReceiver {
 						}else if(tag.equals(BmobConfig.TAG_READED)){
 							String conversionId = BmobJsonUtil.getString(jo,BmobConstant.PUSH_READED_CONVERSIONID);
 							String msgTime = BmobJsonUtil.getString(jo,BmobConstant.PUSH_READED_MSGTIME);
-							
-							BmobChatManager.getInstance(context).updateMsgStatus(BmobConfig.STATUS_SEND_RECEIVERED, conversionId, msgTime);
-							if(toId.equals(currentUser.getObjectId())){
-								if (ehList.size() > 0) {
-									for (EventListener handler : ehList)
-										handler.onReaded(conversionId, msgTime);
+							if(currentUser!=null){
+								BmobChatManager.getInstance(context).updateMsgStatus(BmobConfig.STATUS_SEND_RECEIVERED, conversionId, msgTime);
+								if(toId.equals(currentUser.getObjectId())){
+									if (ehList.size() > 0) {//
+										for (EventListener handler : ehList)
+											handler.onReaded(conversionId, msgTime);
+									}
 								}
 							}
 						}

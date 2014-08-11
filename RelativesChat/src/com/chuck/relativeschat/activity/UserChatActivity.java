@@ -280,7 +280,7 @@ public class UserChatActivity extends BaseActivity implements IXListViewListener
 				mToast.showMyToast("请先连接网络", Toast.LENGTH_SHORT);
 				// return;
 			}
-			BmobMsg message = BmobMsg.createTextSendMsg(getApplicationContext(), chatUserId, msg);
+			BmobMsg message = BmobMsg.createTextSendMsg(this, chatUserId, msg);
 			System.out.println("发消息给" + currentChatUser.getUsername() + chatUserId);
 			
 			chatManager.sendTextMessage(currentChatUser, message);

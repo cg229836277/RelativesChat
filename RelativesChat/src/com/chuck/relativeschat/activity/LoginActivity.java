@@ -271,19 +271,23 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			@Override
 			public void onError(int arg0, String arg1) {
 				System.out.println("父活动中的数目是" + arg1);
+				loginSuccess();
 			}
 
 			@Override
 			public void onSuccess(List<BmobChatUser> arg0) {
 				RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(arg0));
-				
-				dialog.dismiss();
-				Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-				startActivityForResult(intent , 0);  	
-				
-				mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
+				loginSuccess();				
 			}
 		});
+	}
+	
+	public void loginSuccess(){
+		dialog.dismiss();
+		Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+		startActivityForResult(intent , 0);  	
+		
+		mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);
 	}
 	
 	@Override
