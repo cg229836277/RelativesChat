@@ -7,6 +7,7 @@ import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.ModefyUserInfoActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.common.CircleImageView;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
@@ -170,26 +171,39 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 					ImageLoader.getInstance().displayImage(currentUser.getAvatar(), mImage, ImageLoadOptions.getOptions());
 				}
 			}else{
-				mImage.setBackgroundResource(R.drawable.default_head);
+				setDetailInfoIcon(mImage , R.drawable.default_head);
 			}
 		} 
 	}
 	
 	public void setAddFriendsDetail(ImageView mImage , TextView nameText , TextView nameDetailText){
 		nameDetailText.setVisibility(View.GONE);
-		mImage.setBackgroundResource(R.drawable.add_user);
+		setDetailInfoIcon(mImage , R.drawable.add_user);
 		nameText.setText(getResources().getString(R.string.find_friends));
 	}
 	
 	public void setFriendsInvitationMessage(ImageView mImage , TextView nameText , TextView nameDetailText){
 		nameDetailText.setVisibility(View.GONE);
-		mImage.setBackgroundResource(R.drawable.add_user_message);
+		setDetailInfoIcon(mImage , R.drawable.add_user_message);
 		nameText.setText(getResources().getString(R.string.invite_friends));
 	}
 	
 	public void setTwoDimenDetail(ImageView mImage , TextView nameText , TextView nameDetailText){
 		nameDetailText.setVisibility(View.GONE);
-		mImage.setBackgroundResource(R.drawable.qr_code);
+		setDetailInfoIcon(mImage , R.drawable.qr_code);
 		nameText.setText(getResources().getString(R.string.qr_code));
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @author chengang
+	 * @date 2014-8-12 下午5:09:37
+	 * @param iconView 要设置的控件组件
+	 * @param resourceId 要显示的资源
+	 */
+	public void setDetailInfoIcon(ImageView iconView , int resourceId){
+		CircleImageView imageView = new CircleImageView(getActivity().getApplicationContext());
+		iconView.setImageBitmap(imageView.toRoundCorner(resourceId));
 	}
 }
