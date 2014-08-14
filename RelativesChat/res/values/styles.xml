@@ -118,5 +118,29 @@
         <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
         <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
     </style>
+    
+        <!-- 白色文字的阴影 -->
+    <style name="text_white_shadow">
+        <item name="android:shadowColor">#ff333333</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    
+        <!-- 白色特大号字体 -->
+    <style name="text_xlarge_white" parent="@style/text_white_shadow">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+    <!-- 白色大号字体 -->
+    <style name="text_large_white" parent="@style/text_white_shadow">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+    <!-- 白色中号字体 -->
+    <style name="text_medium_white" parent="@style/text_white_shadow">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
 
 </resources>

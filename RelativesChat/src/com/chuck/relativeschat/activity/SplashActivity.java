@@ -36,8 +36,8 @@ public class SplashActivity extends BaseActivity {
 		
 		BmobChat.getInstance().init(this, appId);
 		
-		Intent intent = new Intent(getApplicationContext() ,LoginActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(getApplicationContext() ,LoginActivity.class);
+//		startActivity(intent);
 //		
 //		ImageView testImage = (ImageView)findViewById(R.id.test_image);
 //		CircleImageView imageView = new CircleImageView(getApplicationContext());

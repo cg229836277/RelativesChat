@@ -63,4 +63,13 @@
 	<string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 	<string name="share_to_tencent">分享到腾讯微博</string>
     <string name="share_to_sina">分享到新浪微博</string>
+    <string name="main_menu_user_text">我的好友</string>
+    <string name="main_menu_user_image">好友们的照片</string>
+    <string name="main_menu_user_photo">分享萌图片</string>
+    <string name="main_menu_user_sound">分享声音</string>
+    <string name="main_menu_user_video">分享短视频</string>
+    <string name="main_menu_user_music">分享好音乐</string>
+    <string name="main_menu_user_setting">设置</string>
+    <string name="main_menu_user_no_user">暂时没有好友</string>
+    <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>
 </resources>
