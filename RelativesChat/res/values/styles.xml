@@ -129,7 +129,7 @@
     
         <!-- 白色特大号字体 -->
     <style name="text_xlarge_white" parent="@style/text_white_shadow">
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
     <!-- 白色大号字体 -->

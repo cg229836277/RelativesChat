@@ -1,7 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="11"
     android:background="@drawable/main_menu_background"
     tools:context=".SplashActivity" >
 
@@ -9,8 +11,8 @@
         android:id="@+id/main_menu_user_layout"
         style="@drawable/background_selector"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="@drawable/background_nomal"
         android:orientation="vertical" >
 
@@ -49,15 +51,15 @@
     <View
         android:id="@+id/blank_1"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/main_menu_user_layout" />
+        android:layout_height="0dp"
+        android:layout_weight="0.25"/>
 
     <LinearLayout
         android:id="@+id/main_menu_sound_photo_layout"
         style="@drawable/background_selector"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/blank_1"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -90,8 +92,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="2dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.02"
                 android:background="@color/transparent"
                 android:orientation="vertical" >
             </LinearLayout>
@@ -124,15 +127,15 @@
     <View
         android:id="@+id/blank_2"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/main_menu_sound_photo_layout" />
+        android:layout_height="0dp"
+        android:layout_weight="0.25"/>
 
     <LinearLayout
         android:id="@+id/main_menu_video_layout"
         style="@drawable/background_selector"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/blank_2"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="@drawable/background_nomal"
         android:orientation="vertical" >
 
@@ -171,15 +174,15 @@
     <View
         android:id="@+id/blank_3"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/main_menu_video_layout" />
+        android:layout_height="0dp"
+        android:layout_weight="0.25" />
 
     <LinearLayout
         android:id="@+id/main_menu_image_music_layout"
         style="@drawable/background_selector"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/blank_3"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -192,7 +195,7 @@
                 android:id="@+id/image_layout"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="0.29"
+                android:layout_weight="0.39"
                 android:background="@drawable/background_nomal"
                 android:orientation="vertical" >
 
@@ -223,7 +226,7 @@
                 android:id="@+id/music_layout"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="0.69"
+                android:layout_weight="0.59"
                 android:background="@drawable/background_nomal"
                 android:orientation="vertical" >
 
@@ -249,15 +252,15 @@
     <View
         android:id="@+id/blank_4"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/main_menu_image_music_layout" />
+        android:layout_height="0dp"
+        android:layout_weight="0.25" />
 
     <LinearLayout
         android:id="@+id/main_menu_setting_layout"
         style="@drawable/background_selector"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="@drawable/background_nomal"
         android:orientation="vertical" >
 
@@ -276,4 +279,4 @@
             android:text="@string/main_menu_user_setting" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
