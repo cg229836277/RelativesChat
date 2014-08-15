@@ -127,6 +127,14 @@
         <item name="android:shadowRadius">1</item>
     </style>
     
+            <!-- 黑色文字的阴影 -->
+    <style name="text_black_shadow">
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    
         <!-- 白色特大号字体 -->
     <style name="text_xlarge_white" parent="@style/text_white_shadow">
         <item name="android:textSize">28sp</item>
@@ -141,6 +149,22 @@
     <style name="text_medium_white" parent="@style/text_white_shadow">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+    
+    <!-- 黑色特大号字体 -->
+    <style name="text_xlarge_black">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    <!-- 黑色大号字体 -->
+    <style name="text_large_black">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    <!-- 黑色中号字体 -->
+    <style name="text_medium_black">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#000000</item>
     </style>
 
 </resources>

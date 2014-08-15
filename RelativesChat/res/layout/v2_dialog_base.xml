@@ -35,7 +35,7 @@
         android:id="@+id/title_red_line"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
-        android:background="@drawable/base_horizontal_line_red" />
+        android:background="@drawable/base_horizontal_line_blue" />
 
     <LinearLayout
         android:id="@+id/dialog_contentPanel"

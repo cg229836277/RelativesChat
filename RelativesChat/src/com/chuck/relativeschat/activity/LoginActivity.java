@@ -284,7 +284,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	
 	public void loginSuccess(){
 		dialog.dismiss();
-		Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+		Intent intent = new Intent(getApplicationContext(), MyMainMenuActivity.class);
 		startActivityForResult(intent , 0);  	
 		
 		mToast.showMyToast(getResources().getString(R.string.login_success), Toast.LENGTH_SHORT);

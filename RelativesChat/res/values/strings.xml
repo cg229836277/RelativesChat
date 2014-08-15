@@ -60,8 +60,8 @@
     <string name="pop_photo">拍照</string>
     <string name="pop_choose">从手机相册选中</string>
     <string name="qr_code">探索二维码</string>
-	<string name="scan_text">将二维码放入框内, 即可自动扫描</string>
-	<string name="share_to_tencent">分享到腾讯微博</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="share_to_tencent">分享到腾讯微博</string>
     <string name="share_to_sina">分享到新浪微博</string>
     <string name="main_menu_user_text">我的好友</string>
     <string name="main_menu_user_image">好友的照片</string>
@@ -72,4 +72,8 @@
     <string name="main_menu_user_setting">设置</string>
     <string name="main_menu_user_no_user">暂时没有好友</string>
     <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>
+    <string name="title_activity_my_main_menu">MyMainMenuActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_user_list_view">UserListViewActivity</string>
+
 </resources>

@@ -31,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/dialog_content_text"
-        android:background="@drawable/base_horizontal_line_red" />
+        android:background="@drawable/base_horizontal_line_blue" />
 
     <LinearLayout
         android:id="@+id/button_collection_layout"
@@ -54,7 +54,7 @@
         <LinearLayout
         android:layout_width="2dp"
         android:layout_height="fill_parent"
-        android:background="@drawable/base_horizontal_line_red" />
+        android:background="@drawable/base_horizontal_line_blue" />
 
         <Button
             android:id="@+id/commit_dialog_button"

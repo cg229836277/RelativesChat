@@ -31,4 +31,12 @@ public class MyDialog extends Dialog {
     public void setTitle(CharSequence title) {
     	super.setTitle("请稍候...");
     }
+    
+    @Override
+    public void show() {
+    	if(isShowing()){
+    		dismiss();
+    	}
+    	super.show();
+    }
 }

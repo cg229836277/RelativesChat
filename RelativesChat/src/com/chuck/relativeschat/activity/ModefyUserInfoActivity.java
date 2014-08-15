@@ -246,6 +246,7 @@ public class ModefyUserInfoActivity extends BaseActivity {
 		intent.putExtra("return-data", true);
 		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 		intent.putExtra("noFaceDetection", true); // no face detection
+		intent.putExtra("circleCrop", true);
 		startActivityForResult(intent, requestCode);
 	}
 	

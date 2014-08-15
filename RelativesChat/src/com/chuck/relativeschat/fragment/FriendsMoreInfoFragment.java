@@ -7,10 +7,10 @@ import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.ModefyUserInfoActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.common.CircleImageView;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
+import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import android.content.Intent;
@@ -203,7 +203,7 @@ public class FriendsMoreInfoFragment extends Fragment implements OnClickListener
 	 * @param resourceId 要显示的资源
 	 */
 	public void setDetailInfoIcon(ImageView iconView , int resourceId){
-		CircleImageView imageView = new CircleImageView(getActivity().getApplicationContext());
-		iconView.setImageBitmap(imageView.toRoundCorner(resourceId));
+		PhotoUtil imageView = new PhotoUtil(getActivity().getApplicationContext());
+		iconView.setImageBitmap(imageView.toRoundCorner(resourceId , 80.f));
 	}
 }
