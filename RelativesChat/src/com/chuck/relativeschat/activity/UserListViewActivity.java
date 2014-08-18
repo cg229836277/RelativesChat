@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.w3c.dom.UserDataHandler;
+
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
@@ -43,6 +45,8 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	private TextView simpleUserStateText;
 	private View simpleFriendsView;
 	public static final String USER_DATA = "userData";
+	public static final String USER_INDEX = "index";
+	private List<UserInfoBean> userInfoList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,7 +106,8 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 			protected void onPostExecute(List<UserInfoBean> result) {
 				super.onPostExecute(result);
 				if(IsListNotNull.isListNotNull(result)){
-					for(UserInfoBean infoData : result){
+					for(int i = 0 ; i < result.size() ; i++){
+						UserInfoBean infoData = result.get(i);
 						simpleFriendsView = viewInflater.inflate(R.layout.simple_friends_list_view_layout, null);
 						simpleUserIconView = (ImageView)simpleFriendsView.findViewById(R.id.simple_user_icon_image);
 						simpleUserNameText = (TextView)simpleFriendsView.findViewById(R.id.user_name_text);
@@ -121,13 +126,14 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 //						simpleUserNameText.setOnClickListener(UserListViewActivity.this);
 //						simpleUserStateText.setOnClickListener(UserListViewActivity.this);
 						
-						simpleFriendsView.setTag(infoData);
-						simpleUserIconView.setTag(infoData);
-						simpleUserNameText.setTag(infoData);
-						simpleUserStateText.setTag(infoData);
+						simpleFriendsView.setTag(i);
+						simpleUserIconView.setTag(i);
+						simpleUserNameText.setTag(i);
+						simpleUserStateText.setTag(i);
 						
 						simpleFriendsContainerLayout.addView(simpleFriendsView);
 					}
+					userInfoList = result;
 				}
 				dialog.dismiss();
 			}
@@ -141,27 +147,20 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 		switch (v.getId()) {
 		case R.layout.simple_friends_list_view_layout:
 			break;
-//		case R.id.simple_user_icon_image:
-//			parentView = (View)v.getParent().getParent();
-//			parentView.performClick();
-//			break;
-//		case R.id.user_name_text:
-//		case R.id.user_state_text:
-//			parentView = (View)v.getParent().getParent().getParent();
-//			parentView.performClick();
-//			break;
 		default:
 			break;
 		}
 		
-		if(v.getTag() instanceof UserInfoBean){
-			childViewClicked((UserInfoBean)v.getTag());
+		if(v.getTag() instanceof Integer){
+			childViewClicked((Integer)v.getTag());
 		}
 	}
 	
-	public void childViewClicked(UserInfoBean data){
+	public void childViewClicked(int index){
+		if(IsListNotNull.isListNotNull(userInfoList)){
+			rcApp.setCurrentUserInfoData(userInfoList.get(index));
+		}
 		Intent intent = new Intent(this , ShareToMyFriendActivity.class);
-		intent.putExtra("USER_DATA", data);
 		startActivity(intent);
 	}
 }

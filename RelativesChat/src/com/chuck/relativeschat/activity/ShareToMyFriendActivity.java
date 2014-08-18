@@ -2,6 +2,7 @@ package com.chuck.relativeschat.activity;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.layout;
+import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.tools.StringUtils;
@@ -23,6 +24,7 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 	private ImageView userIconView;
 	private TextView userNameText;
 	private TextView userStateText;
+	private RelativesChatApplication rcApp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,9 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		mHeadViewLayout.setTitleText("私密分享");
+		rcApp = (RelativesChatApplication)getApplication();
 		
-		simpleUserData = (UserInfoBean)getIntent().getSerializableExtra(UserListViewActivity.USER_DATA);
+		simpleUserData = rcApp.getCurrentUserInfoData();
 		
 		bindEvent();		
 	}
@@ -75,5 +78,11 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		rcApp.setCurrentUserInfoData(null);
+		super.onDestroy();
 	}
 }

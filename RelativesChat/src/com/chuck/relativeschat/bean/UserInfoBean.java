@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
  * @author chengang
  * @version 1.0
  */
-public class UserInfoBean{
+public class UserInfoBean implements Serializable{
 	
 	Bitmap iconBitmap;
 	String userName;

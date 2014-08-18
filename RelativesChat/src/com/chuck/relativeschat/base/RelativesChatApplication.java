@@ -10,6 +10,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.bean.UserBean;
+import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.SharePreferenceUtil;
 import com.chuck.relativeschat.tools.StringUtils;
@@ -31,6 +32,7 @@ public class RelativesChatApplication extends Application {
 	public List<PersonBean> myFriendsDataBean/* = new ArrayList<PersonBean>()*/;
 	private Map<String, BmobChatUser> contactList /*= new HashMap<String, BmobChatUser>()*/;
 	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
+	public UserInfoBean currentUserInfoData;
 	
 	@Override
 	public void onCreate() {
@@ -122,5 +124,13 @@ public class RelativesChatApplication extends Application {
 			}
 		}
 		return null;
+	}
+
+	public UserInfoBean getCurrentUserInfoData() {
+		return currentUserInfoData;
+	}
+
+	public void setCurrentUserInfoData(UserInfoBean currentUserInfoData) {
+		this.currentUserInfoData = currentUserInfoData;
 	}
 }
