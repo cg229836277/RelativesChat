@@ -1,5 +1,7 @@
 package com.chuck.relativeschat.bean;
 
+import java.io.Serializable;
+
 import android.graphics.Bitmap;
 
 /**
@@ -9,7 +11,7 @@ import android.graphics.Bitmap;
  * @author chengang
  * @version 1.0
  */
-public class UserInfoBean {
+public class UserInfoBean{
 	
 	Bitmap iconBitmap;
 	String userName;

@@ -42,6 +42,7 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	private TextView simpleUserNameText;
 	private TextView simpleUserStateText;
 	private View simpleFriendsView;
+	public static final String USER_DATA = "userData";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -160,6 +161,7 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	
 	public void childViewClicked(UserInfoBean data){
 		Intent intent = new Intent(this , ShareToMyFriendActivity.class);
+		intent.putExtra("USER_DATA", data);
 		startActivity(intent);
 	}
 }
