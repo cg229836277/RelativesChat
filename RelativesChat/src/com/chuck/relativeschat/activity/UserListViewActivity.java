@@ -20,6 +20,7 @@ import com.chuck.relativeschat.tools.StringUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -115,9 +116,9 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 						simpleUserStateText.setText(infoData.getUserState());
 						
 						simpleFriendsView.setOnClickListener(UserListViewActivity.this);
-						simpleUserIconView.setOnClickListener(UserListViewActivity.this);
-						simpleUserNameText.setOnClickListener(UserListViewActivity.this);
-						simpleUserStateText.setOnClickListener(UserListViewActivity.this);
+//						simpleUserIconView.setOnClickListener(UserListViewActivity.this);
+//						simpleUserNameText.setOnClickListener(UserListViewActivity.this);
+//						simpleUserStateText.setOnClickListener(UserListViewActivity.this);
 						
 						simpleFriendsView.setTag(infoData);
 						simpleUserIconView.setTag(infoData);
@@ -139,15 +140,15 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 		switch (v.getId()) {
 		case R.layout.simple_friends_list_view_layout:
 			break;
-		case R.id.simple_user_icon_image:
-			parentView = (View)v.getParent().getParent();
-			parentView.performClick();
-			break;
-		case R.id.user_name_text:
-		case R.id.user_state_text:
-			parentView = (View)v.getParent().getParent().getParent();
-			parentView.performClick();
-			break;
+//		case R.id.simple_user_icon_image:
+//			parentView = (View)v.getParent().getParent();
+//			parentView.performClick();
+//			break;
+//		case R.id.user_name_text:
+//		case R.id.user_state_text:
+//			parentView = (View)v.getParent().getParent().getParent();
+//			parentView.performClick();
+//			break;
 		default:
 			break;
 		}
@@ -158,6 +159,7 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	}
 	
 	public void childViewClicked(UserInfoBean data){
-		
+		Intent intent = new Intent(this , ShareToMyFriendActivity.class);
+		startActivity(intent);
 	}
 }

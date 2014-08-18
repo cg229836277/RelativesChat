@@ -64,7 +64,7 @@
     <string name="share_to_tencent">分享到腾讯微博</string>
     <string name="share_to_sina">分享到新浪微博</string>
     <string name="main_menu_user_text">我的好友</string>
-    <string name="main_menu_user_image">好友的照片</string>
+    <string name="main_menu_user_image">好友的分享</string>
     <string name="main_menu_user_photo">分享萌图片</string>
     <string name="main_menu_user_sound">分享声音</string>
     <string name="main_menu_user_video">分享短视频</string>
@@ -72,8 +72,7 @@
     <string name="main_menu_user_setting">设置</string>
     <string name="main_menu_user_no_user">暂时没有好友</string>
     <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>
-    <string name="title_activity_my_main_menu">MyMainMenuActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_user_list_view">UserListViewActivity</string>
+    <string name="my_friends_name">好友名字：</string>
+    <string name="my_friends_sign">好友签名：</string>
 
 </resources>

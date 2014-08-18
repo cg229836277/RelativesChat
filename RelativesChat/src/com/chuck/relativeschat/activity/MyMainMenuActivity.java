@@ -3,21 +3,25 @@ package com.chuck.relativeschat.activity;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.id;
 import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.HttpDownloader;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -27,7 +31,7 @@ import android.widget.TextView;
 public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 
 	private int[] parentViewId = {R.id.user_layout_child_1 , R.id.sound_layout,
-			R.id.photo_layout , R.id.main_menu_video_layout , R.id.image_layout,
+			R.id.photo_layout , R.id.main_menu_video_layout , R.id.share_layout,
 			R.id.music_layout , R.id.main_menu_setting_layout};
 	
 	private LinearLayout parentViewLayout;//正对多个icon的父视图
@@ -160,11 +164,12 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			break;
 		case R.id.photo_layout:
 			break;
-		case R.id.image_layout:
+		case R.id.share_layout:
 			break;
 		case R.id.music_layout:
 			break;
 		case R.id.main_menu_setting_layout:
+			intent = new Intent(this , SystemSettingActivity.class);
 			break;
 		case R.id.main_menu_video_layout:
 			break;
@@ -242,5 +247,35 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 				}.execute();	
 			}
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			DialogTips dialog = new DialogTips(MyMainMenuActivity.this, "提示", "退出系统!", "确认", true, true);
+			dialog.SetOnSuccessListener(new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					logoutSystem();
+					finish();
+				}				
+			});
+			
+			dialog.show();
+			dialog = null;
+			
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void logoutSystem(){
+		BmobUserManager.getInstance(getApplicationContext()).logout();
+		rcApp.setContactList(null);
+		rcApp.setCurrentUser(null);
+		rcApp.setPersonDetailData(null);
 	}
 }
