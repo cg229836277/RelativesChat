@@ -1,0 +1,118 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <include 
+        android:id="@+id/share_image_layout"
+        layout="@layout/friends_menu_header_layout"/>
+    
+    <ImageView android:id="@+id/draw_canvas_image"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:layout_weight="1"/>
+    
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_background"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        
+        <TextView android:id="@+id/pen_color_text"
+            android:text="@string/pen_color"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:layout_height="fill_parent"
+            android:background="@drawable/simple_friend_list_background"
+            android:gravity="center"/>
+        <LinearLayout android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/blue_sky">
+        </LinearLayout>
+        
+        <TextView android:id="@+id/re_draw_text"
+            android:text="@string/redraw_image"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:background="@drawable/simple_friend_list_background"
+            android:layout_height="fill_parent"/>
+        
+       <LinearLayout android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/blue_sky">
+        </LinearLayout>
+        
+         <TextView android:id="@+id/save_to_local_text"
+            android:text="@string/save_to_local"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:background="@drawable/simple_friend_list_background"
+            android:layout_height="fill_parent"/>
+         
+         <LinearLayout android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/blue_sky">
+        </LinearLayout>
+         
+       	<TextView android:id="@+id/send_text"
+            android:text="@string/send"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:background="@drawable/simple_friend_list_background"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/rect_background"
+	    android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+	    android:orientation="horizontal">
+       	
+        <TextView android:id="@+id/select_from_local_text"
+            android:text="@string/pop_choose"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:background="@drawable/simple_friend_list_background"
+            android:layout_height="fill_parent"/>
+        
+        <LinearLayout android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/blue_sky">
+        </LinearLayout>
+         
+       	<TextView android:id="@+id/take_photo_text"
+            android:text="@string/pop_photo"
+            style="@style/text_medium_black"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:background="@drawable/simple_friend_list_background"
+            android:layout_height="fill_parent"/>
+   	</LinearLayout>
+
+</LinearLayout>

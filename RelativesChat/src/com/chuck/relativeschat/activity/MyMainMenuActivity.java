@@ -11,6 +11,7 @@ import com.chuck.relativeschat.R.id;
 import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.DialogTips;
+import com.chuck.relativeschat.common.MyColorPickerDialog;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.HttpDownloader;
 import com.chuck.relativeschat.tools.IsListNotNull;
@@ -163,6 +164,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		case R.id.sound_layout:	
 			break;
 		case R.id.photo_layout:
+			intent = new Intent(this , ShareImageToFriendsActivity.class);
 			break;
 		case R.id.share_layout:
 			break;
@@ -175,7 +177,6 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			break;
 		case R.id.main_menu_user_text:
 			userParentLayout.performClick();
-//			userIconImage.performClick();
 			break;
 		case R.id.user_icon_image:
 			userParentLayout.performClick();

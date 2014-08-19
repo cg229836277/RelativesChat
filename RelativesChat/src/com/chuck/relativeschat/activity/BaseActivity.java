@@ -9,6 +9,7 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.common.MyColorPickerDialog;
 import com.chuck.relativeschat.common.MyDialog;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +31,8 @@ public class BaseActivity extends Activity {
 	
 	protected int mScreenWidth;
 	protected int mScreenHeight;
+	
+	public MyColorPickerDialog colorPickerDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

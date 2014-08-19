@@ -17,7 +17,6 @@
     <string name="items_app">点击注册按钮表示你接收本应用的所有条款</string>
     <string name="user_forget_account">你忘记密码的账号</string>
     <string name="user_forget_email">你注册账号时的邮箱</string>
-    <string name="title_activity_my_dialog">MyDialogActivity</string>
     <string name="relatives_friends_list_text">亲朋列表</string>
     <string name="friends_activity_text">亲朋动态</string>
     <string name="more_info_text">更多</string>
@@ -58,7 +57,7 @@
     <string name="cancle">取消</string>
     <string name="modefy_user_nick">修改我的昵称</string>
     <string name="pop_photo">拍照</string>
-    <string name="pop_choose">从手机相册选中</string>
+    <string name="pop_choose">从手机相册中选</string>
     <string name="qr_code">探索二维码</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
     <string name="share_to_tencent">分享到腾讯微博</string>
@@ -74,5 +73,8 @@
     <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>
     <string name="my_friends_name">好友名字：</string>
     <string name="my_friends_sign">好友签名：</string>
-
+	<string name="pen_color">画笔颜色</string>
+	<string name="redraw_image">重画</string>
+	<string name="send">发送</string>
+	<string name="save_to_local">本地保存</string>
 </resources>

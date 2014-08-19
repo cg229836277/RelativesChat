@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <net.margaritov.preference.colorpicker.ColorPickerPreference
+        android:id="@+id/color_picker"
+	    android:key="color1"
+	    android:title="@string/color1_title"
+	    android:summary="@string/color1_summary"
+	    android:defaultValue="@color/purple"    
+	    alphaSlider="true" />
+
+</RelativeLayout>
