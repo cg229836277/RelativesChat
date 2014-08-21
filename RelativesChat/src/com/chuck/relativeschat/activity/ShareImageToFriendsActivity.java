@@ -56,6 +56,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			R.id.save_to_local_text , R.id.send_text,
 			R.id.select_from_local_text, R.id.take_photo_text};
 	private HeadViewLayout mHeadViewLayout;
+	private float penDrawWidth = 0;
 	
     // 定义手指开始触摸的坐标
     float startX = 0;
@@ -69,6 +70,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
     float moveY = 0;
     float suofangX = 0;
     float suofangY = 0;
+    public boolean isDrawOnImage = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	public void initDrawPen(){
 		paint = new Paint();
         paint.setStrokeWidth(5);
+        penDrawWidth = paint.getStrokeWidth();
         paint.setColor(colorValue);
 	}
 	
@@ -153,12 +156,24 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            // 第一次绘图初始化内存图片，指定背景为白色
 	            if (baseBitmap == null) {
 	                baseBitmap = Bitmap.createBitmap(drawCanvasImage.getWidth(),drawCanvasImage.getHeight(), Bitmap.Config.ARGB_8888);
+	                drawCanvasImage.setImageBitmap(baseBitmap);
 	                canvas = new Canvas(baseBitmap);
 	                canvas.drawColor(Color.WHITE);
 	            }
 	            // 记录开始触摸的点的坐标
 	            startX = event.getX();
 	            startY = event.getY();
+	            
+	            imageList = getImageViewIneerSize(drawCanvasImage);
+	            if(IsListNotNull.isListNotNull(imageList)){
+	            	suofangX = imageList.get(0);
+	            	suofangY = imageList.get(1);
+	            	moveX = imageList.get(2);
+	            	moveY = imageList.get(3);
+	            	startX = (startX-moveX) * suofangX;	
+	            	startY = (startY-moveY) * suofangY;
+	            }
+	            
 	            break;
 	        // 用户手指在屏幕上移动的动作
 	        case MotionEvent.ACTION_MOVE:
@@ -170,7 +185,19 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            if(IsListNotNull.isListNotNull(imageList)){
 	            	suofangX = imageList.get(0);
 	            	suofangY = imageList.get(1);
-	            }
+	            	moveX = imageList.get(2);
+	            	moveY = imageList.get(3);
+	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
+	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
+//	            	if(suofangX > 0){
+//	            		startX = (startX-moveX) * suofangX;	            		
+	            		stopX = (stopX-moveX) * suofangX;	            		
+//	            	}
+//	            	if(suofangY > 0){
+//	            		startY = (startY-moveY) * suofangY;
+	            		stopY = (stopY-moveY) * suofangY;
+//	            	}
+	            }	        
 	            
 	            //根据两点坐标，绘制连线
 	            canvas.drawLine(startX, startY, stopX, stopY, paint);
@@ -186,6 +213,25 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	        case MotionEvent.ACTION_UP:	        	
 	            stopX = event.getX();
 	            stopY = event.getY();
+	            
+	            imageList = getImageViewIneerSize(drawCanvasImage);
+	            if(IsListNotNull.isListNotNull(imageList)){
+	            	suofangX = imageList.get(0);
+	            	suofangY = imageList.get(1);
+	            	moveX = imageList.get(2);
+	            	moveY = imageList.get(3);
+	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
+	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
+//	            	if(suofangX > 0){
+//	            		startX = (startX-moveX) * suofangX;	            		
+	            		stopX = (stopX-moveX) * suofangX;	            		
+//	            	}
+//	            	if(suofangY > 0){
+//	            		startY = (startY-moveY) * suofangY;
+	            		stopY = (stopY-moveY) * suofangY;
+//	            	}
+	            }
+	            
 	            canvas.drawLine(startX, startY, stopX, stopY, paint);
 	            drawCanvasImage.invalidate();// 刷新
 	            break;
@@ -204,6 +250,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	public void clearDrawCanvas(){
 		// 手动清除画板的绘图，重新创建一个画板
         if (baseBitmap != null) {
+        	isDrawOnImage = false;
             baseBitmap = Bitmap.createBitmap(drawCanvasImage.getWidth(),drawCanvasImage.getHeight(), Bitmap.Config.ARGB_8888);
             canvas = new Canvas(baseBitmap);
             canvas.drawColor(Color.WHITE);
@@ -253,6 +300,11 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 *scaleX，为图片在X轴的缩放值的倒数
 	 */ 
 	public List<Float> getImageViewIneerSize(ImageView iv){
+		
+		if(!isDrawOnImage){
+			return null;
+		}
+		
 		List<Float> size=new ArrayList<Float>();
 	    //获得ImageView中Image的变换矩阵 
 	    Matrix m = iv.getImageMatrix(); 
@@ -268,6 +320,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	   size.add(1/sy); //scaleY
 	   size.add(values[2]); //X轴的translate的值
 	   size.add(values[5]); //Y轴的translate的值
+	   
+	   paint.setStrokeWidth(penDrawWidth * size.get(0));
 
 	   return size;
 	}
@@ -277,6 +331,9 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 			case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION://从本地选取图片
+				if(data == null){
+					return;
+				}
 	            Uri uri = data.getData(); 
 	            if(uri == null){
 	            	return;
@@ -305,6 +362,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	                options.inJustDecodeBounds = false;
 	                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
 	                alterBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
+	                
+	                isDrawOnImage = true;
 	                
 	                baseBitmap = alterBitmap;
 	                canvas = new Canvas(alterBitmap);
