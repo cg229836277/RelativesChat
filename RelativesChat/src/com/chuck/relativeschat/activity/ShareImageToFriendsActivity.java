@@ -266,13 +266,17 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @date 2014-8-19 下午4:21:31
 	 */
 	public void saveDrawPicture(){
+		if(baseBitmap == null){
+			mToast.showMyToast("请先加载本地图片或者先拍照再保存！", Toast.LENGTH_SHORT);
+			return;
+		}
 		try {
             // 保存图片到SD卡上
 			String fileName = System.currentTimeMillis() + ".png";
 //            File file = new File(BmobConstants.DRAW_PICTURE_PATH,fileName);
 //            FileOutputStream stream = new FileOutputStream(file);
 //            baseBitmap.compress(CompressFormat.PNG, 100, stream);
-            PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,alterBitmap, true);
+            PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,baseBitmap, true);
             mToast.showMyToast("保存成功！", Toast.LENGTH_SHORT);
             
             // Android设备Gallery应用只会在启动的时候扫描系统文件夹
