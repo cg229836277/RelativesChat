@@ -2,19 +2,22 @@ package com.chuck.relativeschat.activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import net.margaritov.preference.colorpicker.ColorPickerPreference;
+
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
+import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.BitmapUtils;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
@@ -24,7 +27,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -76,7 +78,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
     float suofangX = 0;
     float suofangY = 0;
     public boolean isDrawOnImage = false;
-	
+    public boolean isUpdateSuccessed = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -135,10 +137,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			clearDrawCanvas();
 			break;
 		case R.id.save_to_local_text:
-			saveDrawPicture();
+			saveDrawPicture("local");
 			break;
 		case R.id.send_text:
-			
+			saveDrawPicture("upload");
 			break;
 		case R.id.select_from_local_text:
 			selectImageFromLocal();
@@ -272,7 +274,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @author chengang
 	 * @date 2014-8-19 下午4:21:31
 	 */
-	public void saveDrawPicture(){
+	public void saveDrawPicture(final String operateType){
 		new AsyncTask<Void, Boolean, Boolean>() {
 			@Override
 			protected void onPreExecute() {
@@ -282,8 +284,13 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			
 			@Override
 			protected Boolean doInBackground(Void... params) {
-				try {					
-		            return saveImageToLocal();
+				try {
+					if(operateType.equals("local")){
+						return saveImageToLocal();
+					}else{
+						return uploadImageToServer();
+					}
+		            
 		        } catch (Exception e) {
 		            e.printStackTrace();
 		            return false;
@@ -294,10 +301,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			protected void onPostExecute(Boolean result) {
 				dialog.dismiss();
 				if(result){
-					mToast.showMyToast("保存成功！", Toast.LENGTH_SHORT);
+					mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
 					clearDrawCanvas();
 				}else{
-					mToast.showMyToast("保存失败！", Toast.LENGTH_SHORT);
+					mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);
 				}
 				super.onPostExecute(result);
 			}
@@ -362,7 +369,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @return
 	 */
 	public boolean uploadImageToServer(){
-		boolean isSavedSuccessed = true;
+		boolean isSavedSuccessed = false;
 		String totalFilePath = null;
 		// 保存图片到SD卡上
 		if(alterBitmap != null){
@@ -381,7 +388,59 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			isSavedSuccessed = PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,baseBitmap, true);
 			totalFilePath = BmobConstants.DRAW_PICTURE_PATH + fileName;
 		}
-		return isSavedSuccessed;
+		if(isSavedSuccessed){
+			File file = new File(totalFilePath);
+			if(file!= null && file.exists()){
+				final BmobFile uploadFile = new BmobFile(file);
+				uploadFile.upload(getApplicationContext(), new UploadFileListener() {
+					
+					@Override
+					public void onSuccess() {
+						uploadImageToServer(uploadFile);
+					}
+					
+					@Override
+					public void onProgress(Integer arg0) {
+						
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						isUpdateSuccessed = false;
+					}
+				});
+			}
+		}
+		return isUpdateSuccessed;
+	}
+	
+	/**
+	 * 保存相关的数据到服务器
+	 * 
+	 * @author chengang
+	 * @date 2014-8-22 下午1:28:44
+	 * @param uploadFile
+	 */
+	public void uploadImageToServer(BmobFile uploadFile){
+		ShareFileBean fileDataBean = new ShareFileBean();
+		fileDataBean.setFileName(uploadFile.getFilename());
+		fileDataBean.setFilePath(uploadFile.getFileUrl());
+		fileDataBean.setFileType(ShareFileBean.PHOTO);
+		fileDataBean.setShareUser(userManager.getCurrentUserObjectId());
+		fileDataBean.setIsShareToAll("1");
+		fileDataBean.setShareTo("");
+		fileDataBean.save(getApplicationContext(), new SaveListener() {
+			
+			@Override
+			public void onSuccess() {
+				isUpdateSuccessed = true;
+			}
+			
+			@Override
+			public void onFailure(int arg0, String arg1) {
+				isUpdateSuccessed = false;
+			}
+		});
 	}
 	
 	/*根据两点坐标，绘制连线
