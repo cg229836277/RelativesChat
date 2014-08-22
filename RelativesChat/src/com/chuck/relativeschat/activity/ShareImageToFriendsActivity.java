@@ -15,11 +15,14 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
+import com.chuck.relativeschat.tools.BitmapUtils;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
+import com.chuck.relativeschat.tools.StringUtils;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -28,6 +31,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -57,7 +61,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			R.id.select_from_local_text, R.id.take_photo_text};
 	private HeadViewLayout mHeadViewLayout;
 	private float penDrawWidth = 0;
-	
+	private String photoPath;//拍摄照片的路径
+	private String takePhotoName;//拍摄照片的名字
     // 定义手指开始触摸的坐标
     float startX = 0;
     float startY = 0;
@@ -139,7 +144,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			selectImageFromLocal();
 			break;
 		case R.id.take_photo_text:
-			
+			selectImageByTakePhoto();
 			break;
 
 		default:
@@ -187,8 +192,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            	suofangY = imageList.get(1);
 	            	moveX = imageList.get(2);
 	            	moveY = imageList.get(3);
-	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
-	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
+//	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
+//	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
 //	            	if(suofangX > 0){
 //	            		startX = (startX-moveX) * suofangX;	            		
 	            		stopX = (stopX-moveX) * suofangX;	            		
@@ -220,8 +225,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            	suofangY = imageList.get(1);
 	            	moveX = imageList.get(2);
 	            	moveY = imageList.get(3);
-	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
-	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
+//	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
+//	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
 //	            	if(suofangX > 0){
 //	            		startX = (startX-moveX) * suofangX;	            		
 	            		stopX = (stopX-moveX) * suofangX;	            		
@@ -251,11 +256,13 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		// 手动清除画板的绘图，重新创建一个画板
         if (baseBitmap != null) {
         	isDrawOnImage = false;
+        	takePhotoName = null;
+        	alterBitmap = null;
             baseBitmap = Bitmap.createBitmap(drawCanvasImage.getWidth(),drawCanvasImage.getHeight(), Bitmap.Config.ARGB_8888);
             canvas = new Canvas(baseBitmap);
             canvas.drawColor(Color.WHITE);
             drawCanvasImage.setImageBitmap(baseBitmap);
-            mToast.showMyToast("清除画布成功！", Toast.LENGTH_SHORT);
+//            mToast.showMyToast("清除画布成功！", Toast.LENGTH_SHORT);
         }
 	}
 	
@@ -266,29 +273,35 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @date 2014-8-19 下午4:21:31
 	 */
 	public void saveDrawPicture(){
-		if(baseBitmap == null){
-			mToast.showMyToast("请先加载本地图片或者先拍照再保存！", Toast.LENGTH_SHORT);
-			return;
-		}
-		try {
-            // 保存图片到SD卡上
-			String fileName = System.currentTimeMillis() + ".png";
-//            File file = new File(BmobConstants.DRAW_PICTURE_PATH,fileName);
-//            FileOutputStream stream = new FileOutputStream(file);
-//            baseBitmap.compress(CompressFormat.PNG, 100, stream);
-            PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,baseBitmap, true);
-            mToast.showMyToast("保存成功！", Toast.LENGTH_SHORT);
-            
-            // Android设备Gallery应用只会在启动的时候扫描系统文件夹
-            // 这里模拟一个媒体装载的广播，用于使保存的图片可以在Gallery中查看
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_MEDIA_MOUNTED);
-            intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
-            sendBroadcast(intent);
-        } catch (Exception e) {
-        	mToast.showMyToast("保存失败！", Toast.LENGTH_SHORT);
-            e.printStackTrace();
-        }
+		new AsyncTask<Void, Boolean, Boolean>() {
+			@Override
+			protected void onPreExecute() {
+				dialog.show();
+				super.onPreExecute();
+			}
+			
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				try {					
+		            return saveImageToLocal();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            return false;
+		        }
+			}
+			
+			@Override
+			protected void onPostExecute(Boolean result) {
+				dialog.dismiss();
+				if(result){
+					mToast.showMyToast("保存成功！", Toast.LENGTH_SHORT);
+					clearDrawCanvas();
+				}else{
+					mToast.showMyToast("保存失败！", Toast.LENGTH_SHORT);
+				}
+				super.onPostExecute(result);
+			}
+		}.execute();
 	}
 	
 	public void selectImageFromLocal(){
@@ -296,6 +309,79 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		intent.setType("image/*"); 
 		intent.setAction(Intent.ACTION_GET_CONTENT);   
 		startActivityForResult(intent,BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
+	}
+	
+	public void selectImageByTakePhoto(){
+		File dir = new File(BmobConstants.DRAW_PICTURE_PATH);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		//定义照片名字
+		takePhotoName = new SimpleDateFormat("yyMMddHHmmss").format(new Date()) + ".png";
+		File file = new File(dir, takePhotoName);
+		photoPath = file.getAbsolutePath();//获取照片路径
+		Uri imageUri = Uri.fromFile(file);
+
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		startActivityForResult(intent,BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+	}
+	
+	/**
+	 * 保存图片到本地
+	 * 
+	 * @author chengang
+	 * @date 2014-8-22 上午10:56:25
+	 * @return
+	 */
+	public boolean saveImageToLocal(){
+		boolean isSavedSuccessed = true;
+		// 保存图片到SD卡上
+		String fileName = System.currentTimeMillis() + ".png";
+		if(alterBitmap != null){
+			if(!StringUtils.isEmpty(takePhotoName)){
+				isSavedSuccessed = PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, takePhotoName,alterBitmap, true);
+			}
+		}else{
+			isSavedSuccessed = PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,baseBitmap, true);
+		}
+        // Android设备Gallery应用只会在启动的时候扫描系统文件夹
+        // 这里模拟一个媒体装载的广播，用于使保存的图片可以在Gallery中查看
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MEDIA_MOUNTED);
+        intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
+        sendBroadcast(intent);	
+		return isSavedSuccessed;		
+	}
+	
+	/**
+	 * 上传图片到服务器
+	 * 
+	 * @author chengang
+	 * @date 2014-8-22 上午10:57:54
+	 * @return
+	 */
+	public boolean uploadImageToServer(){
+		boolean isSavedSuccessed = true;
+		String totalFilePath = null;
+		// 保存图片到SD卡上
+		if(alterBitmap != null){
+			Bitmap compressedBitmap = BitmapUtils.comp(alterBitmap);
+			if(compressedBitmap != null){
+				if(!StringUtils.isEmpty(takePhotoName)){
+					isSavedSuccessed = PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, takePhotoName,compressedBitmap, true);
+					totalFilePath = BmobConstants.DRAW_PICTURE_PATH + takePhotoName;
+				}
+			}else{
+				isSavedSuccessed = false;
+				return isSavedSuccessed;
+			}
+		}else{
+			String fileName = System.currentTimeMillis() + ".png";
+			isSavedSuccessed = PhotoUtil.saveBitmap(BmobConstants.DRAW_PICTURE_PATH, fileName,baseBitmap, true);
+			totalFilePath = BmobConstants.DRAW_PICTURE_PATH + fileName;
+		}
+		return isSavedSuccessed;
 	}
 	
 	/*根据两点坐标，绘制连线
@@ -334,6 +420,34 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
+			case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// �����޸�ͷ��
+				if (resultCode == RESULT_OK) {
+					if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+						return;
+					}
+					if(!StringUtils.isEmpty(photoPath)){
+						File file = new File(photoPath);
+						if(file != null && file.exists()){
+//			            	BitmapFactory.Options options = new BitmapFactory.Options();
+//			                options.inJustDecodeBounds = true;
+//							Bitmap photoBitmap = BitmapFactory.decodeFile(photoPath);
+//							getBitmapOptions(options);																               
+//							photoBitmap = BitmapFactory.decodeFile(photoPath, options);
+							Bitmap photoBitmap = BitmapUtils.getSmallBitmap(photoPath);
+			                alterBitmap = Bitmap.createBitmap(photoBitmap.getWidth(),photoBitmap.getHeight(), photoBitmap.getConfig());
+			                
+			                isDrawOnImage = true;
+			                
+			                baseBitmap = alterBitmap;
+			                canvas = new Canvas(alterBitmap);
+			                Matrix matrix = new Matrix();
+			                canvas.drawBitmap(photoBitmap, matrix, paint);
+			                /* 将Bitmap设定到ImageView */  
+			                drawCanvasImage.setImageBitmap(alterBitmap);  
+						}
+					}					
+				}
+			break;
 			case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION://从本地选取图片
 				if(data == null){
 					return;
@@ -342,28 +456,16 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            if(uri == null){
 	            	return;
 	            }
-	            
-	            Display display = getWindowManager().getDefaultDisplay();
-	            float dw = display.getWidth();
-	            float dh = display.getHeight();
-	            
-	            Log.e("uri", uri.toString());  
+	            takePhotoName = new SimpleDateFormat("yyMMddHHmmss").format(new Date()) + ".png";
+	            Log.e("uri", takePhotoName);  	        
 	            ContentResolver cr = this.getContentResolver();  
 	            try {  
 	            	BitmapFactory.Options options = new BitmapFactory.Options();
 	                options.inJustDecodeBounds = true;
 	                
-	                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri) , null , options);/*.copy(Bitmap.Config.ARGB_8888, true);*/  
-	                int heightRatio = (int) Math.ceil(options.outHeight / dh);
-	                int widthRatio = (int) Math.ceil(options.outWidth / dw);
-	                if (heightRatio > 1 && widthRatio > 1) {
-	                    if (heightRatio > widthRatio) {
-	                        options.inSampleSize = heightRatio;
-	                    } else {
-	                        options.inSampleSize = widthRatio;
-	                    }
-	                }
-	                options.inJustDecodeBounds = false;
+	                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));/*.copy(Bitmap.Config.ARGB_8888, true);*/  
+	                getBitmapOptions(options);
+	               
 	                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
 	                alterBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), bitmap.getConfig());
 	                
@@ -380,5 +482,40 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            }  
 			break;
 		}
+	}
+	
+	protected String getAbsoluteImagePath(Uri uri) {
+		// can post image
+		String[] proj = { MediaStore.Images.Media.DATA };
+		Cursor cursor = managedQuery(uri, proj, // Which columns to return
+		null, // WHERE clause; which rows to return (all rows)
+		null, // WHERE clause selection arguments (none)
+		null); // Order-by clause (ascending by name)
+		if (cursor != null) {
+			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			cursor.moveToFirst();
+			return cursor.getString(column_index);
+		} else {
+			//如果游标为空说明获取的已经是绝对路径了
+			return uri.getPath();
+		}
+	}
+	
+	public void getBitmapOptions(BitmapFactory.Options options){
+		
+        Display display = getWindowManager().getDefaultDisplay();
+        float dw = display.getWidth();
+        float dh = display.getHeight();
+        
+        int heightRatio = (int) Math.ceil(options.outHeight / dh);
+        int widthRatio = (int) Math.ceil(options.outWidth / dw);
+        if (heightRatio > 1 && widthRatio > 1) {
+            if (heightRatio > widthRatio) {
+                options.inSampleSize = heightRatio;
+            } else {
+                options.inSampleSize = widthRatio;
+            }
+        }
+        options.inJustDecodeBounds = false;
 	}
 }

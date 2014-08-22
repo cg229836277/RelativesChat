@@ -77,13 +77,13 @@ public class PhotoUtil {
 	/**
 	 * saveBitmap
 	 * 
-	 * @param @param filename
-	 * @param @param bitmap
-	 * @param @param isDelete
+	 * @param @param filename 要保存的文件名称
+	 * @param @param bitmap bitmap对象
+	 * @param @param isDelete 存在同名文件是否删除
 	 * @return void
 	 * @throws
 	 */
-	public static void saveBitmap(String dirpath, String filename,
+	public static boolean saveBitmap(String dirpath, String filename,
 			Bitmap bitmap, boolean isDelete) {
 		File dir = new File(dirpath);
 		if (!dir.exists()) {
@@ -101,8 +101,8 @@ public class PhotoUtil {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return false;
 			}
 		}
 		FileOutputStream out = null;
@@ -113,17 +113,21 @@ public class PhotoUtil {
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
 					e.printStackTrace();
+					return false;
 				}
 			}
 		}
+		return true;
 	}
 
 	public static File getFilePath(String filePath, String fileName) {
