@@ -108,7 +108,7 @@ public class PhotoUtil {
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(file);
-			if (bitmap.compress(Bitmap.CompressFormat.PNG, 40, out)) {
+			if (bitmap.compress(Bitmap.CompressFormat.PNG, 20, out)) {
 				out.flush();
 			}
 		} catch (FileNotFoundException e) {

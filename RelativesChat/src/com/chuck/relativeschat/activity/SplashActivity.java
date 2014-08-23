@@ -5,6 +5,7 @@ import java.util.List;
 import com.chuck.relativeschat.R;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.bean.BmobInvitation;
+import cn.bmob.v3.BmobPushManager;
 import android.content.Intent;
 import android.os.Bundle;
 

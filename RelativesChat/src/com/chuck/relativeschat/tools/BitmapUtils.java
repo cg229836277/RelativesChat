@@ -49,9 +49,9 @@ public class BitmapUtils {
 		System.gc();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();		
 		image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-		if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出	
+		if( baos.toByteArray().length / 1024>100) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出	
 			baos.reset();//重置baos即清空baos
-			image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+			image.compress(Bitmap.CompressFormat.JPEG, 20, baos);//这里压缩50%，把压缩后的数据存放到baos中
 		}
 		ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
 		BitmapFactory.Options newOpts = new BitmapFactory.Options();
@@ -93,7 +93,7 @@ public class BitmapUtils {
 		System.gc();
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		image.compress(Bitmap.CompressFormat.PNG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+		image.compress(Bitmap.CompressFormat.PNG, 50, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
 		int options = 100;
 		while ( baos.toByteArray().length / 1024>100 && options > 0) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩		
 			baos.reset();//重置baos即清空baos

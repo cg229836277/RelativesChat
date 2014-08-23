@@ -37,6 +37,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -94,6 +95,40 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		initDrawPen();
 	}
 	
+//	public void upload(){
+////		new AsyncTask<Void, Void, Void>(){
+////			@Override
+////			protected Void doInBackground(Void... arg0) {
+//
+//				final BmobFile file = new BmobFile(new File("/mnt/sdcard/Camera/IMG_20140511_151306.jpg"));
+//				file.upload(this, new UploadFileListener() {
+//					
+//					@Override
+//					public void onSuccess() {
+//						// TODO Auto-generated method stub
+//						System.out.println("文件上传之后的路径是" + file.getFileUrl());
+//					}
+//					
+//					@Override
+//					public void onProgress(Integer arg0) {
+//						// TODO Auto-generated method stub
+//						System.out.println("文件上传进度是" + arg0.intValue());
+//					}
+//					
+//					@Override
+//					public void onFailure(int arg0, String arg1) {
+//						// TODO Auto-generated method stub
+//						System.out.println("文件上传失败是" + arg1);
+//					}
+//				});				
+////			}
+//		
+////				return null;
+////			}
+////			
+////		}.execute();
+//	}
+	
 	public void bindEvent(){
 		for(int i = 0 ; i < textIds.length ; i++){
 			TextView text = (TextView)findViewById(textIds[i]);
@@ -120,10 +155,18 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			colorValue = msg.what;
-			String color = ColorPickerPreference.convertToRGB(colorValue);
-			paint.setColor(Color.parseColor(color));
-			System.out.println("选中好的颜色是" + color);
+			if(msg.what > 100){
+				colorValue = msg.what;
+				String color = ColorPickerPreference.convertToRGB(colorValue);
+				paint.setColor(Color.parseColor(color));
+				System.out.println("选中好的颜色是" + color);
+			}else if(msg.what == 1){
+				Bundle data = msg.getData();
+				String path = data.getString("path");
+				uploadFileDataToServer(path);
+			}else{
+				handleUploadResult(false);
+			}			
 		}
 	}
 
@@ -276,6 +319,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 */
 	public void saveDrawPicture(final String operateType){
 		new AsyncTask<Void, Boolean, Boolean>() {
+			String serverFilePath;
+			
 			@Override
 			protected void onPreExecute() {
 				dialog.show();
@@ -288,7 +333,12 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 					if(operateType.equals("local")){
 						return saveImageToLocal();
 					}else{
-						return uploadImageToServer();
+						serverFilePath = uploadImageToServer();
+						if(!StringUtils.isEmpty(serverFilePath)){
+							return true;
+						}else{
+							return false;
+						}
 					}
 		            
 		        } catch (Exception e) {
@@ -299,16 +349,29 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			
 			@Override
 			protected void onPostExecute(Boolean result) {
-				dialog.dismiss();
-				if(result){
-					mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
-					clearDrawCanvas();
-				}else{
-					mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);
-				}
 				super.onPostExecute(result);
+//				if(!operateType.equals("local") && result){
+//					result = uploadFileDataToServer(serverFilePath);
+//				}
+				dialog.dismiss();
+//				Looper.prepare();
+				Message msg = new Message();
+				if(result){
+					msg.what = 1;
+					Bundle dle = new Bundle();
+					dle.putString("path", serverFilePath);
+					msg.setData(dle);
+					mHandler.sendMessage(msg);
+//					mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
+//					clearDrawCanvas();
+				}else{
+					msg.what = 0;
+					mHandler.sendMessage(msg);
+//					mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);
+				}
+//				Looper.loop();
 			}
-		}.execute();
+		}.execute();		
 	}
 	
 	public void selectImageFromLocal(){
@@ -368,7 +431,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @date 2014-8-22 上午10:57:54
 	 * @return
 	 */
-	public boolean uploadImageToServer(){
+	public String uploadImageToServer(){
 		boolean isSavedSuccessed = false;
 		String totalFilePath = null;
 		// 保存图片到SD卡上
@@ -381,7 +444,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 				}
 			}else{
 				isSavedSuccessed = false;
-				return isSavedSuccessed;
+//				return isSavedSuccessed;
 			}
 		}else{
 			String fileName = System.currentTimeMillis() + ".png";
@@ -389,29 +452,12 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			totalFilePath = BmobConstants.DRAW_PICTURE_PATH + fileName;
 		}
 		if(isSavedSuccessed){
-			File file = new File(totalFilePath);
-			if(file!= null && file.exists()){
-				final BmobFile uploadFile = new BmobFile(file);
-				uploadFile.upload(getApplicationContext(), new UploadFileListener() {
-					
-					@Override
-					public void onSuccess() {
-						uploadImageToServer(uploadFile);
-					}
-					
-					@Override
-					public void onProgress(Integer arg0) {
-						
-					}
-					
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						isUpdateSuccessed = false;
-					}
-				});
-			}
+//			isUpdateSuccessed = uploadFileDataToServer(totalFilePath);
+			return totalFilePath;
+		}else{
+			return null;
 		}
-		return isUpdateSuccessed;
+//		return isUpdateSuccessed;
 	}
 	
 	/**
@@ -421,26 +467,53 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 * @date 2014-8-22 下午1:28:44
 	 * @param uploadFile
 	 */
-	public void uploadImageToServer(BmobFile uploadFile){
+	public void uploadFileDataToServer(String totalFilePath){
+//		totalFilePath = "/mnt/sdcard/onlylove.mp3";
+		File file = new File(totalFilePath);
+		if(file!= null && file.exists()){
+			final BmobFile uploadFile = new BmobFile(file);
+			uploadFile.uploadblock(this, new UploadFileListener() {
+				
+				@Override
+				public void onSuccess() {
+					setFileData(uploadFile);
+				}
+				
+				@Override
+				public void onProgress(Integer arg0) {
+					
+				}
+				
+				@Override
+				public void onFailure(int arg0, String arg1) {
+					handleUploadResult(false);
+					System.out.println("上传文件失败的原因是" + arg1);
+				}
+			});
+		}		
+	}
+	
+	public void setFileData(BmobFile tempFile){
 		ShareFileBean fileDataBean = new ShareFileBean();
-		fileDataBean.setFileName(uploadFile.getFilename());
-		fileDataBean.setFilePath(uploadFile.getFileUrl());
+		fileDataBean.setFileName(tempFile.getFilename());
+		fileDataBean.setFilePath(tempFile.getFileUrl());
 		fileDataBean.setFileType(ShareFileBean.PHOTO);
 		fileDataBean.setShareUser(userManager.getCurrentUserObjectId());
 		fileDataBean.setIsShareToAll("1");
 		fileDataBean.setShareTo("");
-		fileDataBean.save(getApplicationContext(), new SaveListener() {
+		fileDataBean.save(this, new SaveListener() {
 			
 			@Override
 			public void onSuccess() {
-				isUpdateSuccessed = true;
+				handleUploadResult(true);
 			}
 			
 			@Override
 			public void onFailure(int arg0, String arg1) {
-				isUpdateSuccessed = false;
+				handleUploadResult(false);
+				System.out.println("设置上传数据失败 " + arg1);
 			}
-		});
+		});		
 	}
 	
 	/*根据两点坐标，绘制连线
@@ -576,5 +649,14 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
             }
         }
         options.inJustDecodeBounds = false;
+	}
+	
+	public void handleUploadResult(boolean result){
+		if(result){
+			mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
+			clearDrawCanvas();
+		}else{
+			mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);
+		}
 	}
 }
