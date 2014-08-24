@@ -73,8 +73,11 @@
     <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>
     <string name="my_friends_name">好友名字：</string>
     <string name="my_friends_sign">好友签名：</string>
-	<string name="pen_color">画笔颜色</string>
-	<string name="redraw_image">重画</string>
-	<string name="send">发送</string>
-	<string name="save_to_local">本地保存</string>
+    <string name="pen_color">画笔颜色</string>
+    <string name="redraw_image">重画</string>
+    <string name="send">发送</string>
+    <string name="save_to_local">本地保存</string>
+    <string name="title_activity_friend_share">FriendShareActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

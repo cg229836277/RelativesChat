@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class ShareToMyFriendActivity extends BaseActivity implements OnClickListener{
 
 	private int[] imageViewId = {R.id.share_photo_icon , R.id.share_music_icon,
-			R.id.share_video_icon,R.id.share_file_icon,R.id.share_sound_icon};
+			R.id.share_video_icon,R.id.share_sound_icon};
 	private HeadViewLayout mHeadViewLayout;
 	private UserInfoBean simpleUserData;
 	private ImageView userIconView;
@@ -70,8 +70,6 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 		case R.id.share_music_icon:			
 			break;
 		case R.id.share_video_icon:			
-			break;
-		case R.id.share_file_icon:			
 			break;
 		case R.id.share_sound_icon:			
 			break;

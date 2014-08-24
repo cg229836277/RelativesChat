@@ -242,9 +242,8 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="0.3"
-                    style="@style/text_xlarge_white"
-                    android:gravity="center"
-                    android:text="0"/>
+                    style="@style/text_xlarge_red"
+                    android:gravity="center" />
                 	
                 </LinearLayout>  
 

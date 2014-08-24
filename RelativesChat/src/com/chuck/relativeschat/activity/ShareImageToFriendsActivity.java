@@ -353,7 +353,6 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 //				if(!operateType.equals("local") && result){
 //					result = uploadFileDataToServer(serverFilePath);
 //				}
-				dialog.dismiss();
 //				Looper.prepare();
 				Message msg = new Message();
 				if(result){
@@ -472,7 +471,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		File file = new File(totalFilePath);
 		if(file!= null && file.exists()){
 			final BmobFile uploadFile = new BmobFile(file);
-			uploadFile.uploadblock(this, new UploadFileListener() {
+			uploadFile.upload(this, new UploadFileListener() {
 				
 				@Override
 				public void onSuccess() {
@@ -498,7 +497,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		fileDataBean.setFileName(tempFile.getFilename());
 		fileDataBean.setFilePath(tempFile.getFileUrl());
 		fileDataBean.setFileType(ShareFileBean.PHOTO);
-		fileDataBean.setShareUser(userManager.getCurrentUserObjectId());
+		fileDataBean.setShareUser(userManager.getCurrentUserName());
 		fileDataBean.setIsShareToAll("1");
 		fileDataBean.setShareTo("");
 		fileDataBean.save(this, new SaveListener() {
@@ -652,6 +651,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	}
 	
 	public void handleUploadResult(boolean result){
+		dialog.dismiss();
 		if(result){
 			mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
 			clearDrawCanvas();

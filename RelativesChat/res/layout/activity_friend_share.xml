@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/friends_share_background"
+    tools:context=".FriendShareActivity" >
+	
+   	<include 
+        android:id="@+id/head_menu_layout_friend_share"
+        layout="@layout/friends_menu_header_layout"/>
+   	
+   	<ListView android:id="@+id/friend_share_list_view"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_margin="20dp"
+   	    android:dividerHeight="6dp"
+   	    android:divider="@color/transparent"
+   	    android:layout_below="@+id/head_menu_layout_friend_share"/>
+</RelativeLayout>

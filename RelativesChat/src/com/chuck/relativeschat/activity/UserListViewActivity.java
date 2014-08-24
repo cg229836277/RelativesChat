@@ -10,7 +10,9 @@ import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.layout;
+import com.chuck.relativeschat.adapter.MyFriendsListViewAdapter;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
@@ -28,25 +30,24 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class UserListViewActivity extends BaseActivity implements OnClickListener{
+public class UserListViewActivity extends BaseActivity implements OnItemClickListener{
 
 	private HeadViewLayout mHeadViewLayout;
-	private LinearLayout simpleFriendsContainerLayout;
+	private ListView friendsListView;
 	private RelativesChatApplication rcApp;
 	private List<PersonBean> personBeanDataList;
-	private LayoutInflater viewInflater;
 	private BmobChatUser currentUser;
-	private ImageView simpleUserIconView;
-	private TextView simpleUserNameText;
-	private TextView simpleUserStateText;
-	private View simpleFriendsView;
 	public static final String USER_DATA = "userData";
 	public static final String USER_INDEX = "index";
 	private List<UserInfoBean> userInfoList;
+	private MyFriendsListViewAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,12 +62,12 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	}
 	
 	public void bindEvent(){
-		simpleFriendsContainerLayout = (LinearLayout)findViewById(R.id.user_list_container_layout);
+		friendsListView = (ListView)findViewById(R.id.my_friends_list_view);
+		friendsListView.setOnItemClickListener(this);
 	}
 	
 	public void addUserDataForSimpleView(){
-		
-		viewInflater = LayoutInflater.from(getApplicationContext());
+
 		rcApp = (RelativesChatApplication)getApplication();
 		personBeanDataList = rcApp.getMyFriendsDataBean();
 		currentUser = userManager.getCurrentUser();
@@ -106,34 +107,8 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 			protected void onPostExecute(List<UserInfoBean> result) {
 				super.onPostExecute(result);
 				if(IsListNotNull.isListNotNull(result)){
-					for(int i = 0 ; i < result.size() ; i++){
-						UserInfoBean infoData = result.get(i);
-						simpleFriendsView = viewInflater.inflate(R.layout.simple_friends_list_view_layout, null);
-						simpleUserIconView = (ImageView)simpleFriendsView.findViewById(R.id.simple_user_icon_image);
-						simpleUserNameText = (TextView)simpleFriendsView.findViewById(R.id.user_name_text);
-						simpleUserStateText = (TextView)simpleFriendsView.findViewById(R.id.user_state_text);
-						
-						simpleUserIconView.setImageBitmap(infoData.getIconBitmap());
-						if(!StringUtils.isEmpty(infoData.getNickName())){
-							simpleUserNameText.setText(infoData.getNickName());
-						}else{
-							simpleUserNameText.setText(infoData.getUserName());
-						}
-						simpleUserStateText.setText(infoData.getUserState());
-						
-						simpleFriendsView.setOnClickListener(UserListViewActivity.this);
-//						simpleUserIconView.setOnClickListener(UserListViewActivity.this);
-//						simpleUserNameText.setOnClickListener(UserListViewActivity.this);
-//						simpleUserStateText.setOnClickListener(UserListViewActivity.this);
-						
-						simpleFriendsView.setTag(i);
-						simpleUserIconView.setTag(i);
-						simpleUserNameText.setTag(i);
-						simpleUserStateText.setTag(i);
-						
-						simpleFriendsContainerLayout.addView(simpleFriendsView);
-					}
-					userInfoList = result;
+					adapter = new MyFriendsListViewAdapter(getApplicationContext(), result);
+					friendsListView.setAdapter(adapter);
 				}
 				dialog.dismiss();
 			}
@@ -142,25 +117,12 @@ public class UserListViewActivity extends BaseActivity implements OnClickListene
 	}
 
 	@Override
-	public void onClick(View v) {
-		View parentView = null;
-		switch (v.getId()) {
-		case R.layout.simple_friends_list_view_layout:
-			break;
-		default:
-			break;
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		if(adapter.getItem(arg2) instanceof UserInfoBean){
+			UserInfoBean data = (UserInfoBean)adapter.getItem(arg2);
+			rcApp.setCurrentUserInfoData(data);
+			Intent intent = new Intent(this , ShareToMyFriendActivity.class);
+			startActivity(intent);
 		}
-		
-		if(v.getTag() instanceof Integer){
-			childViewClicked((Integer)v.getTag());
-		}
-	}
-	
-	public void childViewClicked(int index){
-		if(IsListNotNull.isListNotNull(userInfoList)){
-			rcApp.setCurrentUserInfoData(userInfoList.get(index));
-		}
-		Intent intent = new Intent(this , ShareToMyFriendActivity.class);
-		startActivity(intent);
 	}
 }

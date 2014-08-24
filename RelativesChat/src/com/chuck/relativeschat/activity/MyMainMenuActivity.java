@@ -5,13 +5,17 @@ import java.util.Map;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.id;
 import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.biz.impl.GetFriendsShareDataBizImpl;
 import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
+import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.HttpDownloader;
 import com.chuck.relativeschat.tools.IsListNotNull;
@@ -48,6 +52,8 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	private ImageView secondUserIconImage;
 	private TextView secondUserNameText;
 	private TextView userNameText;
+	private TextView friendsShareNumber;
+	private int count = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,8 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		firstUserNameText = (TextView)findViewById(R.id.first_user_name);
 		secondUserIconImage = (ImageView)findViewById(R.id.second_user_icon);
 		secondUserNameText = (TextView)findViewById(R.id.second_user_name);
+		
+		friendsShareNumber = (TextView)findViewById(R.id.friends_share_number_text);
 		
 		initUserViewData();
 	}
@@ -167,6 +175,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			intent = new Intent(this , ShareImageToFriendsActivity.class);
 			break;
 		case R.id.share_layout:
+			intent = new Intent(this , FriendShareActivity.class);
 			break;
 		case R.id.music_layout:
 			break;
@@ -190,11 +199,14 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		}
 		
 		if(intent != null){
-			startActivity(intent);
+			startActivityForResult(intent, 0);
 		}
 	}
 	
 	public void initUserViewData(){
+		
+		setFriendsShareNumber();
+		
 		rcApp = (RelativesChatApplication)getApplication();
 		chatUserMap = rcApp.getContactList();
 		if(chatUserMap != null && chatUserMap.size() > 0){
@@ -278,5 +290,51 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		rcApp.setContactList(null);
 		rcApp.setCurrentUser(null);
 		rcApp.setPersonDetailData(null);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		setFriendsShareNumber();		
+	}
+	
+	public void setFriendsShareNumber(){
+		
+//		new AsyncTask<Void, Void, Void>(){
+//			
+//			@Override
+//			protected void onPreExecute() {
+//				dialog.show();
+//				super.onPreExecute();
+//			}
+//
+//			@Override
+//			protected Void doInBackground(Void... arg0) {
+				BmobQuery<ShareFileBean> dataQuery = new BmobQuery<ShareFileBean>();
+				dataQuery.addWhereEqualTo("isShareToAll", "1");
+				dataQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {			
+					@Override
+					public void onSuccess(List<ShareFileBean> arg0) {
+						if(IsListNotNull.isListNotNull(arg0)){
+							count = arg0.size();
+							friendsShareNumber.setText("" + count);
+						}
+					}
+					
+					@Override
+					public void onError(int arg0, String arg1) {
+						System.out.println("查找好友分享数目  " + arg1);
+					}
+				});
+//				return null;
+//			}
+//			
+//			@Override
+//			protected void onPostExecute(Void result) {
+//				dialog.dismiss();
+//				friendsShareNumber.setText(""+count);
+//				super.onPostExecute(result);
+//			}
+//		}.execute();
 	}
 }
