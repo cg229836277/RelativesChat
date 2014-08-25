@@ -28,9 +28,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.QrCodeScan.activity.MipcaCaptureActivity;
 import com.chuck.relativeschat.QrCodeScan.camera.CameraManager;
 import com.chuck.relativeschat.common.ViewfinderResultPointCallback;
+import com.chuck.relativeschat.QrCodeScan.activity.MipcaCaptureActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 

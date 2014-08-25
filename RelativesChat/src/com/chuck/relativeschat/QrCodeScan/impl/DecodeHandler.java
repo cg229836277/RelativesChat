@@ -24,9 +24,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.QrCodeScan.activity.MipcaCaptureActivity;
 import com.chuck.relativeschat.QrCodeScan.camera.CameraManager;
 import com.chuck.relativeschat.QrCodeScan.camera.PlanarYUVLuminanceSource;
+import com.chuck.relativeschat.QrCodeScan.activity.MipcaCaptureActivity;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;

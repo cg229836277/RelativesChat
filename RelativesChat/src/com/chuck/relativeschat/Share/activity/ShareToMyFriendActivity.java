@@ -1,7 +1,8 @@
-package com.chuck.relativeschat.activity;
+package com.chuck.relativeschat.Share.activity;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.layout;
+import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
@@ -9,6 +10,7 @@ import com.chuck.relativeschat.tools.StringUtils;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,8 +66,12 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 
 	@Override
 	public void onClick(View v) {
+		Intent intent = null;
+		
 		switch (v.getId()) {
-		case R.id.share_photo_icon:			
+		case R.id.share_photo_icon:	
+			intent = new Intent(this, ShareImageToFriendsActivity.class);
+			intent.putExtra(ShareImageToFriendsActivity.SHARE_TO_USER, simpleUserData.getUserId());
 			break;
 		case R.id.share_music_icon:			
 			break;
@@ -75,6 +81,9 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 			break;
 		default:
 			break;
+		}
+		if(intent != null){
+			startActivity(intent);
 		}
 	}
 	

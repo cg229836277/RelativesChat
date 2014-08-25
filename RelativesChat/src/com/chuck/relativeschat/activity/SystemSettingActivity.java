@@ -3,23 +3,19 @@ package com.chuck.relativeschat.activity;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
-import com.chuck.relativeschat.R.layout;
-import com.chuck.relativeschat.R.menu;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
+import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;

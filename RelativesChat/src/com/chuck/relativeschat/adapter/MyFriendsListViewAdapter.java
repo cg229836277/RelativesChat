@@ -12,7 +12,7 @@ import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.activity.ShareToMyFriendActivity;
+import com.chuck.relativeschat.Share.activity.ShareToMyFriendActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.bean.UserInfoBean;

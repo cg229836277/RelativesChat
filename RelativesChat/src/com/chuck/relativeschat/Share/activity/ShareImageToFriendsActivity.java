@@ -1,7 +1,8 @@
-package com.chuck.relativeschat.activity;
+package com.chuck.relativeschat.Share.activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
@@ -80,6 +82,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
     float suofangY = 0;
     public boolean isDrawOnImage = false;
     public boolean isUpdateSuccessed = false;
+    public static final String SHARE_TO_USER = "shareToUser";
+    private String shareToUserId = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,44 +94,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		mHeadViewLayout.setTitleText("关于图片");
-		
+		shareToUserId = getIntent().getStringExtra(SHARE_TO_USER);
 		bindEvent();
 		initDrawPen();
 	}
-	
-//	public void upload(){
-////		new AsyncTask<Void, Void, Void>(){
-////			@Override
-////			protected Void doInBackground(Void... arg0) {
-//
-//				final BmobFile file = new BmobFile(new File("/mnt/sdcard/Camera/IMG_20140511_151306.jpg"));
-//				file.upload(this, new UploadFileListener() {
-//					
-//					@Override
-//					public void onSuccess() {
-//						// TODO Auto-generated method stub
-//						System.out.println("文件上传之后的路径是" + file.getFileUrl());
-//					}
-//					
-//					@Override
-//					public void onProgress(Integer arg0) {
-//						// TODO Auto-generated method stub
-//						System.out.println("文件上传进度是" + arg0.intValue());
-//					}
-//					
-//					@Override
-//					public void onFailure(int arg0, String arg1) {
-//						// TODO Auto-generated method stub
-//						System.out.println("文件上传失败是" + arg1);
-//					}
-//				});				
-////			}
-//		
-////				return null;
-////			}
-////			
-////		}.execute();
-//	}
 	
 	public void bindEvent(){
 		for(int i = 0 ; i < textIds.length ; i++){
@@ -180,10 +150,18 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			clearDrawCanvas();
 			break;
 		case R.id.save_to_local_text:
-			saveDrawPicture("local");
+			if(baseBitmap != null){
+				saveDrawPicture("local");
+			}else{
+				mToast.showMyToast("请先画画或者加载照片!", Toast.LENGTH_SHORT);
+			}
 			break;
 		case R.id.send_text:
-			saveDrawPicture("upload");
+			if(baseBitmap != null){
+				saveDrawPicture("upload");
+			}else{
+				mToast.showMyToast("请先画画或者加载照片!", Toast.LENGTH_SHORT);
+			}
 			break;
 		case R.id.select_from_local_text:
 			selectImageFromLocal();
@@ -497,14 +475,20 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		fileDataBean.setFileName(tempFile.getFilename());
 		fileDataBean.setFilePath(tempFile.getFileUrl());
 		fileDataBean.setFileType(ShareFileBean.PHOTO);
-		fileDataBean.setShareUser(userManager.getCurrentUserName());
-		fileDataBean.setIsShareToAll("1");
-		fileDataBean.setShareTo("");
+		fileDataBean.setShareUser(userManager.getCurrentUserName());		
+		if(!StringUtils.isEmpty(shareToUserId)){
+			fileDataBean.setShareTo(shareToUserId);
+			fileDataBean.setIsShareToAll("0");
+		}else{
+			fileDataBean.setShareTo(null);
+			fileDataBean.setIsShareToAll("1");
+		}
 		fileDataBean.save(this, new SaveListener() {
 			
 			@Override
 			public void onSuccess() {
 				handleUploadResult(true);
+				shareToUserId = null;
 			}
 			
 			@Override
@@ -654,6 +638,11 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		dialog.dismiss();
 		if(result){
 			mToast.showMyToast("操作成功！", Toast.LENGTH_SHORT);
+			//文件上传成功之后从本地删除
+			File file = new File(BmobConstants.DRAW_PICTURE_PATH + takePhotoName);
+			if (file != null && file.exists()) {
+				file.delete();
+			}
 			clearDrawCanvas();
 		}else{
 			mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);

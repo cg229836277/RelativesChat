@@ -10,6 +10,7 @@ import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.layout;
+import com.chuck.relativeschat.Share.activity.ShareToMyFriendActivity;
 import com.chuck.relativeschat.adapter.MyFriendsListViewAdapter;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.UserBean;

@@ -2,13 +2,13 @@ package com.chuck.relativeschat.fragment;
 
 import cn.bmob.im.bean.BmobChatUser;
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
 import com.chuck.relativeschat.activity.FindFriendsActivity;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.ModefyUserInfoActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
+import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;

@@ -11,6 +11,8 @@ import cn.bmob.v3.listener.FindListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.R.id;
 import com.chuck.relativeschat.R.layout;
+import com.chuck.relativeschat.Share.activity.FriendShareActivity;
+import com.chuck.relativeschat.Share.activity.ShareImageToFriendsActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.biz.impl.GetFriendsShareDataBizImpl;
 import com.chuck.relativeschat.common.DialogTips;
@@ -298,43 +300,24 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		setFriendsShareNumber();		
 	}
 	
-	public void setFriendsShareNumber(){
-		
-//		new AsyncTask<Void, Void, Void>(){
-//			
-//			@Override
-//			protected void onPreExecute() {
-//				dialog.show();
-//				super.onPreExecute();
-//			}
-//
-//			@Override
-//			protected Void doInBackground(Void... arg0) {
-				BmobQuery<ShareFileBean> dataQuery = new BmobQuery<ShareFileBean>();
-				dataQuery.addWhereEqualTo("isShareToAll", "1");
-				dataQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {			
-					@Override
-					public void onSuccess(List<ShareFileBean> arg0) {
-						if(IsListNotNull.isListNotNull(arg0)){
-							count = arg0.size();
-							friendsShareNumber.setText("" + count);
-						}
-					}
-					
-					@Override
-					public void onError(int arg0, String arg1) {
-						System.out.println("查找好友分享数目  " + arg1);
-					}
-				});
-//				return null;
-//			}
-//			
-//			@Override
-//			protected void onPostExecute(Void result) {
-//				dialog.dismiss();
-//				friendsShareNumber.setText(""+count);
-//				super.onPostExecute(result);
-//			}
-//		}.execute();
+	public void setFriendsShareNumber(){		
+		BmobQuery<ShareFileBean> dataQuery = new BmobQuery<ShareFileBean>();
+		dataQuery.addWhereEqualTo("isShareToAll", "1");
+		dataQuery.setLimit(10000);
+		dataQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {			
+			@Override
+			public void onSuccess(List<ShareFileBean> arg0) {
+				if(IsListNotNull.isListNotNull(arg0)){
+					count = arg0.size();
+					friendsShareNumber.setText("" + count);
+					System.out.println("查找好友分享数目  " + count);
+				}
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+				System.out.println("查找好友分享数目  " + arg1);
+			}
+		});
 	}
 }

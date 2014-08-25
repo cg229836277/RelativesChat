@@ -209,17 +209,24 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.activity.ShareToMyFriendActivity"
+            android:name="com.chuck.relativeschat.Share.activity.ShareToMyFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.activity.ShareImageToFriendsActivity"
+            android:name="com.chuck.relativeschat.Share.activity.ShareImageToFriendsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.activity.FriendShareActivity"
+            android:name="com.chuck.relativeschat.Share.activity.FriendShareActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.chuck.relativeschat.Share.activity.WatchShareImageActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:theme="@android:style/Theme.Translucent"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
