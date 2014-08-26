@@ -34,6 +34,8 @@ public class BaseActivity extends Activity {
 	
 	public MyColorPickerDialog colorPickerDialog;
 	
+	protected ImageLoader imageLoader;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +47,8 @@ public class BaseActivity extends Activity {
 		mToast = new MyToast(BaseActivity.this);
 		dialog = new MyDialog(BaseActivity.this);
 		
-		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 		
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);

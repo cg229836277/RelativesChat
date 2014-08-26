@@ -18,6 +18,7 @@ public class UserInfoBean implements Serializable{
 	String nickName;
 	String userState;
 	String userId;
+	String avatorUrl;
 	public Bitmap getIconBitmap() {
 		return iconBitmap;
 	}
@@ -47,5 +48,11 @@ public class UserInfoBean implements Serializable{
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getAvatorUrl() {
+		return avatorUrl;
+	}
+	public void setAvatorUrl(String avatorUrl) {
+		this.avatorUrl = avatorUrl;
 	}
 }

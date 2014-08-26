@@ -54,7 +54,7 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 		
 		userIconView = (ImageView)findViewById(R.id.friend_icon_view);
 		if(simpleUserData != null){
-			userIconView.setImageBitmap(simpleUserData.getIconBitmap());
+			imageLoader.displayImage(simpleUserData.getAvatorUrl(), userIconView);
 			if(!StringUtils.isEmpty(simpleUserData.getNickName())){
 				userNameText.setText(simpleUserData.getNickName());
 			}else{

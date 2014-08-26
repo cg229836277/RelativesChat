@@ -88,10 +88,11 @@ public class UserListViewActivity extends BaseActivity implements OnItemClickLis
 					List<UserInfoBean> infoBeanList = new ArrayList<UserInfoBean>();
 					for(PersonBean data : personBeanDataList){
 						if(!data.getObjectId().equals(currentUser.getObjectId())){									
-							Bitmap tempBitmap = HttpDownloader.downfile(data.getAvatar(), data.getObjectId());
-							tempBitmap = PhotoUtil.toRoundCorner(tempBitmap, 120);
+//							Bitmap tempBitmap = HttpDownloader.downfile(data.getAvatar(), data.getObjectId());
+//							tempBitmap = PhotoUtil.toRoundCorner(tempBitmap, 120);
 							UserInfoBean infoBean = new UserInfoBean();
-							infoBean.setIconBitmap(tempBitmap);
+//							infoBean.setIconBitmap(tempBitmap);
+							infoBean.setAvatorUrl(data.getAvatar());
 							infoBean.setUserName(data.getUsername());
 							infoBean.setUserState(data.getUserState());
 							infoBean.setNickName(data.getNickName());

@@ -17,6 +17,8 @@ public class UserShareFileBean {
 	String shareUser;
 	String createDate;
 	String fileType;
+	String shareToUser;
+	String isShareToAll;
 	public String getFileUrl() {
 		return fileUrl;
 	}
@@ -52,5 +54,17 @@ public class UserShareFileBean {
 	}
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+	public String getShareToUser() {
+		return shareToUser;
+	}
+	public void setShareToUser(String shareToUser) {
+		this.shareToUser = shareToUser;
+	}
+	public String getIsShareToAll() {
+		return isShareToAll;
+	}
+	public void setIsShareToAll(String isShareToAll) {
+		this.isShareToAll = isShareToAll;
 	}
 }

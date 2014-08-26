@@ -4,8 +4,14 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rect_background"
     android:orientation="horizontal"
-    android:weightSum="12" >
+    android:weightSum="10" >
 
+    <ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/file_type_image"
+        android:layout_gravity="left|center_vertical"
+		android:layout_weight="1"/>
+    
     <TextView
         android:id="@+id/share_desc_text"
         style="@style/text_small_black"
@@ -13,8 +19,14 @@
         android:layout_height="fill_parent"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:gravity="left|center_vertical" />
+    
+ 	<ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/share_favourite_image"
+        android:layout_gravity="left|center_vertical"
+		android:layout_weight="1"/>
 
     <LinearLayout
         android:id="@+id/watch_share_layout"
@@ -38,72 +50,4 @@
             android:gravity="center"
             android:text="查看" />
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/feedback_share_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:background="@drawable/share_feedback_selector"
-            android:gravity="center" />
-
-        <TextView
-            style="@style/text_smaller_black"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:text="分享回复" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/feedback_word_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:background="@drawable/share_remark_selector" />
-
-        <TextView
-            style="@style/text_smaller_black"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:text="文字回复" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/feedback_good_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:background="@drawable/share_good_selector" />
-
-        <TextView
-            style="@style/text_smaller_black"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:text="点赞" />
-    </LinearLayout>
-
 </LinearLayout>
