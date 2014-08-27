@@ -99,6 +99,7 @@ public class WatchShareImageActivity extends BaseActivity {
 
 		@Override
 		public int getCount() {
+			System.out.println("当前照片的总数是" + images.length);
 			return images.length;
 		}
 
@@ -164,5 +165,17 @@ public class WatchShareImageActivity extends BaseActivity {
 		public Parcelable saveState() {
 			return null;
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		if(IsListNotNull.isListNotNull(shareUserList)){
+			shareUserList.clear();
+		}
+		
+		if(IsListNotNull.isListNotNull(imageUrlList)){
+			imageUrlList.clear();
+		}
+		super.onDestroy();
 	}
 }

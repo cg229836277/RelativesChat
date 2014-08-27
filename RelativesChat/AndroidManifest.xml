@@ -226,6 +226,7 @@
         <activity
             android:name="com.chuck.relativeschat.Share.activity.WatchShareImageActivity"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"            
             android:windowSoftInputMode="stateHidden" >
         </activity>
     </application>

@@ -1,11 +1,16 @@
 package com.chuck.relativeschat.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
@@ -297,26 +302,41 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		setFriendsShareNumber();		
+		setFriendsShareNumber();
+		
+		Map<String , String> nameMap = new HashMap<String, String>();
+		nameMap.put("qin", "yanhui");
+		nameMap.put("chen", "Gang");
+		
+		Set<String> keyStr = nameMap.keySet();
+		Iterator<String> iter = keyStr.iterator();
+		while (iter.hasNext()) {
+			String value = nameMap.get(iter.next());
+			System.out.println(value);
+		}
 	}
 	
 	public void setFriendsShareNumber(){		
-		BmobQuery<ShareFileBean> dataQuery = new BmobQuery<ShareFileBean>();
-		dataQuery.addWhereEqualTo("isShareToAll", "1");
-		dataQuery.setLimit(10000);
-		dataQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {			
+		BmobQuery<ShareFileBean> dataQuery1 = new BmobQuery<ShareFileBean>();
+		dataQuery1.addWhereEqualTo("isShareToAll", "1");
+		BmobQuery<ShareFileBean> dataQuery2 = new BmobQuery<ShareFileBean>();
+		dataQuery2.addWhereEqualTo("isShareToAll", "0");
+		dataQuery2.addWhereEqualTo("shareTo", userManager.getCurrentUserObjectId());
+		List<BmobQuery<ShareFileBean>> queries = new ArrayList<BmobQuery<ShareFileBean>>();
+		queries.add(dataQuery2);
+		queries.add(dataQuery1);
+		BmobQuery<ShareFileBean> mainQuery = new BmobQuery<ShareFileBean>();
+		mainQuery.or(queries);
+		mainQuery.count(getApplicationContext(), ShareFileBean.class, new CountListener() {
+			
 			@Override
-			public void onSuccess(List<ShareFileBean> arg0) {
-				if(IsListNotNull.isListNotNull(arg0)){
-					count = arg0.size();
-					friendsShareNumber.setText("" + count);
-					System.out.println("查找好友分享数目  " + count);
-				}
+			public void onSuccess(int arg0) {
+				friendsShareNumber.setText("" + arg0);		
 			}
 			
 			@Override
-			public void onError(int arg0, String arg1) {
-				System.out.println("查找好友分享数目  " + arg1);
+			public void onFailure(int arg0, String arg1) {
+				
 			}
 		});
 	}
