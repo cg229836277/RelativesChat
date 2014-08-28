@@ -268,6 +268,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 					intent.putStringArrayListExtra(WatchShareImageActivity.IMAGE_URL, urlList);
 					intent.putStringArrayListExtra(WatchShareImageActivity.SHARE_USER, shareUserList);
 					startActivity(intent);
+					finish();
 				}
 				break;
 			default:
