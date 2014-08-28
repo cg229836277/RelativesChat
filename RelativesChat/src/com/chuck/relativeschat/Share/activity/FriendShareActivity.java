@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -148,6 +149,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 				adapter.setList(shareFileBeanList);
 				friendsShareListView.setSelection(adapter.getCount() - 1);
 				dialog.dismiss();
+				
+				adapter.notifyDataSetChanged();
 			}
 		}.execute();
 	}
@@ -281,6 +284,15 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 	protected void onDestroy() {
 		EventBus.getDefault().post(new EventBusShareData(shareFileBeanList));
 		super.onDestroy();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			this.finish();
+			return true;
+		}
+		return false;
 	}
 	
 }

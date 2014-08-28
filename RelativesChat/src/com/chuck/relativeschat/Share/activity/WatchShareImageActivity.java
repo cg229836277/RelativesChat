@@ -26,10 +26,12 @@ import de.greenrobot.event.EventBus;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -349,5 +351,16 @@ public class WatchShareImageActivity extends BaseActivity implements OnPageChang
 		}else{
 			mToast.showMyToast("评论好友的分享失败！" + failReason, Toast.LENGTH_SHORT);
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			Intent intent = new Intent(this , FriendShareActivity.class);
+			startActivity(intent);
+			this.finish();
+			return true;
+		}
+		return false;
 	}
 }

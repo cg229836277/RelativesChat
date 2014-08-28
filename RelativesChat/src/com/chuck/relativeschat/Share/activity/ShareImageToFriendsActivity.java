@@ -648,4 +648,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			mToast.showMyToast("操作失败！", Toast.LENGTH_SHORT);
 		}
 	}
+	
+	@Override
+	protected void onDestroy() {
+		System.gc();
+		super.onDestroy();
+	}
 }
