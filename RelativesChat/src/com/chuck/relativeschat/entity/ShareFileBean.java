@@ -28,6 +28,9 @@ public class ShareFileBean extends BmobObject {
 	String shareUser;
 	//分享给单个用户的id
 	String shareTo;
+	String shareRemarkNumber;
+	String wordRemarkNumber;
+	String isGoodNumber;
 	public String getFileName() {
 		return fileName;
 	}
@@ -63,6 +66,24 @@ public class ShareFileBean extends BmobObject {
 	}
 	public void setShareTo(String shareTo) {
 		this.shareTo = shareTo;
+	}
+	public String getShareRemarkNumber() {
+		return shareRemarkNumber;
+	}
+	public String getWordRemarkNumber() {
+		return wordRemarkNumber;
+	}
+	public String getIsGoodNumber() {
+		return isGoodNumber;
+	}
+	public void setShareRemarkNumber(String shareRemarkNumber) {
+		this.shareRemarkNumber = shareRemarkNumber;
+	}
+	public void setWordRemarkNumber(String wordRemarkNumber) {
+		this.wordRemarkNumber = wordRemarkNumber;
+	}
+	public void setIsGoodNumber(String isGoodNumber) {
+		this.isGoodNumber = isGoodNumber;
 	}
 	
 }

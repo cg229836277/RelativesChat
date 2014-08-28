@@ -304,16 +304,16 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		super.onActivityResult(requestCode, resultCode, data);
 		setFriendsShareNumber();
 		
-		Map<String , String> nameMap = new HashMap<String, String>();
-		nameMap.put("qin", "yanhui");
-		nameMap.put("chen", "Gang");
-		
-		Set<String> keyStr = nameMap.keySet();
-		Iterator<String> iter = keyStr.iterator();
-		while (iter.hasNext()) {
-			String value = nameMap.get(iter.next());
-			System.out.println(value);
-		}
+//		Map<String , String> nameMap = new HashMap<String, String>();
+//		nameMap.put("qin", "yanhui");
+//		nameMap.put("chen", "Gang");
+//		
+//		Set<String> keyStr = nameMap.keySet();
+//		Iterator<String> iter = keyStr.iterator();
+//		while (iter.hasNext()) {
+//			String value = nameMap.get(iter.next());
+//			System.out.println(value);
+//		}
 	}
 	
 	public void setFriendsShareNumber(){		

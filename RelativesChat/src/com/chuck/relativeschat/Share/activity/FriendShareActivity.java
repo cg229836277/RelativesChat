@@ -9,6 +9,7 @@ import cn.bmob.v3.listener.FindListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
+import com.chuck.relativeschat.bean.EventBusShareData;
 import com.chuck.relativeschat.bean.UserShareFileBean;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.ViewHolder;
@@ -17,6 +18,8 @@ import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.XListView;
 import com.chuck.relativeschat.tools.XListView.IXListViewListener;
+
+import de.greenrobot.event.EventBus;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -106,6 +109,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			protected Void doInBackground(Void... params) {
 				for(ShareFileBean dataBean : data){
 					UserShareFileBean shareFileData = new UserShareFileBean();
+					shareFileData.setFileId(dataBean.getObjectId());
 					shareFileData.setCreateDate(dataBean.getCreatedAt());
 					shareFileData.setFileName(dataBean.getFileName());
 					shareFileData.setFileType(dataBean.getFileType());
@@ -113,6 +117,24 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 					shareFileData.setFileUrl(dataBean.getFilePath());
 					shareFileData.setShareToUser(dataBean.getShareTo());
 					shareFileData.setIsShareToAll(dataBean.getIsShareToAll());
+					if(StringUtils.isEmpty(dataBean.getShareRemarkNumber())){
+						shareFileData.setFileShareNumber("0");
+					}else{
+						shareFileData.setFileShareNumber(dataBean.getShareRemarkNumber());
+					}
+					
+					if(StringUtils.isEmpty(dataBean.getWordRemarkNumber())){
+						shareFileData.setWordRemarkNumber("0");
+					}else{
+						shareFileData.setWordRemarkNumber(dataBean.getWordRemarkNumber());
+					}
+					
+					if(StringUtils.isEmpty(dataBean.getIsGoodNumber())){
+						shareFileData.setIsGoodNumber("0");
+					}else{
+						shareFileData.setIsGoodNumber(dataBean.getIsGoodNumber());
+					}
+					
 					shareFileBeanList.add(shareFileData);
 				}
 				return null;
@@ -169,7 +191,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			
 			if(IsListNotNull.isListNotNull(shareUserList)){
 				shareUserList.clear();
-			}
+			}		
 		}
 
 		@Override
@@ -194,11 +216,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			
 			String fileType = null;
 			
-			if(data != null){
-				if(!StringUtils.isEmpty(data.getShareUser())){
-					shareUserList.add(data.getShareUser());
-				}
-				
+			if(data != null){				
 				if(!StringUtils.isEmpty(data.getFileType())){
 					fileType = data.getFileType();
 					if(fileType.equals(ShareFileBean.PHOTO)){
@@ -208,6 +226,11 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 							urlList.add(data.getFileUrl());
 							watchFeedBaLayout.setTag(data.getFileUrl());
 						}
+						
+						if(!StringUtils.isEmpty(data.getShareUser())){
+							shareUserList.add(data.getShareUser());
+						}
+						
 					}else if(fileType.equals(ShareFileBean.MUSIC)){
 						fileType = "音乐";
 					}else if(fileType.equals(ShareFileBean.VIDEO)){
@@ -240,12 +263,12 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			case R.id.watch_share_layout:
 				if(arg0.getTag() instanceof String){
 					String position = (String)arg0.getTag();
-//					String[] urlArray = (String[])urlList.toArray(new String[urlList.size()]);
 					Intent intent = new Intent(FriendShareActivity.this , WatchShareImageActivity.class);
 					intent.putExtra(WatchShareImageActivity.POSITION, position);
 					intent.putStringArrayListExtra(WatchShareImageActivity.IMAGE_URL, urlList);
 					intent.putStringArrayListExtra(WatchShareImageActivity.SHARE_USER, shareUserList);
 					startActivity(intent);
+					finish();
 				}
 				break;
 			default:
@@ -253,4 +276,11 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			}
 		}
 	}
+	
+	@Override
+	protected void onDestroy() {
+		EventBus.getDefault().post(new EventBusShareData(shareFileBeanList));
+		super.onDestroy();
+	}
+	
 }

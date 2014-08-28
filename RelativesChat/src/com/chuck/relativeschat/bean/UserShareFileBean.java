@@ -1,5 +1,10 @@
 package com.chuck.relativeschat.bean;
 
+import java.io.Serializable;
+import java.util.List;
+
+import com.chuck.relativeschat.entity.ShareFileBean;
+
 import android.graphics.Bitmap;
 
 /**
@@ -9,33 +14,31 @@ import android.graphics.Bitmap;
  * @author chengang
  * @version 1.0
  */
-public class UserShareFileBean {
+public class UserShareFileBean{
 
+	String fileId;
 	String fileUrl;
 	String fileName;
-	Bitmap fileBitmap;
 	String shareUser;
 	String createDate;
 	String fileType;
 	String shareToUser;
 	String isShareToAll;
+	String fileShareNumber;
+	String wordRemarkNumber;
+	String isGoodNumber;
+	
 	public String getFileUrl() {
 		return fileUrl;
 	}
 	public String getFileName() {
 		return fileName;
 	}
-	public Bitmap getFileBitmap() {
-		return fileBitmap;
-	}
 	public void setFileUrl(String fileUrl) {
 		this.fileUrl = fileUrl;
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-	public void setFileBitmap(Bitmap fileBitmap) {
-		this.fileBitmap = fileBitmap;
 	}
 	public String getShareUser() {
 		return shareUser;
@@ -66,5 +69,31 @@ public class UserShareFileBean {
 	}
 	public void setIsShareToAll(String isShareToAll) {
 		this.isShareToAll = isShareToAll;
+	}
+	public String getFileShareNumber() {
+		return fileShareNumber;
+	}
+	public String getWordRemarkNumber() {
+		return wordRemarkNumber;
+	}
+	public String getIsGoodNumber() {
+		return isGoodNumber;
+	}
+	public void setFileShareNumber(String fileShareNumber) {
+		this.fileShareNumber = fileShareNumber;
+	}
+	public void setWordRemarkNumber(String wordRemarkNumber) {
+		this.wordRemarkNumber = wordRemarkNumber;
+	}
+	public void setIsGoodNumber(String isGoodNumber) {
+		this.isGoodNumber = isGoodNumber;
+	}
+
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
 	}
 }
