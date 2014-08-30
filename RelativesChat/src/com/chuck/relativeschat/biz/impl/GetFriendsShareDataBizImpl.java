@@ -7,8 +7,6 @@ import android.content.Context;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
-
-import com.chuck.relativeschat.adapter.FriendsShareAdapter;
 import com.chuck.relativeschat.biz.GetFriendsShareDataBiz;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.IsListNotNull;

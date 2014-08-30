@@ -2,52 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@drawable/rect_background"
-    android:orientation="horizontal"
-    android:weightSum="10" >
+    android:orientation="vertical" >
 
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/file_type_image"
-        android:layout_gravity="left|center_vertical"
-		android:layout_weight="1"/>
-    
     <TextView
         android:id="@+id/share_desc_text"
-        style="@style/text_small_black"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_weight="6"
+        style="@style/text_medium_black"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:gravity="left|center_vertical" />
-    
- 	<ImageView android:layout_width="wrap_content"
+
+    <ImageView
+        android:id="@+id/share_small_image"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/share_favourite_image"
         android:layout_gravity="left|center_vertical"
-		android:layout_weight="1"/>
-
-    <LinearLayout
-        android:id="@+id/watch_share_layout"
-        android:layout_width="0dp"
+        android:layout_margin="10dp" />
+    <TextView android:id="@+id/share_file_time"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical" >
+        android:gravity="left"
+        android:layout_marginLeft="12dp"
+        style="@style/text_smaller_black"/>
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:background="@drawable/share_watch_selector"
-            android:gravity="center" />
+    <include
+        android:layout_margin="8dp"
+        layout="@layout/three_kind_remark_share" />
 
-        <TextView
-            style="@style/text_smaller_black"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:text="查看" />
-    </LinearLayout>
 </LinearLayout>
