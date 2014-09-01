@@ -81,5 +81,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_watch_share_image">WatchShareImageActivity</string>
     <string name="title_activity_feedback_friends_share">FeedbackFriendsShareActivity</string>
+    <string name="title_activity_share_sound_to_friends">ShareSoundToFriendsActivity</string>
 
 </resources>

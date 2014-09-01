@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ShareSoundToFriendsActivity" >
+
+    <include 
+        android:id="@+id/share_sound_layout"
+        layout="@layout/friends_menu_header_layout"/>
+    
+    <FrameLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/rect_background"
+        android:layout_weight="1">
+        
+        <com.chuck.relativeschat.tools.XListView
+        android:id="@+id/my_sound_recorder_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fadingEdgeLength="0dp"
+        android:fastScrollEnabled="true"
+        android:listSelector="@color/transparent"
+        android:layout_margin="20dp"
+        android:dividerHeight="6dp"
+        android:transcriptMode="normal"
+        android:visibility="visible" />
+        
+        <ImageView android:id="@+id/sound_level_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:visibility="gone"/>
+        
+    </FrameLayout>
+    
+    <ImageView android:id="@+id/press_start_record_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:background="@drawable/press_start_record_selector"
+        android:layout_marginBottom="10dp"/>
+
+</LinearLayout>
