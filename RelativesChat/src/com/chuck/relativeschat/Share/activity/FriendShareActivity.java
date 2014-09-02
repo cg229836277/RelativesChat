@@ -87,7 +87,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		dataQuery1.addWhereEqualTo("isShareToAll", "1");
 		BmobQuery<ShareFileBean> dataQuery2 = new BmobQuery<ShareFileBean>();
 		dataQuery2.addWhereEqualTo("isShareToAll", "0");
-		dataQuery2.addWhereEqualTo("shareTo", userManager.getCurrentUserObjectId());
+		dataQuery2.addWhereEqualTo("shareTo", userManager.getCurrentUserName());
 		List<BmobQuery<ShareFileBean>> queries = new ArrayList<BmobQuery<ShareFileBean>>();
 		queries.add(dataQuery2);
 		queries.add(dataQuery1);
@@ -174,7 +174,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 				friendsShareListView.setSelection(adapter.getCount() - 1);
 				dialog.dismiss();
 				
-				adapter.notifyDataSetChanged();
+//				adapter.notifyDataSetChanged();
 			}
 		}.execute();
 	}
@@ -183,7 +183,6 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			friendsShareListView.setSelection(adapter.getCount() - 1);
-//			System.out.println("页数是" + PAGE_INDEX);
 		}
 	};
 
@@ -193,7 +192,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			@Override
 			public void run() {
 				PAGE_INDEX++;
-//				System.out.println("页数是@@@@" + PAGE_INDEX);
+//				adapter.notifyDataSetChanged();
 				getFriendsShareList(PAGE_INDEX);
 				friendsShareListView.stopRefresh();
 			}
@@ -213,6 +212,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		private float scaleWidth;
 		private float scaleHeight;
 		private Dialog mDialog;
+		private TextView goodsNumberText;
+		private ShareFileBean fileData;
 		
 		public FriendsShareAdapter(Context context, List<UserShareFileBean> list) {
 			super(context, list);
@@ -237,6 +238,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			LinearLayout shareFeedbackLayout =  ViewHolder.get(convertView, R.id.feedback_share_layout);
 			LinearLayout wordFeedbackLayout =  ViewHolder.get(convertView, R.id.feedback_word_layout);
 			LinearLayout goodFeedbackLayout =  ViewHolder.get(convertView, R.id.feedback_good_layout);
+			goodsNumberText = (TextView)goodFeedbackLayout.findViewById(R.id.good_text);
+			goodsNumberText.setText("点赞" + "(" + data.getIsGoodNumber() + ")");
 			
 			smallImageView.setOnClickListener(this);
 			shareFeedbackLayout.setOnClickListener(this);
@@ -354,7 +357,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		public void remarkByGood(final UserShareFileBean data){
 			dialog.show();
 			if(data != null){
-				final ShareFileBean fileData = new ShareFileBean();
+				fileData = new ShareFileBean();
 				fileData.setObjectId(data.getFileId());
 				fileData.setIsGoodNumber("" + (Integer.parseInt(data.getIsGoodNumber()) + 1));
 				fileData.update(getApplicationContext(), new UpdateListener() {
@@ -377,7 +380,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 								mixData.save(getApplicationContext(), new SaveListener() {
 									
 									@Override
-									public void onSuccess() {												
+									public void onSuccess() {	
+										goodsNumberText.setText("点赞" + "(" + fileData.getIsGoodNumber() + ")");
 										handleSaveException(true , null);
 									}
 									
@@ -424,10 +428,12 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		public void handleSaveException(boolean isSuccess , String failReason){
 			dialog.dismiss();
 			if(isSuccess){
+//				adapter.notifyDataSetChanged();
 				mToast.showMyToast("评论好友的分享成功！", Toast.LENGTH_SHORT);
 			}else{
 				mToast.showMyToast("评论好友的分享失败！" + failReason, Toast.LENGTH_SHORT);
 			}
+			fileData = null;
 		}
 	}
 	

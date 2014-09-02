@@ -2,46 +2,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/friends_share_background"
     android:orientation="vertical"
     tools:context=".ShareSoundToFriendsActivity" >
 
-    <include 
+    <include
         android:id="@+id/share_sound_layout"
-        layout="@layout/friends_menu_header_layout"/>
-    
-    <FrameLayout 
+        layout="@layout/friends_menu_header_layout" />
+
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:background="@drawable/rect_background"
-        android:layout_weight="1">
-        
+        android:layout_weight="1"
+        android:background="@drawable/rect_background" >
+
         <com.chuck.relativeschat.tools.XListView
-        android:id="@+id/my_sound_recorder_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@null"
-        android:fadingEdgeLength="0dp"
-        android:fastScrollEnabled="true"
-        android:listSelector="@color/transparent"
-        android:layout_margin="20dp"
-        android:dividerHeight="6dp"
-        android:transcriptMode="normal"
-        android:visibility="visible" />
-        
-        <ImageView android:id="@+id/sound_level_image"
+            android:id="@+id/my_sound_recorder_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:dividerHeight="6dp"
+            android:fadingEdgeLength="0dp"
+            android:fastScrollEnabled="true"
+            android:listSelector="@color/transparent"
+            android:transcriptMode="normal"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/sound_level_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="gone" />
         
+        <TextView android:id="@+id/no_share_sound_text"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="你暂时没有分享语音，赶紧分享吧!"
+            style="@style/text_large_black"
+            android:gravity="center"
+            android:visibility="gone"/>
     </FrameLayout>
+	
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:orientation="horizontal">
+	    <ProgressBar android:id="@+id/cal_number_progress"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="0.9"
+	        style="?android:attr/progressBarStyleHorizontal"/>
+	    <TextView android:id="@+id/number_text"
+	        android:layout_height="fill_parent"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.1"
+	        android:textColor="@color/blue_sky"
+	        android:textSize="12sp"
+	        android:gravity="center"/>
+    </LinearLayout>
     
-    <ImageView android:id="@+id/press_start_record_image"
+    <ImageView
+        android:id="@+id/press_start_record_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:background="@drawable/press_start_record_selector"
-        android:layout_marginBottom="10dp"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/press_start_record_selector" />
 
 </LinearLayout>

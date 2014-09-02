@@ -21,7 +21,7 @@ public class MyDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.mydialog);
-        
+        this.setCanceledOnTouchOutside(false);
         mProgressBar = (ProgressBar)findViewById(R.id.dialog_progress);   
         
         setTitle("");
@@ -34,9 +34,15 @@ public class MyDialog extends Dialog {
     
     @Override
     public void show() {
+    	if(!isShowing()){
+    		super.show();
+    	}   	
+    }
+    
+    @Override
+    public void dismiss() {
     	if(isShowing()){
-    		dismiss();
-    	}
-    	super.show();
+    		super.dismiss();
+    	}      	
     }
 }

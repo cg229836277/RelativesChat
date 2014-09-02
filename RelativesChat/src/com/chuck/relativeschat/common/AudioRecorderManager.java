@@ -72,9 +72,7 @@ public class AudioRecorderManager {
 		} catch (IllegalStateException e) {
 			Log.i(TAG , "call startAmr(File mRecAudioFile) failed!" + e.getMessage());
 		} catch (IOException e) {
-			Log.i(TAG,
-					"call startAmr(File mRecAudioFile) failed!"
-							+ e.getMessage());
+			Log.i(TAG,"call startAmr(File mRecAudioFile) failed!" + e.getMessage());
 		}
 
 	}
@@ -124,7 +122,7 @@ public class AudioRecorderManager {
 			System.out.println("分贝值："+db+"     "+Math.log10(ratio));
 			switch (db / 4) {
 			case 0:
-				view.setImageBitmap(null);
+				view.setImageResource(R.drawable.mic_default);
 				break;
 			case 1:
 				view.setImageResource(R.drawable.mic_1);
@@ -142,7 +140,7 @@ public class AudioRecorderManager {
 				view.setImageResource(R.drawable.mic_5);
 				break;
 			default:
-				view.setImageResource(R.drawable.ic_launcher);
+				view.setImageResource(R.drawable.mic_default);
 				break;
 			}
 			mHandler.postDelayed(mUpdateMicStatusTimer, SPACE);

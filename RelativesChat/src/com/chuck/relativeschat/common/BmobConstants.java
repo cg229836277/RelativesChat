@@ -18,6 +18,7 @@ public class BmobConstants {
 	 */
 	public static String BMOB_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/image/";
 	public static String DRAW_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/draw/";
+	public static String RECORD_SOUND_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/sound/";
 	
 	/**
 	 * 图像存放路径

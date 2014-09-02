@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="0.2"
-        android:background="@drawable/pic_play_record_05"/>
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:background="@drawable/play"/>
 
 </LinearLayout>

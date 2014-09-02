@@ -64,6 +64,7 @@
             android:background="@drawable/share_good_selector" />
 
         <TextView
+            android:id="@+id/good_text"
             style="@style/text_smaller_black"
             android:layout_width="fill_parent"
             android:layout_height="0dp"

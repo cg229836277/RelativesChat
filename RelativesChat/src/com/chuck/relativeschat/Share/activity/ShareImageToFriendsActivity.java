@@ -83,7 +83,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
     public boolean isDrawOnImage = false;
     public boolean isUpdateSuccessed = false;
     public static final String SHARE_TO_USER = "shareToUser";
-    private String shareToUserId = null;
+    private String shareToUserName = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,7 +94,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		mHeadViewLayout.setTitleText("关于图片");
-		shareToUserId = getIntent().getStringExtra(SHARE_TO_USER);
+		shareToUserName = getIntent().getStringExtra(SHARE_TO_USER);
 		bindEvent();
 		initDrawPen();
 	}
@@ -476,8 +476,8 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		fileDataBean.setFilePath(tempFile.getFileUrl());
 		fileDataBean.setFileType(ShareFileBean.PHOTO);
 		fileDataBean.setShareUser(userManager.getCurrentUserName());		
-		if(!StringUtils.isEmpty(shareToUserId)){
-			fileDataBean.setShareTo(shareToUserId);
+		if(!StringUtils.isEmpty(shareToUserName)){
+			fileDataBean.setShareTo(shareToUserName);
 			fileDataBean.setIsShareToAll("0");
 		}else{
 			fileDataBean.setShareTo(null);
@@ -488,7 +488,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 			@Override
 			public void onSuccess() {
 				handleUploadResult(true);
-				shareToUserId = null;
+				shareToUserName = null;
 			}
 			
 			@Override
