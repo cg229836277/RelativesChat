@@ -19,6 +19,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
+import com.chuck.relativeschat.common.AudioFilePlayer;
 import com.chuck.relativeschat.common.AudioRecorderManager;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.HeadViewLayout;
@@ -42,6 +43,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,9 +63,13 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 	private File recordSoundFileDir = null;
 	private File tempSoundFile;
 	private Timer timer;
-	private int calNum = 14;
-	private ProgressBar recordPregress;
+	private int calNum = 15;
+//	private ProgressBar recordPregress;
 	private TextView numberText;
+	private MyTimeTask task;
+	private AudioFilePlayer audioPlayer;
+	private ImageView tempImage;
+	private SeekBar tempSeekBar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +90,11 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		pressStartRecordImage = (ImageView)findViewById(R.id.press_start_record_image);
 		imageLevelImage = (ImageView)findViewById(R.id.sound_level_image);
 		mySoundShareListView = (XListView)findViewById(R.id.my_sound_recorder_list_view);
+		mySoundShareListView.setXListViewListener(this);
 		noContentText = (TextView)findViewById(R.id.no_share_sound_text);
-		recordPregress = (ProgressBar)findViewById(R.id.cal_number_progress);
+//		recordPregress = (ProgressBar)findViewById(R.id.cal_number_progress);
 		numberText = (TextView)findViewById(R.id.number_text);
-		recordPregress.setMax(14);
-		numberText.setText("15");
+//		recordPregress.setMax(14);
 		
 		pressStartRecordImage.setOnTouchListener(new OnTouchListener() {
 			
@@ -99,6 +105,7 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					startRecordSound();
 					break;
 				case MotionEvent.ACTION_UP:
+					calNum = 15;
 					stopRecordSound();
 					break;
 				default:
@@ -122,11 +129,17 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		tempSoundFile = new File(recordSoundFileName);
 		audioManager = new AudioRecorderManager(tempSoundFile, imageLevelImage);
 		audioManager.startRecord();
+		showProgresOrNot(true);
 		startClaNum();
 	}
 	
 	public void stopRecordSound(){
-		timer.cancel();
+		if(timer != null){
+			timer.cancel();
+			timer = null;
+		}
+
+		showProgresOrNot(false);
 		long recordTime = audioManager.stopRecord();
 		if(recordTime < 1 * 1000){//如果录音时间少于一秒就提示停止
 			mToast.showMyToast("录音时间太短!", Toast.LENGTH_SHORT);
@@ -141,7 +154,19 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		}		
 	}
 	
+	public void showProgresOrNot(boolean isShow){
+		if(isShow){
+			numberText.setVisibility(View.VISIBLE);
+			numberText.setText("15");
+		}else{
+			numberText.setVisibility(View.GONE);
+		}
+	}
+	
 	public void uploadSoundDataToServer(final File soundFile){
+		if(soundFile == null){
+			return;
+		}
 		final BmobFile file = new BmobFile(soundFile);
 		dialog.show();
 		file.upload(getApplicationContext(), new UploadFileListener() {
@@ -198,16 +223,17 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		dialog.show();
 		BmobQuery<ShareFileBean> query1 = new BmobQuery<ShareFileBean>();
 		//找到我分享的，包括普通分享和私密分享
-		query1.addWhereEqualTo("shareUser", userManager.getCurrentUserName());			
+		query1.addWhereEqualTo("shareUser", userManager.getCurrentUserName());
+		query1.addWhereEqualTo("fileType", ShareFileBean.SOUNG);
 		BmobQuery<ShareFileBean> query2 = new BmobQuery<ShareFileBean>();
 		//找到好友分享给我的
 		query2.addWhereEqualTo("shareTo", userManager.getCurrentUserName());
-		query1.addWhereEqualTo("isShareToAll", "0");		
+		query2.addWhereEqualTo("isShareToAll", "0");	
+		query2.addWhereEqualTo("fileType", ShareFileBean.SOUNG);
 		List<BmobQuery<ShareFileBean>> queries = new ArrayList<BmobQuery<ShareFileBean>>();
 		queries.add(query1);
 		queries.add(query2);
-		BmobQuery<ShareFileBean> mainQuery = new BmobQuery<ShareFileBean>();
-		mainQuery.addWhereEqualTo("fileType", ShareFileBean.SOUNG);
+		BmobQuery<ShareFileBean> mainQuery = new BmobQuery<ShareFileBean>();		
 		mainQuery.or(queries);
 		mainQuery.setLimit(PAGE_INDEX * 10);
 		mainQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {
@@ -280,7 +306,8 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 			}
 			final ShareFileBean data = (ShareFileBean) getList().get(position);
 			TextView shareDesc = ViewHolder.get(convertView, R.id.sound_share_desc_text);
-			ImageView playImage = ViewHolder.get(convertView, R.id.listen_my_share_sound);
+			final ImageView playImage = ViewHolder.get(convertView, R.id.listen_my_share_sound);	
+			final SeekBar audioSeekBar = ViewHolder.get(convertView, R.id.audio_seek_bar);	 
 			if(data != null){
 				String desc = null;
 				if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("0")){
@@ -291,13 +318,35 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"给我分享了语音";
 				}				
 				shareDesc.setText(desc);
+				
+				playImage.setTag(data.getFilePath());
 			}
 			
 			playImage.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
-					
+					if(arg0.getTag() instanceof String){
+						if(audioPlayer != null){
+							audioPlayer.stop();
+							audioPlayer = null;
+							if(tempImage != null){
+								tempImage.setImageResource(R.drawable.play);
+							}
+							if(tempSeekBar != null){
+								tempSeekBar.setVisibility(View.GONE);
+							}
+						}
+						playImage.setBackgroundResource(R.drawable.pause);
+						audioSeekBar.setVisibility(View.VISIBLE);
+						
+						tempImage = playImage;
+						tempSeekBar = audioSeekBar;
+						
+						String audioUrl = (String)arg0.getTag();
+						audioPlayer = new AudioFilePlayer(audioUrl, audioSeekBar , handler);
+						audioPlayer.play();
+					}
 				}
 			});
 			return convertView;
@@ -309,7 +358,9 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("此处刷新！");
 				PAGE_INDEX++;
+				initDataToList();
 				soundListAdapter.notifyDataSetChanged();
 				mySoundShareListView.stopRefresh();
 			}
@@ -318,7 +369,7 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 
 	@Override
 	public void onLoadMore() {
-		
+		System.out.println("此处加载更多！");
 	}
 	
 	/**
@@ -329,16 +380,22 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 	 */
 	public void startClaNum(){
 		timer = new Timer(true);
+		if(task != null){
+			task.cancel();
+			task = null;
+		}
+		task = new MyTimeTask();
 		timer.schedule(task,1000, 1000); //延时1000ms后执行，1000ms执行一次
 	}
 	
 	//计时器，录音只能在15秒的时间内
-	TimerTask task = new TimerTask(){  
-	      public void run() {  
+	class MyTimeTask extends TimerTask{ 
+	  @Override
+      public void run() {  
 	      Message message = new Message();      
 	      message.what = 1;      
 	      handler.sendMessage(message);    
-	   }  
+	  }  
 	};
 	
 	@SuppressLint("HandlerLeak")
@@ -348,13 +405,28 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 				--calNum;
 				if(calNum >= 0){
 					numberText.setText("" + calNum);
-					recordPregress.setProgress(calNum);
+//					recordPregress.setProgress(calNum);
 				}else{
+					calNum = 15;
 					stopRecordSound();
 				}
+			}else if(msg.what == 2){
+				tempImage.setImageResource(R.drawable.play);
+				tempSeekBar.setVisibility(View.GONE);
+				tempImage = null;
+				tempSeekBar = null;
 			}else{
 				mySoundShareListView.setSelection(soundListAdapter.getCount() - 1);
 			}
 		}
 	};
+	
+	@Override
+	protected void onDestroy() {
+		if(audioPlayer != null){
+			audioPlayer.stop();
+		}		
+		audioPlayer = null;
+		super.onDestroy();
+	}
 }

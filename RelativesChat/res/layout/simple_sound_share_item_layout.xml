@@ -5,13 +5,25 @@
     android:background="@drawable/rect_background"
     android:orientation="horizontal" >
     
-    <TextView android:id="@+id/sound_share_desc_text"
-        android:layout_width="0dp"
+    <RelativeLayout android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/text_large_black"
-        android:gravity="center"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.8"/>
+        android:layout_weight="0.8" >
+	    <TextView android:id="@+id/sound_share_desc_text"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        style="@style/text_large_black"
+	        android:gravity="center"
+	        android:layout_centerVertical="true" />
+	    
+	    <SeekBar android:id="@+id/audio_seek_bar"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:max="99"
+	        android:layout_below="@+id/sound_share_desc_text"
+	        android:layout_marginLeft="12dp"
+	        android:layout_marginRight="12dp"
+	        android:visibility="invisible"/>
+    </RelativeLayout>
     
     <ImageView android:id="@+id/listen_my_share_sound"
         android:layout_height="wrap_content"
