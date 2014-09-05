@@ -19,7 +19,7 @@ import android.widget.SeekBar;
  * @version 1.0
  */
 public class AudioFilePlayer implements OnBufferingUpdateListener, OnCompletionListener,
-		MediaPlayer.OnPreparedListener {
+		MediaPlayer.OnPreparedListener , SeekBar.OnSeekBarChangeListener {
 	public MediaPlayer mediaPlayer;
 	private SeekBar skbProgress;
 	private Timer mTimer = new Timer();
@@ -37,6 +37,8 @@ public class AudioFilePlayer implements OnBufferingUpdateListener, OnCompletionL
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			mediaPlayer.setOnBufferingUpdateListener(this);
 			mediaPlayer.setOnPreparedListener(this);
+			mediaPlayer.setOnCompletionListener(this);
+			skbProgress.setOnSeekBarChangeListener(this);
 		} catch (Exception e) {
 			Log.e("mediaPlayer", "error", e);
 		}
@@ -144,18 +146,17 @@ public class AudioFilePlayer implements OnBufferingUpdateListener, OnCompletionL
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		Log.e("mediaPlayer", "onCompletion");
+		Message msg = new Message();
+		msg.what = 2;
+		mHandler.sendMessage(msg);
+		stop();
 	}
 
 	@Override
 	public void onBufferingUpdate(MediaPlayer arg0, int bufferingProgress) {
 		skbProgress.setSecondaryProgress(bufferingProgress);
 		int currentProgress = skbProgress.getMax() * mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration();
-		Log.e(currentProgress + "% play", bufferingProgress + "% buffer");
-		if(currentProgress == 99){
-			Message msg = new Message();
-			msg.what = 2;
-			mHandler.sendMessage(msg);
-		}
+//		Log.e(currentProgress + "% play", bufferingProgress + "% buffer");
 	}
 
 	/**
@@ -199,4 +200,22 @@ public class AudioFilePlayer implements OnBufferingUpdateListener, OnCompletionL
 		}
 	}
 
+	@Override
+	public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+//		System.out.println("现在seek的位置是final" + arg0.getProgress() + "最后是" + arg1);
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar arg0) {
+		System.out.println("现在seek的位置是start" + arg0.getProgress());
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar arg0) {
+		System.out.println("现在seek的位置是stop" + arg0.getProgress());
+		if(mediaPlayer != null){
+			mediaPlayer.seekTo(arg0.getProgress());
+//			skbProgress.setProgress(arg0.getProgress());
+		}
+	}
 }

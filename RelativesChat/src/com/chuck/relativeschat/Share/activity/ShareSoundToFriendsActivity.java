@@ -326,26 +326,28 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 				
 				@Override
 				public void onClick(View arg0) {
-					if(arg0.getTag() instanceof String){
-						if(audioPlayer != null){
-							audioPlayer.stop();
-							audioPlayer = null;
-							if(tempImage != null){
-								tempImage.setImageResource(R.drawable.play);
+					if(arg0.getTag() instanceof String){						
+						if(tempImage != null && tempSeekBar != null){
+							if(audioPlayer != null){
+								audioPlayer.stop();
 							}
-							if(tempSeekBar != null){
-								tempSeekBar.setVisibility(View.GONE);
-							}
+							tempImage.setBackgroundResource(R.drawable.play);
+							tempSeekBar.setVisibility(View.VISIBLE);
+							tempImage = null;
+							tempSeekBar = null;
+						}else{
+							playImage.setBackgroundResource(R.drawable.pause);
+							audioSeekBar.setVisibility(View.VISIBLE);
+							
+							tempImage = playImage;
+							tempSeekBar = audioSeekBar;
+							
+							String audioUrl = (String)arg0.getTag();
+							if(audioPlayer == null){
+								audioPlayer = new AudioFilePlayer(audioUrl, audioSeekBar , handler);
+							}							
+							audioPlayer.play();
 						}
-						playImage.setBackgroundResource(R.drawable.pause);
-						audioSeekBar.setVisibility(View.VISIBLE);
-						
-						tempImage = playImage;
-						tempSeekBar = audioSeekBar;
-						
-						String audioUrl = (String)arg0.getTag();
-						audioPlayer = new AudioFilePlayer(audioUrl, audioSeekBar , handler);
-						audioPlayer.play();
 					}
 				}
 			});
@@ -411,10 +413,12 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					stopRecordSound();
 				}
 			}else if(msg.what == 2){
-				tempImage.setImageResource(R.drawable.play);
-				tempSeekBar.setVisibility(View.GONE);
-				tempImage = null;
-				tempSeekBar = null;
+				if(tempImage != null && tempSeekBar !=null){
+					tempImage.setBackgroundResource(R.drawable.play);
+					tempSeekBar.setVisibility(View.INVISIBLE);
+					tempImage = null;
+					tempSeekBar = null;
+				}
 			}else{
 				mySoundShareListView.setSelection(soundListAdapter.getCount() - 1);
 			}

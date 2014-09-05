@@ -174,7 +174,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 				friendsShareListView.setSelection(adapter.getCount() - 1);
 				dialog.dismiss();
 				
-//				adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 			}
 		}.execute();
 	}
@@ -440,5 +440,19 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		if(shareFileBeanList != null){
+			shareFileBeanList.clear();
+		}
 	}	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(shareFileBeanList != null){
+			shareFileBeanList.clear();
+		}
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}		
+	}
 }

@@ -18,10 +18,11 @@
 	    <SeekBar android:id="@+id/audio_seek_bar"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:max="99"
+	        android:max="100"
 	        android:layout_below="@+id/sound_share_desc_text"
 	        android:layout_marginLeft="12dp"
 	        android:layout_marginRight="12dp"
+	        android:layout_marginTop="8dp"
 	        android:visibility="invisible"/>
     </RelativeLayout>
     
