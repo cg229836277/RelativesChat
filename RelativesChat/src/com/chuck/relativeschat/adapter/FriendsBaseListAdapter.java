@@ -38,22 +38,22 @@ public abstract class FriendsBaseListAdapter<E> extends BaseAdapter {
 
 	public void setList(List<E> list) {
 		this.list = list;
-		notifyDataSetChanged();
+//		notifyDataSetChanged();
 	}
 
 	public void add(E e) {
 		this.list.add(e);
-		notifyDataSetChanged();
+//		notifyDataSetChanged();
 	}
 
 	public void addAll(List<E> list) {
 		this.list.addAll(list);
-		notifyDataSetChanged();
+//		notifyDataSetChanged();
 	}
 
 	public void remove(int position) {
 		this.list.remove(position);
-		notifyDataSetChanged();
+//		notifyDataSetChanged();
 	}
 
 	public FriendsBaseListAdapter(Context context, List<E> list) {

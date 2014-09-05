@@ -2,11 +2,28 @@ package com.chuck.relativeschat.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
+import android.support.v4.util.LruCache;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.ImageView;
 
 /**
  * @Title：SAFEYE@
@@ -106,12 +123,4 @@ public class BitmapUtils {
 		Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
 		return bitmap;
 	}
-	//把bitmap转换成String
-//	public static String bitmapToString(String filePath) {
-//        Bitmap bm = getSmallBitmap(filePath);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bm.compress(Bitmap.CompressFormat.JPEG, 40, baos);
-//        byte[] b = baos.toByteArray();
-//        return Base64.encodeToString(b, Base64.DEFAULT);
-//    }
 }

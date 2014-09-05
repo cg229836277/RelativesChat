@@ -17,6 +17,7 @@ import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.FileRemarkBean;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.entity.ShareFileRemark;
+import com.chuck.relativeschat.tools.BitmapCacheUtil;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.XListView;
@@ -214,6 +215,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		private Dialog mDialog;
 		private TextView goodsNumberText;
 		private ShareFileBean fileData;
+		private BitmapCacheUtil imageCache = null;
 		
 		public FriendsShareAdapter(Context context, List<UserShareFileBean> list) {
 			super(context, list);
@@ -223,7 +225,13 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			
 			if(IsListNotNull.isListNotNull(shareUserList)){
 				shareUserList.clear();
-			}		
+			}	
+			
+			if(imageCache != null){
+				imageCache = null;
+			}
+			
+			imageCache = new BitmapCacheUtil();
 		}
 
 		@Override
@@ -256,7 +264,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 				if(!StringUtils.isEmpty(data.getFileType())){
 					fileType = data.getFileType();
 					if(fileType.equals(ShareFileBean.PHOTO)){
-						fileType = "照片";
+						fileType = "照片";						
 						setSmallImageView(data, smallImageView);
 					}else if(fileType.equals(ShareFileBean.MUSIC)){
 						fileType = "音乐";
@@ -264,6 +272,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 						fileType = "短视频";
 					}else if(fileType.equals(ShareFileBean.SOUNG)){
 						fileType = "语音";
+						smallImageView.setVisibility(View.GONE);
 					}
 					
 					if(!StringUtils.isEmpty(data.getShareUser())){	
@@ -313,45 +322,42 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			}
 		}
 		
-		public void setSmallImageView(UserShareFileBean data , final ImageView smallImage){
-			imageLoader.displayImage(data.getFileUrl(), smallImage, options, new SimpleImageLoadingListener() {
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					smallImage.setImageResource(R.drawable.chat_add_camera_normal);					
-				}
-
-				@Override
-				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-					String message = null;
-					switch (failReason.getType()) {
-						case IO_ERROR:
-							message = "Input/Output error";
-							break;
-						case DECODING_ERROR:
-							message = "Image can't be decoded";
-							break;
-						case NETWORK_DENIED:
-							message = "Downloads are denied";
-							break;
-						case OUT_OF_MEMORY:
-							message = "Out Of Memory error";
-							break;
-						case UNKNOWN:
-							message = "Unknown error";
-							break;
+		public void setSmallImageView(UserShareFileBean data , final ImageView smallImage){		
+			boolean isCacheExist = imageCache.loadBitmap(data.getFileUrl(), smallImage);
+			if(!isCacheExist){
+				imageLoader.displayImage(data.getFileUrl(), smallImage, options, new SimpleImageLoadingListener() {
+					@Override
+					public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+						String message = null;
+						switch (failReason.getType()) {
+							case IO_ERROR:
+								message = "Input/Output error";
+								break;
+							case DECODING_ERROR:
+								message = "Image can't be decoded";
+								break;
+							case NETWORK_DENIED:
+								message = "Downloads are denied";
+								break;
+							case OUT_OF_MEMORY:
+								message = "Out Of Memory error";
+								break;
+							case UNKNOWN:
+								message = "Unknown error";
+								break;
+						}
+						Toast.makeText(FriendShareActivity.this, message, Toast.LENGTH_SHORT).show();
 					}
-					Toast.makeText(FriendShareActivity.this, message, Toast.LENGTH_SHORT).show();
-				}
 
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					smallImage.setTag(loadedImage);
-					Bitmap newBitmap = ThumbnailUtils.extractThumbnail(loadedImage, 72,72);
-		         	scaleWidth = 1;
-		         	scaleHeight = 1;
-					smallImage.setImageBitmap(newBitmap);	
-				}
-			});
+					@Override
+					public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+						smallImage.setTag(loadedImage);
+						imageCache.addBitmapToMemoryCache(imageUri, loadedImage);
+						Bitmap newBitmap = ThumbnailUtils.extractThumbnail(loadedImage, 72,72);
+						smallImage.setImageBitmap(newBitmap);		
+					}
+				});
+			}
 		}
 		
 		public void remarkByGood(final UserShareFileBean data){
@@ -452,7 +458,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			shareFileBeanList.clear();
 		}
 		if(adapter != null){
-			adapter.notifyDataSetChanged();
+//			adapter.notifyDataSetChanged();
 		}		
 	}
 }
