@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.common.BmobConstants;
 
 /**
@@ -136,6 +137,7 @@ public class HttpDownloader {
                    Bitmap bitmap = downloadBitmap(url);
                    addBitmapToCache(url, bitmap);
                    imageView.setImageBitmap(bitmap);
+                   imageView.setTag(bitmap);
                    break;
 
                case NO_DOWNLOADED_DRAWABLE:
@@ -148,7 +150,7 @@ public class HttpDownloader {
                    task = new BitmapDownloaderTask(imageView);
                    DownloadedDrawable downloadedDrawable = new DownloadedDrawable(task);
                    imageView.setImageDrawable(downloadedDrawable);
-                   imageView.setMinimumHeight(156);
+                   imageView.setMinimumHeight(72);
                    task.execute(url);
                    break;
            }
@@ -304,8 +306,9 @@ public class HttpDownloader {
                BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
                // Change bitmap only if this process is still associated with it
                // Or if we don't use any bitmap to task association (NO_DOWNLOADED_DRAWABLE mode)
-               if ((this == bitmapDownloaderTask) || (mode != Mode.CORRECT)) {
+               if ((BitmapDownloaderTask.this == bitmapDownloaderTask)/* || (mode != Mode.CORRECT)*/) {
                    imageView.setImageBitmap(bitmap);
+                   imageView.setTag(bitmap);
                }
            }
        }
@@ -323,7 +326,7 @@ public class HttpDownloader {
        private final WeakReference<BitmapDownloaderTask> bitmapDownloaderTaskReference;
 
        public DownloadedDrawable(BitmapDownloaderTask bitmapDownloaderTask) {
-           super(Color.BLACK);
+           super(R.color.blue_sky);
            bitmapDownloaderTaskReference =
                new WeakReference<BitmapDownloaderTask>(bitmapDownloaderTask);
        }

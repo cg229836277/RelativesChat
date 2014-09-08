@@ -446,6 +446,9 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	 */
 	public void uploadFileDataToServer(String totalFilePath){
 //		totalFilePath = "/mnt/sdcard/onlylove.mp3";
+		if(StringUtils.isEmpty(totalFilePath)){
+			return;
+		}
 		File file = new File(totalFilePath);
 		if(file!= null && file.exists()){
 			final BmobFile uploadFile = new BmobFile(file);
