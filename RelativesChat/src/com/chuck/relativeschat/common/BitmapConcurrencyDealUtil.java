@@ -30,8 +30,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
+import android.provider.MediaStore.Images.Thumbnails;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -176,7 +178,8 @@ public class BitmapConcurrencyDealUtil {
 	            final ImageView imageView = imageViewReference.get();
 	            final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 	            if (this == bitmapWorkerTask && imageView != null) {	            	
-	                imageView.setImageBitmap(bitmap);
+	            	imageView.setTag(bitmap);
+	     	       	imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, 72,72));
 	            }
 	        }
 	    }
@@ -188,8 +191,9 @@ public class BitmapConcurrencyDealUtil {
 	       forceDownload(url, imageView);
 	   } else {
 		   imageView.setVisibility(View.VISIBLE);
-	       cancelPotentialDownload(url, imageView);
-	       imageView.setImageBitmap(bitmap);
+	       cancelPotentialDownload(url, imageView);	      
+	       imageView.setTag(bitmap);
+	       imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, 72,72));
 	   }
 	}
 	
