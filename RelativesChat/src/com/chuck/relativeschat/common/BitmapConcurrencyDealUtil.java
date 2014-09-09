@@ -331,6 +331,8 @@ public class BitmapConcurrencyDealUtil {
                        inputStream.close();
                    }
                    entity.consumeContent();
+                   
+                   System.gc();
                }
            }
 

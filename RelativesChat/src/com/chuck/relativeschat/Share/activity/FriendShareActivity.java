@@ -60,6 +60,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 	private HeadViewLayout mHeadViewLayout;
 	private int PAGE_INDEX = 1;
 	private DisplayImageOptions options;
+	BitmapConcurrencyDealUtil dealUtil = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		.build();
 		
 		friendsShareListView = (XListView)findViewById(R.id.friend_share_list_view);
+		friendsShareListView.setPullLoadEnable(true);
+		friendsShareListView.setPullRefreshEnable(true);
 		friendsShareListView.setXListViewListener(this);
 		getFriendsShareList(PAGE_INDEX);
 	}
@@ -192,20 +195,30 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 
 	@Override
 	public void onRefresh() {
+		getMoreData("fresh");
+		
+	}
+
+	@Override
+	public void onLoadMore() {
+		getMoreData("load");
+		
+	}
+	
+	public void getMoreData(final String type){
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				PAGE_INDEX++;
 //				adapter.notifyDataSetChanged();
-				getFriendsShareList(PAGE_INDEX);
-				friendsShareListView.stopRefresh();
+				getFriendsShareList(PAGE_INDEX);				
+				if(type.equals("fresh")){
+					friendsShareListView.stopRefresh();
+				}else{				
+					friendsShareListView.stopLoadMore();
+				}
 			}
 		}, 1000);	
-	}
-
-	@Override
-	public void onLoadMore() {
-		
 	}
 	
 	public class FriendsShareAdapter extends FriendsBaseListAdapter<UserShareFileBean> implements OnClickListener{
@@ -218,8 +231,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		private float scaleHeight;
 		private Dialog mDialog;
 		private TextView goodsNumberText;
-		private ShareFileBean fileData;
-		BitmapConcurrencyDealUtil dealUtil = null;
+		private ShareFileBean fileData;		
 //		private BitmapCacheUtil imageCache = null;
 		
 		public FriendsShareAdapter(Context context, List<UserShareFileBean> list) {
@@ -462,6 +474,11 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		super.onDestroy();
 		if(shareFileBeanList != null){
 			shareFileBeanList.clear();
+		}
+		
+		if(dealUtil != null){
+			dealUtil.clearCache();
+			dealUtil = null;
 		}
 	}	
 	

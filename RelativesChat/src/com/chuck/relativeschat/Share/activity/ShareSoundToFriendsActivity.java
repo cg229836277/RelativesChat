@@ -90,6 +90,8 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		pressStartRecordImage = (ImageView)findViewById(R.id.press_start_record_image);
 		imageLevelImage = (ImageView)findViewById(R.id.sound_level_image);
 		mySoundShareListView = (XListView)findViewById(R.id.my_sound_recorder_list_view);
+		mySoundShareListView.setPullLoadEnable(true);
+		mySoundShareListView.setPullRefreshEnable(true);
 		mySoundShareListView.setXListViewListener(this);
 		noContentText = (TextView)findViewById(R.id.no_share_sound_text);
 //		recordPregress = (ProgressBar)findViewById(R.id.cal_number_progress);
