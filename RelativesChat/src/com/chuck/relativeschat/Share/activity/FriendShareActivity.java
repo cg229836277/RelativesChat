@@ -12,12 +12,14 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
 import com.chuck.relativeschat.bean.UserShareFileBean;
+import com.chuck.relativeschat.common.BitmapConcurrencyDealUtil;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.FileRemarkBean;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.entity.ShareFileRemark;
 import com.chuck.relativeschat.tools.BitmapCacheUtil;
+import com.chuck.relativeschat.tools.BitmapUtils;
 import com.chuck.relativeschat.tools.HttpDownloader;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.StringUtils;
@@ -171,8 +173,6 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				adapter = new FriendsShareAdapter(getApplicationContext(), shareFileBeanList);
-				HttpDownloader.Mode mode = HttpDownloader.Mode.CORRECT;
-				adapter.getImageDownloader().setMode(mode);
 				friendsShareListView.setAdapter(adapter);
 				adapter.setList(shareFileBeanList);
 				friendsShareListView.setSelection(adapter.getCount() - 1);
@@ -219,6 +219,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		private Dialog mDialog;
 		private TextView goodsNumberText;
 		private ShareFileBean fileData;
+		BitmapConcurrencyDealUtil dealUtil = null;
 //		private BitmapCacheUtil imageCache = null;
 		
 		public FriendsShareAdapter(Context context, List<UserShareFileBean> list) {
@@ -236,6 +237,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 //			}
 //			
 //			imageCache = new BitmapCacheUtil();
+			
+			dealUtil = new BitmapConcurrencyDealUtil(getApplicationContext());
 		}
 
 		@Override
@@ -357,12 +360,14 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 //					public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 //						smallImage.setTag(loadedImage);
 //						imageCache.addBitmapToMemoryCache(imageUri, loadedImage);
+////						BitmapUtils.decodeSampledBitmapFromResource(getResources(), R.id.share_small_image, 72, 72);
 //						Bitmap newBitmap = ThumbnailUtils.extractThumbnail(loadedImage, 72,72);
 //						smallImage.setImageBitmap(newBitmap);		
 //					}
 //				});
 //			}
-			imageDownloader.download(data.getFileUrl(), smallImage);
+//			imageDownloader.download(data.getFileUrl(), smallImage);
+			dealUtil.loadBitmap(data.getFileUrl(), smallImage);
 		}
 		
 		public void remarkByGood(final UserShareFileBean data){
