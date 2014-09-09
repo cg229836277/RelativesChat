@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.chuck.relativeschat.R;
 
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.util.Log;
@@ -20,7 +21,8 @@ import android.widget.ImageView;
  */
 public class AudioRecorderManager {
 	private final String TAG = "RecordManager";
-	private MediaRecorder mMediaRecorder;
+	private MediaRecorder mMediaRecorder = null;
+	private MediaPlayer mPlayer = null;
 	public static final int MAX_LENGTH = 1000 * 60 * 10;// 最大录音时长1000*60*10;
 	private File file;
 
@@ -150,6 +152,60 @@ public class AudioRecorderManager {
 			 */
 		}
 	}
+	
+//	private void onRecord(boolean start) {
+//        if (start) {
+//            startRecording();
+//        } else {
+//            stopRecording();
+//        }
+//    }
+//
+//    private void onPlay(boolean start) {
+//        if (start) {
+//            startPlaying();
+//        } else {
+//            stopPlaying();
+//        }
+//    }
+//
+//    private void startPlaying() {
+//        mPlayer = new MediaPlayer();
+//        try {
+//            mPlayer.setDataSource(mFileName);
+//            mPlayer.prepare();
+//            mPlayer.start();
+//        } catch (IOException e) {
+//            Log.e(LOG_TAG, "prepare() failed");
+//        }
+//    }
+//
+//    private void stopPlaying() {
+//        mPlayer.release();
+//        mPlayer = null;
+//    }
+//
+//    private void startRecording() {
+//    	mMediaRecorder = new MediaRecorder();
+//    	mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//    	mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//    	mMediaRecorder.setOutputFile(mFileName);
+//    	mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//
+//        try {
+//        	mMediaRecorder.prepare();
+//        } catch (IOException e) {
+//            Log.e(LOG_TAG, "prepare() failed");
+//        }
+//
+//        mMediaRecorder.start();
+//    }
+//
+//    private void stopRecording() {
+//    	mMediaRecorder.stop();
+//    	mMediaRecorder.release();
+//    	mMediaRecorder = null;
+//    }
 
 }
 
