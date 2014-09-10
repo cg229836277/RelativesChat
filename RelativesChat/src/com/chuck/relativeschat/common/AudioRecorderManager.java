@@ -2,12 +2,12 @@ package com.chuck.relativeschat.common;
 
 import java.io.File;
 import java.io.IOException;
-
 import com.chuck.relativeschat.R;
-
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -19,19 +19,33 @@ import android.widget.ImageView;
  * @author chengang
  * @version 1.0
  */
-public class AudioRecorderManager {
+public class AudioRecorderManager implements MediaPlayer.OnPreparedListener , OnCompletionListener{
 	private final String TAG = "RecordManager";
 	private MediaRecorder mMediaRecorder = null;
 	private MediaPlayer mPlayer = null;
-	public static final int MAX_LENGTH = 1000 * 60 * 10;// 最大录音时长1000*60*10;
+	public static final int MAX_LENGTH = 1000 * 60 * 15;// 最大录音时长1000*60*10;
 	private File file;
+	private String mFileUrl;
+	private Handler myActivityHandler;
 
+	/**
+	 * 初始化录音数据
+	 * @param file
+	 * @param view
+	 */
 	public AudioRecorderManager(File file,ImageView view) {
 		this.file = file;
 		this.view=view;
 	}
-	public AudioRecorderManager(File file) {
-		this.file = file;
+	
+	/**
+	 * 初始化播放录音的数据
+	 * @param fileUrl
+	 * @param handler
+	 */
+	public AudioRecorderManager(String fileUrl , Handler handler) {
+		this.mFileUrl = fileUrl;
+		this.myActivityHandler = handler;
 	}
 
 	private long startTime;
@@ -47,35 +61,31 @@ public class AudioRecorderManager {
 	public void startRecord() {
 		// 开始录音
 		/* ①Initial：实例化MediaRecorder对象 */
-		if (mMediaRecorder == null)
-			mMediaRecorder = new MediaRecorder();
+		mMediaRecorder = new MediaRecorder();
+		/* ②setAudioSource/setVedioSource */
+		mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);// 设置麦克风
+		/*
+		 * ②设置输出文件的格式：THREE_GPP/MPEG-4/RAW_AMR/Default THREE_GPP(3gp格式
+		 * ，H263视频/ARM音频编码)、MPEG-4、RAW_AMR(只支持音频且音频编码要求为AMR_NB)
+		 */
+		mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+		/* ②设置音频文件的编码：AAC/AMR_NB/AMR_MB/Default 声音的（波形）的采样 */
+		mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+		/* ③准备 */
+		mMediaRecorder.setOutputFile(file.getAbsolutePath());
+		mMediaRecorder.setMaxDuration(MAX_LENGTH);
 		try {
-			/* ②setAudioSource/setVedioSource */
-			mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);// 设置麦克风
-			/*
-			 * ②设置输出文件的格式：THREE_GPP/MPEG-4/RAW_AMR/Default THREE_GPP(3gp格式
-			 * ，H263视频/ARM音频编码)、MPEG-4、RAW_AMR(只支持音频且音频编码要求为AMR_NB)
-			 */
-			mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-			/* ②设置音频文件的编码：AAC/AMR_NB/AMR_MB/Default 声音的（波形）的采样 */
-			mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-			/* ③准备 */
-			mMediaRecorder.setOutputFile(file.getAbsolutePath());
-			mMediaRecorder.setMaxDuration(MAX_LENGTH);
 			mMediaRecorder.prepare();
-			/* ④开始 */
-			mMediaRecorder.start();
-			// AudioRecord audioRecord.
-			/* 获取开始时间* */
-			startTime = System.currentTimeMillis();
-			// pre=mMediaRecorder.getMaxAmplitude();
-			updateMicStatus();
-			Log.i("ACTION_START", "startTime" + startTime);
-		} catch (IllegalStateException e) {
-			Log.i(TAG , "call startAmr(File mRecAudioFile) failed!" + e.getMessage());
 		} catch (IOException e) {
-			Log.i(TAG,"call startAmr(File mRecAudioFile) failed!" + e.getMessage());
+			Log.e(TAG, "prepare() failed");
 		}
+		/* ④开始 */
+		mMediaRecorder.start();
+		// AudioRecord audioRecord.
+		/* 获取开始时间* */
+		startTime = System.currentTimeMillis();
+		updateMicStatus();
+		Log.i(TAG, "startTime" + startTime);
 
 	}
 
@@ -85,15 +95,15 @@ public class AudioRecorderManager {
 	 * @param mMediaRecorder
 	 */
 	public long stopRecord() {
-		if (mMediaRecorder == null)
+		if (mMediaRecorder == null){
 			return 0L;
+		}
 		endTime = System.currentTimeMillis();
-		Log.i("ACTION_END", "endTime" + endTime);
+		Log.i(TAG, "endTime" + endTime);
 		mMediaRecorder.stop();
-		mMediaRecorder.reset();
 		mMediaRecorder.release();
 		mMediaRecorder = null;
-		Log.i("ACTION_LENGTH", "Time" + (endTime - startTime));
+		Log.i(TAG, "Time" + (endTime - startTime));
 		return endTime - startTime;
 	}
 
@@ -153,59 +163,53 @@ public class AudioRecorderManager {
 		}
 	}
 	
-//	private void onRecord(boolean start) {
-//        if (start) {
-//            startRecording();
-//        } else {
-//            stopRecording();
-//        }
-//    }
-//
-//    private void onPlay(boolean start) {
-//        if (start) {
-//            startPlaying();
-//        } else {
-//            stopPlaying();
-//        }
-//    }
-//
-//    private void startPlaying() {
-//        mPlayer = new MediaPlayer();
-//        try {
-//            mPlayer.setDataSource(mFileName);
-//            mPlayer.prepare();
-//            mPlayer.start();
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "prepare() failed");
-//        }
-//    }
-//
-//    private void stopPlaying() {
-//        mPlayer.release();
-//        mPlayer = null;
-//    }
-//
-//    private void startRecording() {
-//    	mMediaRecorder = new MediaRecorder();
-//    	mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//    	mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//    	mMediaRecorder.setOutputFile(mFileName);
-//    	mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//
-//        try {
-//        	mMediaRecorder.prepare();
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "prepare() failed");
-//        }
-//
-//        mMediaRecorder.start();
-//    }
-//
-//    private void stopRecording() {
-//    	mMediaRecorder.stop();
-//    	mMediaRecorder.release();
-//    	mMediaRecorder = null;
-//    }
+    public void startPlaying() {
+        mPlayer = new MediaPlayer();
+        mPlayer.setOnCompletionListener(this);
+        mPlayer.setOnPreparedListener(this);
+        try {
+        	System.out.println("录音地址是" + mFileUrl);
+            mPlayer.setDataSource(mFileUrl);
+            mPlayer.prepare();          
+        } catch (IOException e) {
+            Log.e(TAG, "prepare() failed");
+        }
+    }
 
+    public void stopPlaying() {
+    	if (mPlayer != null && mPlayer.isPlaying()) {
+    		mPlayer.stop();
+    		mPlayer.release();
+    		mPlayer = null;
+		}
+    }
+    
+	@Override
+	public void onPrepared(MediaPlayer mp) {		
+		mPlayer.start();
+	}
+	
+	@Override
+	public void onCompletion(MediaPlayer arg0) {
+		Log.i("mediaPlayer", "onCompletion");
+		Message msg = new Message();
+		msg.what = 2;
+		myActivityHandler.sendMessage(msg);
+		stopPlaying();
+		
+		System.gc();
+	}
+	
+	public void destoryPlayer(){
+		if (mMediaRecorder != null) {
+			mMediaRecorder.release();
+			mMediaRecorder = null;
+        }
+
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+	}
 }
 

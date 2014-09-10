@@ -26,6 +26,7 @@ import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.IsListNotNull;
+import com.chuck.relativeschat.tools.MediaFileCacheUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.XListView;
 import com.chuck.relativeschat.tools.XListView.IXListViewListener;
@@ -64,12 +65,10 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 	private File tempSoundFile;
 	private Timer timer;
 	private int calNum = 15;
-//	private ProgressBar recordPregress;
 	private TextView numberText;
 	private MyTimeTask task;
-	private AudioFilePlayer audioPlayer;
 	private ImageView tempImage;
-	private SeekBar tempSeekBar;
+	private MediaFileCacheUtil fileCacheUtil = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +79,8 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		mHeadViewLayout.setTitleText("分享语音");
 		shareToUserName = getIntent().getStringExtra(SHARE_TO_USER);
+		
+		fileCacheUtil = new MediaFileCacheUtil();
 		
 		bindEvent();
 		
@@ -125,7 +126,7 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 		String recordSoundDir = BmobConstants.RECORD_SOUND_PATH;
 		recordSoundFileDir = new File(recordSoundDir);
 		if(!recordSoundFileDir.exists()){
-			recordSoundFileDir.mkdir();			
+			recordSoundFileDir.mkdirs();			
 		}
 		recordSoundFileName = recordSoundDir + File.separator + UUID.randomUUID() + ".amr";
 		tempSoundFile = new File(recordSoundFileName);
@@ -193,6 +194,9 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					@Override
 					public void onSuccess() {
 						dialog.dismiss();
+						//在本地文件上传成功之后，将其添加到缓存，避免再次播放的时候从网络下载						
+						fileCacheUtil.addMediaFileToMemoryCache(file.getFileUrl(), soundFile);
+						
 						soundFile.delete();
 						//发送之后立即更新数据
 						initDataToList();
@@ -244,10 +248,16 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 			public void onSuccess(List<ShareFileBean> arg0) {
 				if(IsListNotNull.isListNotNull(arg0)){
 					handleExistDataList();
-					soundListAdapter = new SoundShareListAdapter(getApplicationContext(), arg0);
-					mySoundShareListView.setAdapter(soundListAdapter);
-					soundListAdapter.setList(arg0);
-					mySoundShareListView.setSelection(soundListAdapter.getCount() - 1);
+					if(PAGE_INDEX * 10 - arg0.size() > 10){
+						mToast.showMyToast("没有更多的分享数据了！", Toast.LENGTH_SHORT);
+						PAGE_INDEX--;
+					}else{
+						soundListAdapter = new SoundShareListAdapter(getApplicationContext(), arg0);
+						mySoundShareListView.setAdapter(soundListAdapter);
+						soundListAdapter.setList(arg0);
+						mySoundShareListView.setSelection(soundListAdapter.getCount() - 1);
+						soundListAdapter.notifyDataSetChanged();
+					}
 				}else{
 					handleBlankDataList();
 				}				
@@ -293,6 +303,9 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 	
 	public class SoundShareListAdapter extends FriendsBaseListAdapter<ShareFileBean>{
 
+		boolean mStartRecording = true;
+		boolean mStartPlaying = true;
+		
 		/**
 		 * @param context
 		 * @param list
@@ -309,7 +322,7 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 			final ShareFileBean data = (ShareFileBean) getList().get(position);
 			TextView shareDesc = ViewHolder.get(convertView, R.id.sound_share_desc_text);
 			final ImageView playImage = ViewHolder.get(convertView, R.id.listen_my_share_sound);	
-			final SeekBar audioSeekBar = ViewHolder.get(convertView, R.id.audio_seek_bar);	 
+//			final SeekBar audioSeekBar = ViewHolder.get(convertView, R.id.audio_seek_bar);	 
 			if(data != null){
 				String desc = null;
 				if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("0")){
@@ -320,7 +333,6 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"给我分享了语音";
 				}				
 				shareDesc.setText(desc);
-				
 				playImage.setTag(data.getFilePath());
 			}
 			
@@ -328,52 +340,83 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 				
 				@Override
 				public void onClick(View arg0) {
-					if(arg0.getTag() instanceof String){						
-						if(tempImage != null && tempSeekBar != null){
-							if(audioPlayer != null){
-								audioPlayer.stop();
-							}
-							tempImage.setBackgroundResource(R.drawable.play);
-							tempSeekBar.setVisibility(View.VISIBLE);
-							tempImage = null;
-							tempSeekBar = null;
-						}else{
-							playImage.setBackgroundResource(R.drawable.pause);
-							audioSeekBar.setVisibility(View.VISIBLE);
-							
-							tempImage = playImage;
-							tempSeekBar = audioSeekBar;
-							
-							String audioUrl = (String)arg0.getTag();
-							if(audioPlayer == null){
-								audioPlayer = new AudioFilePlayer(audioUrl, audioSeekBar , handler);
-							}							
-							audioPlayer.play();
-						}
+					if(arg0.getTag() instanceof String){																																
+						String audioUrl = (String)arg0.getTag();
+						onPlay(mStartPlaying, audioUrl , playImage);
+						mStartPlaying = !mStartPlaying;
 					}
-				}
+				}					
 			});
 			return convertView;
-		}		
+		}
+		
+//		private void onRecord(boolean start) {
+//			if (start) {
+//				startRecording();
+//			} else {
+//				stopRecording();
+//			}
+//		}
+
+		private void onPlay(boolean start , String fileUrl , ImageView playImage) {
+			if(audioManager != null){
+				audioManager = null;
+			}
+			
+			if(fileCacheUtil == null){
+				return;
+			}
+			
+			File tempFile = fileCacheUtil.getFileFromMemCache(fileUrl);
+			if(tempFile != null && tempFile.exists()){
+				audioManager = new AudioRecorderManager(tempFile.getAbsolutePath() , handler);
+				fileCacheUtil.addMediaFileToMemoryCache(fileUrl, tempFile);
+			}else{			
+				audioManager = new AudioRecorderManager(fileUrl , handler);
+			}
+			if (start) {
+				audioManager.startPlaying();
+				tempImage = playImage;
+				playImage.setBackgroundResource(R.drawable.pause);
+			} else {
+				if(tempImage != null){
+					audioManager.stopPlaying();
+					tempImage.setBackgroundResource(R.drawable.play);
+					tempImage = null;
+				}
+			}
+		}
+
+	}
+	
+	@Override
+	public void onRefresh() {
+		getMoreData("fresh");
+		
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onLoadMore() {
+		getMoreData("load");
+		
+	}
+	
+	public void getMoreData(final String type){
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("此处刷新！");
 				PAGE_INDEX++;
 				initDataToList();
-				soundListAdapter.notifyDataSetChanged();
-				mySoundShareListView.stopRefresh();
+//				soundListAdapter.notifyDataSetChanged();
+//				mySoundShareListView.stopRefresh();
+				if(type.equals("fresh")){
+					mySoundShareListView.stopRefresh();
+				}else{				
+					mySoundShareListView.stopLoadMore();
+				}
 			}
 		}, 1000);	
-	}
-
-	@Override
-	public void onLoadMore() {
-		System.out.println("此处加载更多！");
 	}
 	
 	/**
@@ -415,11 +458,9 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 					stopRecordSound();
 				}
 			}else if(msg.what == 2){
-				if(tempImage != null && tempSeekBar !=null){
+				if(tempImage != null){
 					tempImage.setBackgroundResource(R.drawable.play);
-					tempSeekBar.setVisibility(View.INVISIBLE);
 					tempImage = null;
-					tempSeekBar = null;
 				}
 			}else{
 				mySoundShareListView.setSelection(soundListAdapter.getCount() - 1);
@@ -429,10 +470,25 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 	
 	@Override
 	protected void onDestroy() {
-		if(audioPlayer != null){
-			audioPlayer.stop();
-		}		
-		audioPlayer = null;
+		if(audioManager != null){
+			audioManager.destoryPlayer();
+		}
+		
+		if(fileCacheUtil != null){
+			fileCacheUtil.clearMemoryCache();
+		}
 		super.onDestroy();
+	}
+	
+	@Override
+	protected void onPause() {
+		if(audioManager != null){
+			audioManager.destoryPlayer();
+		}
+		
+		if(fileCacheUtil != null){
+			fileCacheUtil.clearMemoryCache();
+		}
+		super.onPause();
 	}
 }

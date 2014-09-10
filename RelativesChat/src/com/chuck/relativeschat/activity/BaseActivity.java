@@ -1,17 +1,12 @@
 package com.chuck.relativeschat.activity;
 
-import java.util.List;
-
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
-import cn.bmob.im.bean.BmobChatUser;
-import cn.bmob.v3.listener.FindListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
 import com.chuck.relativeschat.common.MyDialog;
-import com.chuck.relativeschat.tools.CollectionUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
