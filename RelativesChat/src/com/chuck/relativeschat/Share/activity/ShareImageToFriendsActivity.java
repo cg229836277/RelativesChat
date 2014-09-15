@@ -394,10 +394,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		}
         // Android设备Gallery应用只会在启动的时候扫描系统文件夹
         // 这里模拟一个媒体装载的广播，用于使保存的图片可以在Gallery中查看
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MEDIA_MOUNTED);
-        intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
-        sendBroadcast(intent);	
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_MEDIA_MOUNTED);
+//        intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
+//        sendBroadcast(intent);	
 		return isSavedSuccessed;		
 	}
 	
