@@ -233,6 +233,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+        <activity
+            android:name="com.chuck.relativeschat.Share.activity.ShareVideoToFriendsActivity"
+           	android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
     </application>
 
 </manifest>

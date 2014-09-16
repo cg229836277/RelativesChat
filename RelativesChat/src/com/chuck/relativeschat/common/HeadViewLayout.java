@@ -23,6 +23,7 @@ public class HeadViewLayout extends LinearLayout {
 	private LayoutInflater mInflater;
 	private ImageButton backButton; // 后退按钮
 	private TextView tvTitleText; // 标题文本
+	private TextView moreInfoText;
 //	private RelativesChatApplication rcApp;
 
 	public HeadViewLayout(Context context) {
@@ -42,6 +43,7 @@ public class HeadViewLayout extends LinearLayout {
 		addView(rootViewGroup);
 		backButton = (ImageButton) rootViewGroup.findViewById(R.id.back_image_btn);
 		tvTitleText = (TextView) rootViewGroup.findViewById(R.id.title_text);
+		moreInfoText = (TextView) rootViewGroup.findViewById(R.id.more_info_text);
 		
 		backButton.setOnClickListener(new OnClickListener() {
 			
@@ -59,6 +61,11 @@ public class HeadViewLayout extends LinearLayout {
 	
 	public void setTitleText(String title) {
 		tvTitleText.setText(title);
+	}
+	
+	public void setMoreInfoTest(String infoText){
+		moreInfoText.setVisibility(View.VISIBLE);
+		moreInfoText.setText(infoText);
 	}
 	
 	public void setBackButtonVisiable(int viewFlag){

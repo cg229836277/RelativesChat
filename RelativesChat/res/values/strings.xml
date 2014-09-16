@@ -82,5 +82,6 @@
     <string name="title_activity_watch_share_image">WatchShareImageActivity</string>
     <string name="title_activity_feedback_friends_share">FeedbackFriendsShareActivity</string>
     <string name="title_activity_share_sound_to_friends">ShareSoundToFriendsActivity</string>
+    <string name="title_activity_share_video_to_friends">ShareVideoToFriendsActivity</string>
 
 </resources>
