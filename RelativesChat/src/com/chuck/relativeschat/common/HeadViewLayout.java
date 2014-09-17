@@ -2,7 +2,10 @@ package com.chuck.relativeschat.common;
 
 import java.io.IOException;
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.Share.activity.RecordVideoToServerActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,6 +69,13 @@ public class HeadViewLayout extends LinearLayout {
 	public void setMoreInfoTest(String infoText){
 		moreInfoText.setVisibility(View.VISIBLE);
 		moreInfoText.setText(infoText);
+		moreInfoText.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(getContext(), RecordVideoToServerActivity.class);
+				getContext().startActivity(intent);
+			}
+		});
 	}
 	
 	public void setBackButtonVisiable(int viewFlag){

@@ -277,9 +277,9 @@ public class MipcaCaptureActivity extends BaseActivity implements Callback {
 //		super.onCreateOptionsMenu(menu);
 //		CreateMenu(menu);
 //		return true;
-		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.activity_main, menu);
-	    CreateMenu(menu);
+//		MenuInflater inflater = getMenuInflater();
+//	    inflater.inflate(R.menu.activity_main, menu);
+//	    CreateMenu(menu);
 	    return true;
 	}
 }

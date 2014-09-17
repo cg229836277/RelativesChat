@@ -19,6 +19,7 @@ import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.Share.activity.FriendShareActivity;
 import com.chuck.relativeschat.Share.activity.ShareImageToFriendsActivity;
 import com.chuck.relativeschat.Share.activity.ShareSoundToFriendsActivity;
+import com.chuck.relativeschat.Share.activity.ShareVideoToFriendsActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.biz.impl.GetFriendsShareDataBizImpl;
 import com.chuck.relativeschat.common.DialogTips;
@@ -192,6 +193,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			intent = new Intent(this , SystemSettingActivity.class);
 			break;
 		case R.id.main_menu_video_layout:
+			intent = new Intent(this , ShareVideoToFriendsActivity.class);
 			break;
 		case R.id.main_menu_user_text:
 			userParentLayout.performClick();

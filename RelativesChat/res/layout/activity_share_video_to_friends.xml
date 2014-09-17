@@ -10,6 +10,7 @@
         layout="@layout/friends_menu_header_layout" />
 
     <FrameLayout
+        android:layout_below="@+id/share_video_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/rect_background" >
