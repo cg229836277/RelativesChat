@@ -16,10 +16,10 @@ public class BmobConstants {
 	/**
 	 * 照片存放路径
 	 */
-	public static String BMOB_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/image/";
-	public static String DRAW_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/draw/";
-	public static String RECORD_SOUND_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/sound/";
-	
+	public static String BMOB_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/image/";
+	public static String DRAW_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/draw/";
+	public static String RECORD_SOUND_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/sound/";
+	public static String RECORD_VIDEO_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/video/";
 	/**
 	 * 图像存放路径
 	 */

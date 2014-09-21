@@ -5,21 +5,25 @@
     android:orientation="vertical"
     tools:context=".RecordVideoToServerActivity" >
 
-	<VideoView android:id="@+id/video_view"
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dp"
-	    android:layout_weight="1"
-	    android:layout_margin="12dp" />
-	
-	<Button android:id="@+id/send_video_btn"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    style="@style/text_large_white"
-	    android:background="@drawable/login_btn_background"
-	    android:text="@string/send"
-	    android:gravity="center"
-	    android:layout_marginLeft="12dp"
-	    android:layout_marginRight="12dp" 
-	    android:layout_marginBottom="12dp"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <SurfaceView
+            android:id="@+id/take_video_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+    
+    <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        
+        <Button android:id="@+id/start_or_stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+            android:background="@drawable/take_video_nomal"/>
+    </RelativeLayout>
 
 </LinearLayout>
