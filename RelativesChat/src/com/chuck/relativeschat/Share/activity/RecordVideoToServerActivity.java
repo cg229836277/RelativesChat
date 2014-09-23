@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.Share.activity;
 
 import com.chuck.relativeschat.R;
+import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.common.VideoRecorderManager;
 
 import android.net.Uri;
@@ -15,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.VideoView;
 
-public class RecordVideoToServerActivity extends Activity implements SurfaceHolder.Callback{
+public class RecordVideoToServerActivity extends BaseActivity implements SurfaceHolder.Callback{
 
 	static final int REQUEST_VIDEO_CAPTURE = 1;
 	public boolean isRecording = false;
