@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
-import com.chuck.relativeschat.activity.MainMenuActivity;
+import com.chuck.relativeschat.activity.MyMainMenuActivity;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.NetworkTool;
 
@@ -139,7 +139,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 							boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
 							if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
 								String tickerText = username+"";
-								BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, username, tickerText.toString(),MainMenuActivity.class);
+								BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, username, tickerText.toString(),MyMainMenuActivity.class);
 							}
 							BmobMsg.createAndSaveRecentAfterAgree(context, json);
 							
@@ -192,7 +192,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		CharSequence tickerText = msg.getBelongUsername() + ":" + trueMsg;
 		String contentTitle = msg.getBelongUsername()+ " (" + mNewNum + ")";
 		
-		Intent intent = new Intent(context, MainMenuActivity.class);
+		Intent intent = new Intent(context, MyMainMenuActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
 		boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();

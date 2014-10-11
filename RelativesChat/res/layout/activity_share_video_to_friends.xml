@@ -1,18 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ShareVideoToFriendsActivity" >
 
     <include
         android:id="@+id/share_video_layout"
-        android:layout_alignParentTop="true"
         layout="@layout/friends_menu_header_layout" />
 
     <FrameLayout
-        android:layout_below="@+id/share_video_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/frame_layout"
+        android:layout_weight="1"
         android:background="@drawable/rect_background" >
 
         <com.chuck.relativeschat.tools.XListView
@@ -25,7 +26,7 @@
             android:dividerHeight="6dp"
             android:fadingEdgeLength="0dp"
             android:fastScrollEnabled="true"
-            android:listSelector="@color/transparent"
+            android:listSelector="@color/transparent"          
             android:transcriptMode="normal"
             android:visibility="visible" />
 
@@ -35,8 +36,14 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="你暂时没有分享视频，赶紧分享吧!"
             android:visibility="gone" />
     </FrameLayout>
-
-</RelativeLayout>
+    
+    <Button android:id="@+id/start_take_video"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/login_btn_background"
+        android:text="我要分享"
+        style="@style/text_large_white" />
+</LinearLayout>

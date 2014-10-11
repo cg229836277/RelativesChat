@@ -1,5 +1,6 @@
 package com.chuck.relativeschat.Share.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.IsListNotNull;
+import com.chuck.relativeschat.tools.StringUtils;
 import com.chuck.relativeschat.tools.XListView;
 import com.chuck.relativeschat.tools.XListView.IXListViewListener;
 
@@ -23,10 +25,17 @@ import android.os.Message;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +48,14 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	private int PAGE_INDEX = 1;
 	private ShareVideoListViewAdapter videoListAdapter;
 	
+	private SpannableString shareSp = null;
+	private final int VIDEO_REQUEST_QODE = 1;
+	private final int REVIEW_VIDEO_QODE = 2;
+	public final static String VIDEO_URL = "video_url"; 
+	public static final String SHARE_TO_USER = "shareToUser";
+	private String shareToUserName;
+	private Button startShareVideoBtn;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,7 +64,8 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 		mHeadViewLayout = (HeadViewLayout)findViewById(R.id.title_menu_layout);
 		mHeadViewLayout.setBackButtonVisiable(View.VISIBLE);
 		mHeadViewLayout.setTitleText("分享短视频");
-		mHeadViewLayout.setMoreInfoTest("我要分享");
+		
+		shareToUserName = getIntent().getStringExtra(SHARE_TO_USER);
 		
 		bindEvent();
 		
@@ -56,7 +74,15 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	
 	public void bindEvent(){
 		sharedVideoListView = (XListView)findViewById(R.id.shared_video_list);
+		sharedVideoListView.setXListViewListener(this);
 		noContentView = (TextView)findViewById(R.id.no_share_video_text);
+		startShareVideoBtn = (Button)findViewById(R.id.start_take_video);
+		startShareVideoBtn.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				startToTakeVideo();
+			}
+		});
 	}
 	
 	public void initDataToVideoList(){
@@ -107,7 +133,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	}
 	
 	/**
-	 * 处理没有语音分享数据的时候
+	 * 处理没有视频分享数据的时候
 	 * 
 	 * @author chengang
 	 * @date 2014-9-2 上午11:03:49
@@ -115,10 +141,23 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	public void handleBlankDataList(){
 		sharedVideoListView.setVisibility(View.GONE);
 		noContentView.setVisibility(View.VISIBLE);
+		
+		String blankString = "你暂时没有分享视频，赶紧分享吧!";
+		shareSp = new SpannableString(blankString);
+		shareSp.setSpan(new UnderlineSpan(), 12, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		shareSp.setSpan(new ClickableSpan() {			
+			@Override
+			public void onClick(View widget) {
+				startToTakeVideo();
+			}
+		}, 12, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
+		noContentView.setText(shareSp);
+		noContentView.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 	
 	/**
-	 * 处理有语音分享数据的时候
+	 * 处理有视频分享数据的时候
 	 * 
 	 * @author chengang
 	 * @date 2014-9-2 上午11:03:49
@@ -205,5 +244,29 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 				String videoUrl = (String)arg0.getTag();
 			}
 		}	
+	}
+	
+	public void startToTakeVideo(){
+		Intent intent = new Intent(ShareVideoToFriendsActivity.this , RecordVideoToServerActivity.class);
+		startActivityForResult(intent, VIDEO_REQUEST_QODE);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == VIDEO_REQUEST_QODE){
+			String videoUrl = data.getStringExtra(VIDEO_URL);
+			File file = new File(videoUrl);
+			if(!StringUtils.isEmpty(videoUrl) && file.exists()){
+				Intent intent = new Intent(this , ReviewRecordedVideoActivity.class);
+				if(!StringUtils.isEmpty(shareToUserName)){
+					intent.putExtra(SHARE_TO_USER, shareToUserName);
+				}
+				intent.putExtra(VIDEO_URL, videoUrl);
+				startActivityForResult(intent , REVIEW_VIDEO_QODE);
+			}
+		}else if(requestCode == REVIEW_VIDEO_QODE){			
+			initDataToVideoList();
+		}
 	}
 }

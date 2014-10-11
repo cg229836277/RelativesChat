@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -53,11 +54,11 @@ public class RecordVideoToServerActivity extends BaseActivity implements Surface
 				}
 				
 				if(isRecording){
-					mediarecorder.stop();
-					mediarecorder = null;
+					finishRecordVideo();
 				}else{
-					mediarecorder.start();
+					mediarecorder.startTakeVideo();
 					startTakeVideo.setBackgroundResource(R.drawable.take_video_pressed);
+					isRecording = true;
 				}
 			}
 		});
@@ -71,6 +72,10 @@ public class RecordVideoToServerActivity extends BaseActivity implements Surface
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
 		 surfaceHolder = arg0;  
+		 if(mediarecorder == null){
+			mediarecorder = new VideoRecorderManager(surfaceHolder);
+		 }
+		 mediarecorder.startPreView();
 	}
 
 	@Override
@@ -78,6 +83,32 @@ public class RecordVideoToServerActivity extends BaseActivity implements Surface
 		surfaceview = null;  
 		surfaceHolder = null;  
 		mediarecorder = null;  
+		
+		if(mediarecorder!=null){
+			mediarecorder.releaseMediaRecorder();
+			mediarecorder.release();
+			mediarecorder=null;
+       }
 	}
-
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			finishRecordVideo();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void finishRecordVideo(){
+		String videoUrl = mediarecorder.getRecordedVideoUrl();
+		mediarecorder.stopTakeVideo();
+		mediarecorder = null;
+		isRecording = false;					
+		
+		Intent intent = new Intent();
+		intent.putExtra(ShareVideoToFriendsActivity.VIDEO_URL, videoUrl);
+		setResult(RESULT_OK , intent);
+		finish();
+	}
 }

@@ -92,7 +92,7 @@ public class RegistAccountActivity extends BaseActivity {
 							
 							userManager.bindInstallationForRegister(bu.getObjectId());
 							
-							Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+							Intent intent = new Intent(getApplicationContext(), MyMainMenuActivity.class);
 							startActivity(intent); 
 							
 							mToast.showMyToast(getResources().getString(R.string.regist_success),Toast.LENGTH_SHORT);

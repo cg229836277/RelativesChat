@@ -8,7 +8,6 @@ import android.os.Message;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
-import com.chuck.relativeschat.activity.MainMenuActivity;
 import com.chuck.relativeschat.biz.LoginSystemBiz;
 import com.chuck.relativeschat.common.MyDialog;
 

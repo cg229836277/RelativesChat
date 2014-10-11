@@ -75,7 +75,9 @@ public class ShareToMyFriendActivity extends BaseActivity implements OnClickList
 			break;
 		case R.id.share_music_icon:			
 			break;
-		case R.id.share_video_icon:			
+		case R.id.share_video_icon:	
+			intent = new Intent(this, ShareVideoToFriendsActivity.class);
+			intent.putExtra(ShareVideoToFriendsActivity.SHARE_TO_USER, simpleUserData.getUserName());
 			break;
 		case R.id.share_sound_icon:	
 			intent = new Intent(this, ShareSoundToFriendsActivity.class);
