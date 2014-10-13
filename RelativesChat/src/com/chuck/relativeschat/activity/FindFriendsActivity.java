@@ -60,7 +60,7 @@ public class FindFriendsActivity extends BaseActivity {
 	public void findFriends(){
 		String searchUserName = searchFriendsEdit.getText().toString();
 		if(!StringUtils.isEmpty(searchUserName)){
-			userManager.queryUserInfo(searchUserName, new FindListener<PersonBean>() {
+			userManager.queryUser(searchUserName, new FindListener<PersonBean>() {
 
 				@Override
 				public void onError(int arg0, String arg1) {

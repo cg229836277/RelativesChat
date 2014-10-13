@@ -20,8 +20,8 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
-		
-		BmobChat.getInstance().init(this, appId);
+
+		BmobChat.getInstance(getApplicationContext()).init(appId);
 		
 		Intent intent = new Intent(getApplicationContext() ,LoginActivity.class);
 		startActivity(intent);

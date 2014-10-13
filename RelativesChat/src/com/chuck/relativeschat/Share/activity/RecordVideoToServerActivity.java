@@ -102,9 +102,11 @@ public class RecordVideoToServerActivity extends BaseActivity implements Surface
 	
 	public void finishRecordVideo(){
 		String videoUrl = mediarecorder.getRecordedVideoUrl();
-		mediarecorder.stopTakeVideo();
-		mediarecorder = null;
-		isRecording = false;					
+		if(isRecording){			
+			mediarecorder.stopTakeVideo();
+			mediarecorder = null;
+			isRecording = false;	
+		}
 		
 		Intent intent = new Intent();
 		intent.putExtra(ShareVideoToFriendsActivity.VIDEO_URL, videoUrl);

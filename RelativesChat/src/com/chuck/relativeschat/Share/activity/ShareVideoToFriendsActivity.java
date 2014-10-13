@@ -10,6 +10,7 @@ import cn.bmob.v3.listener.FindListener;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
+import com.chuck.relativeschat.common.BitmapConcurrencyDealUtil;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.ShareFileBean;
@@ -49,12 +50,13 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	private ShareVideoListViewAdapter videoListAdapter;
 	
 	private SpannableString shareSp = null;
-	private final int VIDEO_REQUEST_QODE = 1;
-	private final int REVIEW_VIDEO_QODE = 2;
+	private final int VIDEO_REQUEST_CODE = 1;
+	private final int REVIEW_VIDEO_CODE = 2;
 	public final static String VIDEO_URL = "video_url"; 
 	public static final String SHARE_TO_USER = "shareToUser";
 	private String shareToUserName;
 	private Button startShareVideoBtn;
+	private BitmapConcurrencyDealUtil dealUtil = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +208,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 
 		public ShareVideoListViewAdapter(Context context,List<ShareFileBean> list) {
 			super(context, list);
+			dealUtil = new BitmapConcurrencyDealUtil(getApplicationContext());
 		}
 
 		@Override
@@ -228,12 +231,13 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 				}				
 				shareDesc.setText(desc);
 				timeText.setText(data.getCreatedAt());
-				Bitmap microBitmap = ThumbnailUtils.createVideoThumbnail(data.getFilePath(), Thumbnails.MINI_KIND);
+				Bitmap microBitmap = ThumbnailUtils.createVideoThumbnail(data.getFilePath(), Thumbnails.MICRO_KIND);
 				if(microBitmap != null){
 					thumbNailImage.setImageBitmap(microBitmap);
 					thumbNailImage.setTag(data.getFilePath());
 					thumbNailImage.setOnClickListener(this);
-				}
+				}				
+//				dealUtil.loadBitmap(data.getFilePath(), thumbNailImage);
 			}
 			return convertView;
 		}
@@ -248,13 +252,13 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	
 	public void startToTakeVideo(){
 		Intent intent = new Intent(ShareVideoToFriendsActivity.this , RecordVideoToServerActivity.class);
-		startActivityForResult(intent, VIDEO_REQUEST_QODE);
+		startActivityForResult(intent, VIDEO_REQUEST_CODE);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == VIDEO_REQUEST_QODE){
+		if(requestCode == VIDEO_REQUEST_CODE){
 			String videoUrl = data.getStringExtra(VIDEO_URL);
 			File file = new File(videoUrl);
 			if(!StringUtils.isEmpty(videoUrl) && file.exists()){
@@ -263,9 +267,9 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 					intent.putExtra(SHARE_TO_USER, shareToUserName);
 				}
 				intent.putExtra(VIDEO_URL, videoUrl);
-				startActivityForResult(intent , REVIEW_VIDEO_QODE);
+				startActivityForResult(intent , REVIEW_VIDEO_CODE);
 			}
-		}else if(requestCode == REVIEW_VIDEO_QODE){			
+		}else if(requestCode == REVIEW_VIDEO_CODE){			
 			initDataToVideoList();
 		}
 	}

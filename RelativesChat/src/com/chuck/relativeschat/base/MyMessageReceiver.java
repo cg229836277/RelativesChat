@@ -2,16 +2,12 @@ package com.chuck.relativeschat.base;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.FriendsInvitionMessageActivity;
 import com.chuck.relativeschat.activity.MyMainMenuActivity;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.NetworkTool;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +22,7 @@ import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.config.BmobConstant;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.inteface.EventListener;
+import cn.bmob.im.inteface.OnReceiveListener;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
@@ -74,48 +71,45 @@ public class MyMessageReceiver extends BroadcastReceiver {
 				//发消息的人
 				String fromId = BmobJsonUtil.getString(jo, BmobConstant.PUSH_KEY_TARGETID);
 				//收消息的人
-				String toId = BmobJsonUtil.getString(jo, BmobConstant.PUSH_KEY_TOID);
+				final String toId = BmobJsonUtil.getString(jo, BmobConstant.PUSH_KEY_TOID);
+				String msgTime = BmobJsonUtil.getString(jo,BmobConstant.PUSH_READED_MSGTIME);
 				if(fromId!=null && !BmobDB.create(context,toId).isBlackUser(fromId)){
 					if(TextUtils.isEmpty(tag)){
-						BmobMsg msg =BmobMsg.createReceiveMsg(context,json);
-						if(currentUser!=null){//当前用户不为空
-							if( toId.equals(currentUser.getObjectId())){//判断是当前用户发的消息
-								if (ehList.size() > 0) {//
+						BmobChatManager.getInstance(context).createReceiveMsg(json, new OnReceiveListener() {
+							
+							@Override
+							public void onSuccess(BmobMsg msg) {
+								//Auto-generated method stub
+								if (ehList.size() > 0) {
 									for (int i = 0; i < ehList.size(); i++) {
 										((EventListener) ehList.get(i)).onMessage(msg);
 									}
 								} else {
-									//保存接收到的消息
-									BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
 									boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
 									if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){//��ǰ��½�û����ڲ���Ҳ���ڽ��շ�id
 										mNewNum++;
-										showNotification(context,msg);
+										showMsgNotify(context,msg);
 									}
 								}
-							}else{//保存接收到的消息
-								BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
 							}
-						}else{//保存接收到的消息
-							BmobChatManager.getInstance(context).saveReceiveMessage(true,msg);
-						}
+							
+							@Override
+							public void onFailure(int code, String arg1) {
+								//Auto-generated method stub
+								BmobLog.i(arg1);
+							}
+						});
+						
 					}else{
-						if(tag.equals(BmobConfig.TAG_ADD_CONTACT)){//添加对话
-							BmobInvitation message = BmobInvitation.createReceiverInvitation(json);
-							BmobDB.create(context,toId).saveInviteMessage(message);
-							if(currentUser!=null){//
+						if(tag.equals(BmobConfig.TAG_ADD_CONTACT)){
+							BmobInvitation message = BmobChatManager.getInstance(context).saveReceiveInvite(json, toId);
+							if(currentUser!=null){
 								if(toId.equals(currentUser.getObjectId())){
-									if (ehList.size() > 0) {//
+									if (ehList.size() > 0) {
 										for (EventListener handler : ehList)
 											handler.onAddUser(message);
 									}else{
-										boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
-										boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
-										boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
-										if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
-											String tickerText = message.getFromname()+"";
-											BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),FriendsInvitionMessageActivity.class);
-										}
+										showOtherNotify(context, message.getFromname(), toId,  message.getFromname()+"发来消息", FriendsInvitionMessageActivity.class);
 									}
 								}
 							}
@@ -125,31 +119,25 @@ public class MyMessageReceiver extends BroadcastReceiver {
 								
 								@Override
 								public void onError(int arg0, final String arg1) {
+									// TODO Auto-generated method stub
 									
 								}
 								
 								@Override
 								public void onSuccess(List<BmobChatUser> arg0) {
+									// TODO Auto-generated method stub
 									RelativesChatApplication.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(context).getContactList()));
 								}
 							});
-							
-							boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
-							boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
-							boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
-							if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
-								String tickerText = username+"";
-								BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, tickerText, username, tickerText.toString(),MyMainMenuActivity.class);
-							}
+							showOtherNotify(context, username, toId,  username+"的消息", MyMainMenuActivity.class);
 							BmobMsg.createAndSaveRecentAfterAgree(context, json);
 							
-						}else if(tag.equals(BmobConfig.TAG_READED)){
+						}else if(tag.equals(BmobConfig.TAG_READED)){//�Ѷ���ִ
 							String conversionId = BmobJsonUtil.getString(jo,BmobConstant.PUSH_READED_CONVERSIONID);
-							String msgTime = BmobJsonUtil.getString(jo,BmobConstant.PUSH_READED_MSGTIME);
 							if(currentUser!=null){
-								BmobChatManager.getInstance(context).updateMsgStatus(BmobConfig.STATUS_SEND_RECEIVERED, conversionId, msgTime);
+								BmobChatManager.getInstance(context).updateMsgStatus(conversionId, msgTime);
 								if(toId.equals(currentUser.getObjectId())){
-									if (ehList.size() > 0) {//
+									if (ehList.size() > 0) {
 										for (EventListener handler : ehList)
 											handler.onReaded(conversionId, msgTime);
 									}
@@ -158,13 +146,14 @@ public class MyMessageReceiver extends BroadcastReceiver {
 						}
 					}
 				}else{
-					BmobLog.i("该用户已经加入黑名单");
+					BmobChatManager.getInstance(context).updateMsgReaded(true, fromId, msgTime);
+					BmobLog.i("����Ϣ���ͷ�Ϊ�����û�");
 				}
 			}
 			
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			BmobLog.i("parseMessage"+e.getMessage());
+			BmobLog.i("parseMessage出错"+e.getMessage());
 		}
 	}
 	
@@ -175,7 +164,6 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	 * @throws
 	 */
 	public void showNotification(Context context,BmobMsg msg) {
-		// ����֪ͨ��
 		int icon = R.drawable.ic_launcher;
 		String trueMsg = "";
 		if(msg.getMsgType()==BmobConfig.TYPE_TEXT && msg.getContent().contains("\\ue")){
@@ -199,6 +187,41 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		
 		BmobNotifyManager.getInstance(context).showNotifyWithExtras(isAllowVoice,isAllowVibrate,icon, tickerText.toString(), contentTitle, tickerText.toString(),intent);
 		
+	}
+	
+	public void showMsgNotify(Context context,BmobMsg msg) {
+		int icon = R.drawable.ic_launcher;
+		String trueMsg = "";
+		if(msg.getMsgType()==BmobConfig.TYPE_TEXT && msg.getContent().contains("\\ue")){
+			trueMsg = "[文字]";
+		}else if(msg.getMsgType()==BmobConfig.TYPE_IMAGE){
+			trueMsg = "[图片]";			
+		}else if(msg.getMsgType()==BmobConfig.TYPE_VOICE){
+			trueMsg = "[语音]";
+		}else if(msg.getMsgType()==BmobConfig.TYPE_LOCATION){
+			trueMsg = "[位置]";
+		}else{
+			trueMsg = msg.getContent();
+		}
+		CharSequence tickerText = msg.getBelongUsername() + ":" + trueMsg;
+		String contentTitle = msg.getBelongUsername()+ " (" + mNewNum + "条新消息)";
+		
+		Intent intent = new Intent(context, MyMainMenuActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		
+		boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
+		boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
+		
+		BmobNotifyManager.getInstance(context).showNotifyWithExtras(isAllowVoice,isAllowVibrate,icon, tickerText.toString(), contentTitle, tickerText.toString(),intent);
+	}
+	
+	public void showOtherNotify(Context context,String username,String toId,String ticker,Class<?> cls){
+		boolean isAllow = RelativesChatApplication.getInstance().getSpUtil().isAllowPushNotify();
+		boolean isAllowVoice = RelativesChatApplication.getInstance().getSpUtil().isAllowVoice();
+		boolean isAllowVibrate = RelativesChatApplication.getInstance().getSpUtil().isAllowVibrate();
+		if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
+			BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,isAllowVibrate,R.drawable.ic_launcher, ticker,username, ticker.toString(),FriendsInvitionMessageActivity.class);
+		}
 	}
 	
 }

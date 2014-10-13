@@ -77,6 +77,10 @@ public class FriendsInvitationMessageAdapter extends FriendsBaseListAdapter<Bmob
 		}else if(status==BmobConfig.INVITE_ADD_AGREE){
 			btn_add.setTextColor(mContext.getResources().getColor(R.color.black));
 			btn_add.setEnabled(false);
+		}else if(status==BmobConfig.INVITE_ADD_NO_VALI_RECEIVED){
+			btn_add.setTextColor(mContext.getResources().getColor(R.color.black));
+			btn_add.setEnabled(false);
+			btn_add.setText("已添加");
 		}
 		name.setText(msg.getFromname());
 		
