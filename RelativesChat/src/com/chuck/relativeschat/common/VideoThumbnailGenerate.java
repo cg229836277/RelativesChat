@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 /**
  * @Title：SAFEYE@
@@ -25,27 +26,26 @@ public class VideoThumbnailGenerate {
 		Bitmap generateBitmap = null;
 		FFmpegMediaMetadataRetriever fmmr = new FFmpegMediaMetadataRetriever();
 		try {
-			fmmr.setDataSource(params[0]);
+			fmmr.setDataSource(videoUrl);
 			generateBitmap = fmmr.getFrameAtTime();
 
 			if (generateBitmap != null) {
-				Bitmap b2 = fmmr
-						.getFrameAtTime(
-								4000000,
-								FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+				Bitmap b2 = fmmr.getFrameAtTime(4000000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC);
 				if (b2 != null) {
 					generateBitmap = b2;
 				}
 				if (generateBitmap.getWidth() > 640) {// 如果图片宽度规格超过640px,则进行压缩
 					generateBitmap = ThumbnailUtils.extractThumbnail(generateBitmap,
-							640, 480,
-							ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+							640, 480,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
 				}
 			}
 		} catch (IllegalArgumentException ex) {
 			ex.printStackTrace();
 		} finally {
 			fmmr.release();
+		}
+		if(generateBitmap != null){
+			return generateBitmap;
 		}
 		return null;
 	}

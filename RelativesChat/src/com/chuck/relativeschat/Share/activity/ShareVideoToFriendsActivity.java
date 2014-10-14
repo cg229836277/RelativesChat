@@ -12,6 +12,7 @@ import com.chuck.relativeschat.activity.BaseActivity;
 import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
 import com.chuck.relativeschat.common.BitmapConcurrencyDealUtil;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.common.VideoThumbnailGenerate;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.IsListNotNull;
@@ -231,7 +232,8 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 				}				
 				shareDesc.setText(desc);
 				timeText.setText(data.getCreatedAt());
-				Bitmap microBitmap = ThumbnailUtils.createVideoThumbnail(data.getFilePath(), Thumbnails.MICRO_KIND);
+//				Bitmap microBitmap = ThumbnailUtils.createVideoThumbnail(data.getFilePath(), Thumbnails.MICRO_KIND);
+				Bitmap microBitmap = VideoThumbnailGenerate.getVideoThumbnail(data.getFilePath());
 				if(microBitmap != null){
 					thumbNailImage.setImageBitmap(microBitmap);
 					thumbNailImage.setTag(data.getFilePath());
