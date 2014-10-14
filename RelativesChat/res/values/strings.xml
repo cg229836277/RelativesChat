@@ -85,5 +85,6 @@
     <string name="title_activity_share_video_to_friends">ShareVideoToFriendsActivity</string>
     <string name="title_activity_record_video_to_server">RecordVideoToServerActivity</string>
     <string name="title_activity_review_recorded_video">ReviewRecordedVideoActivity</string>
+    <string name="title_activity_play_shared_video">PlaySharedVideoActivity</string>
 
 </resources>
