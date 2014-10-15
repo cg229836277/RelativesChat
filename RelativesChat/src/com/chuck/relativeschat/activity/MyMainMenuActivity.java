@@ -62,6 +62,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	private TextView secondUserNameText;
 	private TextView userNameText;
 	private TextView friendsShareNumber;
+	private TextView shareVideoNumberText;
 	private int count = 0;
 	
 	@Override
@@ -138,6 +139,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	 * @date 2014-8-15 上午10:44:28
 	 */
 	public void initVideoView(){
+		shareVideoNumberText = (TextView)findViewById(R.id.my_videos_number_text);
 		
 	}
 	
