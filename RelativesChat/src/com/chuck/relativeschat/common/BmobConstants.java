@@ -20,6 +20,7 @@ public class BmobConstants {
 	public static String DRAW_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/draw/";
 	public static String RECORD_SOUND_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/sound/";
 	public static String RECORD_VIDEO_PATH = Environment.getExternalStorageDirectory()	+ "/relatives/video/";
+	public static String RECORD_VIDEO_CACHE_PATH = Environment.getExternalStorageDirectory() + "/relatives/video/cache/";
 	/**
 	 * 图像存放路径
 	 */

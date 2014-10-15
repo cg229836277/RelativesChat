@@ -8,6 +8,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
+import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.MediaFileCacheUtil;
 import com.chuck.relativeschat.tools.StringUtils;
@@ -107,7 +108,7 @@ public class ReviewRecordedVideoActivity extends BaseActivity {
 						dialog.dismiss();
 						//在本地文件上传成功之后，将其添加到缓存，避免再次播放的时候从网络下载						
 						fileCacheUtil.addMediaFileToMemoryCache(file.getFileUrl(), videoFile);
-						
+						videoFile.renameTo(new File(BmobConstants.RECORD_VIDEO_CACHE_PATH));
 						videoFile.delete();
 						//发送之后立即更新数据
 						Intent intent = new Intent();

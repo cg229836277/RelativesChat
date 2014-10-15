@@ -39,6 +39,10 @@ public class MyDialog extends Dialog {
     	}   	
     }
     
+    public void setProgress(int progress){
+    	mProgressBar.setProgress(progress);
+    }
+    
     @Override
     public void dismiss() {
     	if(isShowing()){
