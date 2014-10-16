@@ -67,12 +67,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 //		userInputAccount.setText("cg229836277");
 //		userInputPassword.setText("cg19901018!");
 		userIconView = (ImageView)findViewById(R.id.user_icon);
-		userInputAccount.setText("rr785753550");
-		userInputPassword.setText("qinyanhui172587");
+//		userInputAccount.setText("rr785753550");
+//		userInputPassword.setText("qinyanhui172587");
 //		userInputAccount.setText("cg2542903208");
 //		userInputPassword.setText("cg19901018!");
-//		userInputAccount.setText("cg1301958187");
-//		userInputPassword.setText("cg19901018!");
+		userInputAccount.setText("cg1301958187");
+		userInputPassword.setText("cg19901018!");
 		userInputAccount.setSingleLine(true);
 		userInputPassword.setSingleLine(true);
 		userInputAccount.setSelection(userInputAccount.getText().toString().length());
