@@ -7,6 +7,7 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.MyColorPickerDialog;
 import com.chuck.relativeschat.common.MyDialog;
+import com.chuck.relativeschat.common.MyProgressDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,6 +22,7 @@ public class BaseActivity extends Activity {
 	public BmobChatManager chatManager;
 	public MyToast mToast;
 	public MyDialog dialog;
+	public MyProgressDialog mProgressDialog;
 	
 	public RelativesChatApplication rcApp;
 	
@@ -41,6 +43,7 @@ public class BaseActivity extends Activity {
 		chatManager = BmobChatManager.getInstance(this);
 		mToast = new MyToast(BaseActivity.this);
 		dialog = new MyDialog(BaseActivity.this);
+		mProgressDialog = new MyProgressDialog(BaseActivity.this);
 		
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));

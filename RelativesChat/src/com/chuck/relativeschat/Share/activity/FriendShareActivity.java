@@ -92,6 +92,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 		queries.add(dataQuery1);
 		BmobQuery<ShareFileBean> mainQuery = new BmobQuery<ShareFileBean>();
 		mainQuery.or(queries);
+		mainQuery.order("-createdAt");
 		mainQuery.setLimit(pageIndex * 10);
 		mainQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {			
 			@Override
@@ -170,7 +171,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 				adapter = new FriendsShareAdapter(getApplicationContext(), shareFileBeanList);
 				friendsShareListView.setAdapter(adapter);
 				adapter.setList(shareFileBeanList);
-				friendsShareListView.setSelection(adapter.getCount() - 1);
+				friendsShareListView.setSelection(0);
 				dialog.dismiss();
 				
 				adapter.notifyDataSetChanged();

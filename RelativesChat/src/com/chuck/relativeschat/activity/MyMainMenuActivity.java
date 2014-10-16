@@ -1,34 +1,27 @@
 package com.chuck.relativeschat.activity;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.CountListener;
-import cn.bmob.v3.listener.FindListener;
-
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.R.id;
-import com.chuck.relativeschat.R.layout;
 import com.chuck.relativeschat.Share.activity.FriendShareActivity;
 import com.chuck.relativeschat.Share.activity.ShareImageToFriendsActivity;
 import com.chuck.relativeschat.Share.activity.ShareSoundToFriendsActivity;
 import com.chuck.relativeschat.Share.activity.ShareVideoToFriendsActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.biz.impl.GetFriendsShareDataBizImpl;
+import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.DialogTips;
-import com.chuck.relativeschat.common.MyColorPickerDialog;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.tools.CollectionUtils;
 import com.chuck.relativeschat.tools.HttpDownloader;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
+import com.chuck.relativeschat.tools.StringUtils;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -140,7 +133,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	 */
 	public void initVideoView(){
 		shareVideoNumberText = (TextView)findViewById(R.id.my_videos_number_text);
-		
+		setFriendsShareNumber(ShareFileBean.VIDEO);
 	}
 	
 	/**
@@ -218,7 +211,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	
 	public void initUserViewData(){
 		
-		setFriendsShareNumber();
+		setFriendsShareNumber(null);
 		
 		rcApp = (RelativesChatApplication)getApplication();
 		chatUserMap = rcApp.getContactList();
@@ -285,6 +278,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
 					logoutSystem();
+					deleteCacheVideoFile();
 					finish();
 				}				
 			});
@@ -298,6 +292,20 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		return super.onKeyDown(keyCode, event);
 	}
 	
+	public void deleteCacheVideoFile(){
+		dialog.show();
+		File videoCacheFileDir = new File(BmobConstants.RECORD_VIDEO_CACHE_PATH);
+		File[] cacheVideoFiles = videoCacheFileDir.listFiles();
+		if(cacheVideoFiles.length > 0){
+			for(int i = 0 ; i < cacheVideoFiles.length ; i++){
+				if(cacheVideoFiles[i] != null && cacheVideoFiles[i].exists()){
+					cacheVideoFiles[i].delete();
+				}
+			}
+		}
+		dialog.dismiss();
+	}
+	
 	public void logoutSystem(){
 		BmobUserManager.getInstance(getApplicationContext()).logout();
 		rcApp.setContactList(null);
@@ -308,26 +316,21 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		setFriendsShareNumber();
-		
-//		Map<String , String> nameMap = new HashMap<String, String>();
-//		nameMap.put("qin", "yanhui");
-//		nameMap.put("chen", "Gang");
-//		
-//		Set<String> keyStr = nameMap.keySet();
-//		Iterator<String> iter = keyStr.iterator();
-//		while (iter.hasNext()) {
-//			String value = nameMap.get(iter.next());
-//			System.out.println(value);
-//		}
+		setFriendsShareNumber(null);
 	}
 	
-	public void setFriendsShareNumber(){		
+	public void setFriendsShareNumber(final String flag){		
 		BmobQuery<ShareFileBean> dataQuery1 = new BmobQuery<ShareFileBean>();
 		dataQuery1.addWhereEqualTo("isShareToAll", "1");
 		BmobQuery<ShareFileBean> dataQuery2 = new BmobQuery<ShareFileBean>();
 		dataQuery2.addWhereEqualTo("isShareToAll", "0");
 		dataQuery2.addWhereEqualTo("shareTo", userManager.getCurrentUserObjectId());
+		
+		if(!StringUtils.isEmpty(flag)){
+			dataQuery1.addWhereEqualTo("fileType", flag);
+			dataQuery2.addWhereEqualTo("fileType", flag);
+		}
+		
 		List<BmobQuery<ShareFileBean>> queries = new ArrayList<BmobQuery<ShareFileBean>>();
 		queries.add(dataQuery2);
 		queries.add(dataQuery1);
@@ -337,7 +340,11 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			
 			@Override
 			public void onSuccess(int arg0) {
-				friendsShareNumber.setText("" + arg0);		
+				if(StringUtils.isEmpty(flag)){
+					friendsShareNumber.setText("" + arg0);	
+				}else if(!StringUtils.isEmpty(flag) && flag.equals(ShareFileBean.VIDEO)){
+					shareVideoNumberText.setText("" + arg0);	
+				}
 			}
 			
 			@Override

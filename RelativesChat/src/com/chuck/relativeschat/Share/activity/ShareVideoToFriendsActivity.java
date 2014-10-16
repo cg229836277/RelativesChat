@@ -75,6 +75,8 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	
 	public void bindEvent(){
 		sharedVideoListView = (XListView)findViewById(R.id.shared_video_list);
+		sharedVideoListView.setPullLoadEnable(true);
+		sharedVideoListView.setPullRefreshEnable(true);
 		sharedVideoListView.setXListViewListener(this);
 		noContentView = (TextView)findViewById(R.id.no_share_video_text);
 		startShareVideoBtn = (Button)findViewById(R.id.start_take_video);
@@ -90,7 +92,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 		dialog.show();
 		BmobQuery<ShareFileBean> query1 = new BmobQuery<ShareFileBean>();
 		//找到我分享的，包括普通分享和私密分享
-		query1.addWhereEqualTo("shareUser", userManager.getCurrentUserName());
+		query1.addWhereEqualTo("isShareToAll", "1");
 		query1.addWhereEqualTo("fileType", ShareFileBean.VIDEO);
 		BmobQuery<ShareFileBean> query2 = new BmobQuery<ShareFileBean>();
 		//找到好友分享给我的
@@ -102,6 +104,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 		queries.add(query2);
 		BmobQuery<ShareFileBean> mainQuery = new BmobQuery<ShareFileBean>();		
 		mainQuery.or(queries);
+		mainQuery.order("-createdAt");
 		mainQuery.setLimit(PAGE_INDEX * 10);
 		mainQuery.findObjects(getApplicationContext(), new FindListener<ShareFileBean>() {
 			
@@ -116,7 +119,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 						videoListAdapter = new ShareVideoListViewAdapter(getApplicationContext(), arg0);
 						sharedVideoListView.setAdapter(videoListAdapter);
 						videoListAdapter.setList(arg0);
-						sharedVideoListView.setSelection(videoListAdapter.getCount() - 1);
+						sharedVideoListView.setSelection(0);
 						videoListAdapter.notifyDataSetChanged();
 					}
 				}else{
@@ -225,9 +228,11 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 					desc = "我在" + data.getCreatedAt() + "分享了视频给" + data.getShareTo();					
 				}else if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("1")){
 					desc = "我在" + data.getCreatedAt() + "分享了视频给大家";
-				}else if(data.getShareTo().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("1")){
+				}else if(userManager.getCurrentUserName().equals(data.getShareTo()) && "0".equals(data.getIsShareToAll())){
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"给我分享了视频";
-				}				
+				}else{				
+					desc = data.getShareUser() + "在" + data.getCreatedAt() +"分享了视频";
+				}
 				shareDesc.setText(desc);
 				timeText.setText(data.getCreatedAt());
 				
@@ -282,6 +287,14 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 			}
 		}else if(requestCode == REVIEW_VIDEO_CODE){			
 			initDataToVideoList();
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(dealUtil != null){
+			dealUtil.destoryFmmrInstance();
 		}
 	}
 }

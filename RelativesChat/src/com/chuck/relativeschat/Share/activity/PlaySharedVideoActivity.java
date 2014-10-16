@@ -97,7 +97,7 @@ public class PlaySharedVideoActivity extends BaseActivity{
 	 
 	        @Override
 	        public void run() {
-	        	dialog.show();
+	        	mProgressDialog.show();
 	        }
 	    });
 	}
@@ -107,7 +107,7 @@ public class PlaySharedVideoActivity extends BaseActivity{
 	 
 	        @Override
 	        public void run() {
-            	dialog.dismiss();
+	        	mProgressDialog.dismiss();
 	        }
 	    });
 	}
@@ -231,9 +231,9 @@ public class PlaySharedVideoActivity extends BaseActivity{
 	        case VIDEO_STATE_UPDATE:
 	            double cachepercent = readSize * 100.00 / mediaLength * 1.0;
 	            String s = String.format("已缓存: [%.2f%%]", cachepercent);
-	            if((int)cachepercent < 100 && dialog.isShowing()){
+	            if((int)cachepercent < 100 && mProgressDialog.isShowing()){
 	            	mHandler.sendEmptyMessageDelayed(VIDEO_STATE_UPDATE, 1000);
-	            	dialog.setProgress((int)cachepercent);
+	            	mProgressDialog.setTitle((int)cachepercent);
 	            	System.out.println(s);
 	            }
 	            
@@ -274,7 +274,7 @@ public class PlaySharedVideoActivity extends BaseActivity{
 	                mVideoView.setVideoPath(localUrl);
 	                mVideoView.start();
 	                iserror = false;
-	                dialog.dismiss();
+	                mProgressDialog.dismiss();
 	            }
 	            break;
 	        }

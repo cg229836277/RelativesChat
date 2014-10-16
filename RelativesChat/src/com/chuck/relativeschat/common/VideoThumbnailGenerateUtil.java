@@ -34,9 +34,11 @@ public class VideoThumbnailGenerateUtil {
 	
 	static final String LOG_TAG = "VideoThumbnailGenerateUtil";
 	private Context mContext;
+	FFmpegMediaMetadataRetriever fmmr = null;
 	
 	public VideoThumbnailGenerateUtil(Context context){
 		this.mContext = context;
+		fmmr = new FFmpegMediaMetadataRetriever();
 	}
 	
 	public void loadVideoBitmap(String url, ImageView imageView) {
@@ -221,7 +223,6 @@ public class VideoThumbnailGenerateUtil {
 	 */
 	public Bitmap getVideoThumbnail(String videoUrl){
 		Bitmap generateBitmap = null;
-		FFmpegMediaMetadataRetriever fmmr = new FFmpegMediaMetadataRetriever();
 		try {
 			fmmr.setDataSource(videoUrl);
 			generateBitmap = fmmr.getFrameAtTime();
@@ -245,5 +246,12 @@ public class VideoThumbnailGenerateUtil {
 			return generateBitmap;
 		}
 		return null;
+	}
+	
+	public void destoryFmmrInstance(){
+		if(fmmr != null){
+			fmmr.release();
+			fmmr = null;
+		}
 	}
 }
