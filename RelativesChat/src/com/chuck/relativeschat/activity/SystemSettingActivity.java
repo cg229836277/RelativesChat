@@ -6,7 +6,7 @@ import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
-import com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity;
+import com.chuck.relativeschat.qrcodescan.activity.QrCodeScanActivity;
 import com.chuck.relativeschat.tools.ImageLoadOptions;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;

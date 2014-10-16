@@ -13,11 +13,11 @@ import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.Share.activity.ShareToMyFriendActivity;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.common.ViewHolder;
+import com.chuck.relativeschat.share.activity.ShareToMyFriendActivity;
 import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;

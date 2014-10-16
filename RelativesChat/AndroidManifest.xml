@@ -166,17 +166,17 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.QrCodeScan.activity.QrCodeScanActivity"
+            android:name="com.chuck.relativeschat.qrcodescan.activity.QrCodeScanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.QrCodeScan.activity.MipcaCaptureActivity"
+            android:name="com.chuck.relativeschat.qrcodescan.activity.MipcaCaptureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.QrCodeScan.activity.GenerateQRCodeActivity"
+            android:name="com.chuck.relativeschat.qrcodescan.activity.GenerateQRCodeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
@@ -196,47 +196,47 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.ShareToMyFriendActivity"
+            android:name="com.chuck.relativeschat.share.activity.ShareToMyFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.ShareImageToFriendsActivity"
+            android:name="com.chuck.relativeschat.share.activity.ShareImageToFriendsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.FriendShareActivity"
+            android:name="com.chuck.relativeschat.share.activity.FriendShareActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.FeedbackFriendsShareActivity"
+            android:name="com.chuck.relativeschat.share.activity.FeedbackFriendsShareActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.ShareSoundToFriendsActivity"
+            android:name="com.chuck.relativeschat.share.activity.ShareSoundToFriendsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.ShareVideoToFriendsActivity"
+            android:name="com.chuck.relativeschat.share.activity.ShareVideoToFriendsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.RecordVideoToServerActivity"
+            android:name="com.chuck.relativeschat.share.activity.RecordVideoToServerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.ReviewRecordedVideoActivity"
+            android:name="com.chuck.relativeschat.share.activity.ReviewRecordedVideoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.chuck.relativeschat.Share.activity.PlaySharedVideoActivity"
+            android:name="com.chuck.relativeschat.share.activity.PlaySharedVideoActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>

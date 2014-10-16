@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.QrCodeScan.camera.CameraManager;
+import com.chuck.relativeschat.qrcodescan.camera.CameraManager;
 import com.google.zxing.ResultPoint;
 
 /**
