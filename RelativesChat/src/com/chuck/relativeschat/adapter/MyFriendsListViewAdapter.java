@@ -52,6 +52,27 @@ public class MyFriendsListViewAdapter extends FriendsBaseListAdapter<UserInfoBea
 			simpleUserNameText.setText(data.getUserName());
 		}
 		if(!StringUtils.isEmpty(data.getAvatorUrl())){
+//			ImageLoader.getInstance().loadImage(data.getAvatorUrl(), new ImageLoadingListener() {
+//				
+//				@Override
+//				public void onLoadingStarted(String imageUri, View view) {
+//					
+//				}
+//				
+//				@Override
+//				public void onLoadingFailed(String imageUri, View view,FailReason failReason) {	
+//				}
+//				
+//				@Override
+//				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//					
+//				}
+//				
+//				@Override
+//				public void onLoadingCancelled(String imageUri, View view) {
+//					
+//				}
+//			});
 			ImageLoader.getInstance().displayImage(data.getAvatorUrl(), simpleUserIconView, new ImageLoadingListener() {
 				
 				@Override

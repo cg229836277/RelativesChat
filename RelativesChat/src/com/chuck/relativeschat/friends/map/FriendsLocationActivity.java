@@ -14,6 +14,8 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
+
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Toast;
 
