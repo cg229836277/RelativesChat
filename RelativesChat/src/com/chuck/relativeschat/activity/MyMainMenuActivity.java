@@ -13,6 +13,7 @@ import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.entity.ShareFileBean;
+import com.chuck.relativeschat.friends.map.FriendsLocationActivity;
 import com.chuck.relativeschat.share.activity.FriendShareActivity;
 import com.chuck.relativeschat.share.activity.ShareImageToFriendsActivity;
 import com.chuck.relativeschat.share.activity.ShareSoundToFriendsActivity;
@@ -183,6 +184,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			intent = new Intent(this , FriendShareActivity.class);
 			break;
 		case R.id.music_layout:
+			intent = new Intent(this , FriendsLocationActivity.class);
 			break;
 		case R.id.main_menu_setting_layout:
 			intent = new Intent(this , SystemSettingActivity.class);
@@ -317,6 +319,17 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		setFriendsShareNumber(null);
+//		
+//		Thread testThread = new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				//这里写抓log的程序
+//			}
+//		});
+//		
+//		testThread.start();//开始抓log的线程 ，放在需要开始抓log的地方
+//		testThread.interrupt();//停止抓log的线程，放在需要停止的地方
 	}
 	
 	public void setFriendsShareNumber(final String flag){		

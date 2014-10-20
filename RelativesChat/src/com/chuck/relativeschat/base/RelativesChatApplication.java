@@ -1,15 +1,13 @@
 package com.chuck.relativeschat.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
+import com.baidu.mapapi.SDKInitializer;
 
-import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.tools.SharePreferenceUtil;
@@ -39,6 +37,8 @@ public class RelativesChatApplication extends Application {
 		super.onCreate();
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
+		
+		SDKInitializer.initialize(this);
 	}
 	
 	public BmobChatUser getCurrentUser() {
