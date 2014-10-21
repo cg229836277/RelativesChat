@@ -38,7 +38,7 @@ public class RelativesChatApplication extends Application {
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
 		
-		SDKInitializer.initialize(this);
+		SDKInitializer.initialize(this);		
 	}
 	
 	public BmobChatUser getCurrentUser() {

@@ -1,6 +1,7 @@
 package com.chuck.relativeschat.activity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +9,22 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.CountListener;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.entity.ShareFileBean;
 import com.chuck.relativeschat.friends.map.FriendsLocationActivity;
+import com.chuck.relativeschat.service.GetUserLocationService;
 import com.chuck.relativeschat.share.activity.FriendShareActivity;
 import com.chuck.relativeschat.share.activity.ShareImageToFriendsActivity;
 import com.chuck.relativeschat.share.activity.ShareSoundToFriendsActivity;
@@ -24,17 +35,29 @@ import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 
@@ -58,11 +81,13 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	private TextView friendsShareNumber;
 	private TextView shareVideoNumberText;
 	private int count = 0;
+	private GetUserLocationService  mMyService;  
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_main_menu);
+			
 		bindEvent();
 	}
 	
@@ -184,7 +209,8 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			intent = new Intent(this , FriendShareActivity.class);
 			break;
 		case R.id.music_layout:
-			intent = new Intent(this , FriendsLocationActivity.class);
+//			intent = new Intent(this , FriendsLocationActivity.class);
+			intent = new Intent(this , BaiduMapTestActivity.class);
 			break;
 		case R.id.main_menu_setting_layout:
 			intent = new Intent(this , SystemSettingActivity.class);
@@ -319,17 +345,6 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		setFriendsShareNumber(null);
-//		
-//		Thread testThread = new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				//这里写抓log的程序
-//			}
-//		});
-//		
-//		testThread.start();//开始抓log的线程 ，放在需要开始抓log的地方
-//		testThread.interrupt();//停止抓log的线程，放在需要停止的地方
 	}
 	
 	public void setFriendsShareNumber(final String flag){		
@@ -366,4 +381,25 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			}
 		});
 	}
+
+    private ServiceConnection mConnection = new ServiceConnection() {  
+        public void onServiceConnected(ComponentName className,IBinder localBinder) {  
+        	mMyService = ((GetUserLocationService.MyBinder)localBinder).getService();  
+        }  
+        public void onServiceDisconnected(ComponentName arg0) {  
+        	mMyService = null;  
+        }  
+    }; 
+
+    protected void onStart() {  
+        super.onStart();  
+        Intent intent = new Intent(this, GetUserLocationService.class);  
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);  
+    }  
+    
+    @Override
+    protected void onDestroy() {
+    	unbindService(mConnection);  
+    	super.onDestroy();
+    }		
 }

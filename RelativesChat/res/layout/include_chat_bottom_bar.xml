@@ -20,8 +20,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/btn_chat_add_selector"
-            android:gravity="center"
-            android:onClick="toAction" />
+            android:gravity="center" />
 
       <!--  <Button
             android:id="@+id/btn_chat_emo"
