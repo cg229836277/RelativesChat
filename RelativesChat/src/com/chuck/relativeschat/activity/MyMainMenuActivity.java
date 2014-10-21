@@ -324,7 +324,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		dialog.show();
 		File videoCacheFileDir = new File(BmobConstants.RECORD_VIDEO_CACHE_PATH);
 		File[] cacheVideoFiles = videoCacheFileDir.listFiles();
-		if(cacheVideoFiles.length > 0){
+		if(cacheVideoFiles != null && cacheVideoFiles.length > 0){
 			for(int i = 0 ; i < cacheVideoFiles.length ; i++){
 				if(cacheVideoFiles[i] != null && cacheVideoFiles[i].exists()){
 					cacheVideoFiles[i].delete();

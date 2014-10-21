@@ -101,7 +101,9 @@ public class VideoRecorderManager extends MediaRecorder implements OnErrorListen
 	
 	public void initCamera(){
 		camera = Camera.open();
-		cameraParas = camera.getParameters();
+		if(camera != null){
+			cameraParas = camera.getParameters();
+		}
 	}
 	
 	public void startPreView(){		
