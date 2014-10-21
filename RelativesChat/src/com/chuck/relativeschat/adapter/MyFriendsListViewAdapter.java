@@ -3,22 +3,15 @@ package com.chuck.relativeschat.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cn.bmob.im.bean.BmobChatUser;
-
 import com.chuck.relativeschat.R;
-import com.chuck.relativeschat.base.RelativesChatApplication;
-import com.chuck.relativeschat.bean.UserBean;
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.common.ViewHolder;
-import com.chuck.relativeschat.share.activity.ShareToMyFriendActivity;
-import com.chuck.relativeschat.tools.IsListNotNull;
 import com.chuck.relativeschat.tools.PhotoUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
