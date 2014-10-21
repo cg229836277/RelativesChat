@@ -99,6 +99,7 @@ public class GetUserLocationService extends Service{
             }else{
                 Log.d("Location", "Latitude: " + 0);
                 Log.d("Location", "location: " + 0);
+                break;
             }
         }
 	}
