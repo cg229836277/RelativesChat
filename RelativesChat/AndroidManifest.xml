@@ -180,6 +180,11 @@
             android:name="com.chuck.relativeschat.service.GetUserLocationService"
             android:enabled="true"> 
         </service>
+        <service  
+            android:name="com.baidu.location.f"  
+            android:enabled="true"  
+            android:process=":remote" >  
+        </service>
         <activity
             android:name="com.chuck.relativeschat.activity.UserListViewActivity"
             android:screenOrientation="portrait"
