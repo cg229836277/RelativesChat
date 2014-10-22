@@ -224,11 +224,11 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 			ImageView thumbNailImage = ViewHolder.get(convertView, R.id.share_small_image);	
 			if(data != null){
 				String desc = null;
-				if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("0")){
+				if(rcApp.getCurrentUser().getUsername().equals(data.getShareUser()) && "0".equals(data.getIsShareToAll())){
 					desc = "我在" + data.getCreatedAt() + "分享了视频给" + data.getShareTo();					
-				}else if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("1")){
+				}else if(rcApp.getCurrentUser().getUsername().equals(data.getShareUser()) && "1".equals(data.getIsShareToAll())){
 					desc = "我在" + data.getCreatedAt() + "分享了视频给大家";
-				}else if(userManager.getCurrentUserName().equals(data.getShareTo()) && "0".equals(data.getIsShareToAll())){
+				}else if(rcApp.getCurrentUser().getUsername().equals(data.getShareTo()) && "0".equals(data.getIsShareToAll())){
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"给我分享了视频";
 				}else{				
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"分享了视频";

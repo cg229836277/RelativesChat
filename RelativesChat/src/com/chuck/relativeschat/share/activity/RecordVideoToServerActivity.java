@@ -24,8 +24,6 @@ public class RecordVideoToServerActivity extends BaseActivity implements Surface
 	private Button startTakeVideo;// 开始录制按钮  
     private VideoRecorderManager mediarecorder;// 录制视频的类  
     private SurfaceView surfaceview;// 显示视频的控件  
-    // 用来显示视频的一个接口，我靠不用还不行，也就是说用mediarecorder录制视频还得给个界面看  
-    // 想偷偷录视频的同学可以考虑别的办法。。嗯需要实现这个接口的Callback接口  
     private SurfaceHolder surfaceHolder;  
 	
 	@Override

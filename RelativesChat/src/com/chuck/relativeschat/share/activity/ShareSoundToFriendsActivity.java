@@ -325,13 +325,15 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 //			final SeekBar audioSeekBar = ViewHolder.get(convertView, R.id.audio_seek_bar);	 
 			if(data != null){
 				String desc = null;
-				if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("0")){
+				if(rcApp.getCurrentUser().getUsername().equals(data.getShareUser()) && "0".equals(data.getIsShareToAll())){
 					desc = "我在" + data.getCreatedAt() + "分享了语音给" + data.getShareTo();					
-				}else if(data.getShareUser().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("1")){
+				}else if(rcApp.getCurrentUser().getUsername().equals(data.getShareUser()) && "1".equals(data.getIsShareToAll())){
 					desc = "我在" + data.getCreatedAt() + "分享了语音给大家";
-				}else if(data.getShareTo().equals(userManager.getCurrentUserName()) && data.getIsShareToAll().equals("1")){
+				}else if(rcApp.getCurrentUser().getUsername().equals(data.getShareTo()) && "1".equals(data.getIsShareToAll())){
 					desc = data.getShareUser() + "在" + data.getCreatedAt() +"给我分享了语音";
-				}				
+				}else{				
+					desc = data.getShareUser() + "在" + data.getCreatedAt() +"分享了语音";
+				}
 				shareDesc.setText(desc);
 				playImage.setTag(data.getFilePath());
 			}
