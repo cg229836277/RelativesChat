@@ -1,7 +1,6 @@
 package com.chuck.relativeschat.activity;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,20 +9,11 @@ import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.CountListener;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.entity.ShareFileBean;
-import com.chuck.relativeschat.friends.map.FriendsLocationActivity;
 import com.chuck.relativeschat.service.GetUserLocationService;
 import com.chuck.relativeschat.share.activity.FriendShareActivity;
 import com.chuck.relativeschat.share.activity.ShareImageToFriendsActivity;
@@ -41,23 +31,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 
