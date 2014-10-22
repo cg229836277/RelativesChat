@@ -1,5 +1,12 @@
 package com.chuck.relativeschat.service;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.chuck.relativeschat.activity.BaiduMapTestActivity.MyLocationListenner;
 import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.entity.PersonBean;
 
@@ -26,6 +33,9 @@ import android.util.Log;
 public class GetUserLocationService extends Service{
 
 	private RelativesChatApplication rcApp;
+	// 定位相关
+	LocationClient mLocClient;
+	public MyLocationListenner myListener = new MyLocationListenner();
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -51,85 +61,50 @@ public class GetUserLocationService extends Service{
 		super.unbindService(conn);
 	}
 	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();		
+	public void getCurrentUserLocation(){
+		mLocClient = new LocationClient(getApplicationContext());
+		mLocClient.registerLocationListener(myListener);
+		LocationClientOption option = new LocationClientOption();
+		option.setOpenGps(true);// 打开gps
+		option.setCoorType("bd09ll"); // 设置坐标类型
+		option.setScanSpan(1000 * 60 * 60);
+		mLocClient.setLocOption(option);
+		mLocClient.start();
 	}
 	
-	public void getCurrentUserLocation(){
-		//获取到LocationManager对象
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //创建一个Criteria对象
-        Criteria criteria = new Criteria();
-        //设置粗略精确度
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        //设置是否需要返回海拔信息
-        criteria.setAltitudeRequired(false);
-        //设置是否需要返回方位信息
-        criteria.setBearingRequired(false);
-        //设置是否允许付费服务
-        criteria.setCostAllowed(true);
-        //设置电量消耗等级
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        //设置是否需要返回速度信息
-        criteria.setSpeedRequired(false);
- 
-        //根据设置的Criteria对象，获取最符合此标准的provider对象
-        String currentProvider = locationManager.getBestProvider(criteria, true);
-        Log.d("Location", "currentProvider: " + currentProvider);
-        //根据当前provider对象获取最后一次位置信息
-        Location currentLocation = locationManager.getLastKnownLocation(currentProvider);
-        //如果位置信息为null，则请求更新位置信息
-        if(currentLocation == null){
-            locationManager.requestLocationUpdates(currentProvider, 0, 0, locationListener);
-        }
-        //直到获得最后一次位置信息为止，如果未获得最后一次位置信息，则显示默认经纬度
-        //每隔10秒获取一次位置信息
-        while(true){
-            currentLocation = locationManager.getLastKnownLocation(currentProvider);
-            if(currentLocation != null){
-                Log.d("Location", "Latitude: " + currentLocation.getLatitude());
-                Log.d("Location", "location: " + currentLocation.getLongitude()); 
-                
+	/**
+	 * 定位SDK监听函数
+	 */
+	public class MyLocationListenner implements BDLocationListener {
+
+		@Override
+		public void onReceiveLocation(BDLocation location) {
+			// map view 销毁后不在处理新接收的位置
+			if (location == null)
+				return;
+			MyLocationData locData = new MyLocationData.Builder()
+					.accuracy(location.getRadius())
+					// 此处设置开发者获取到的方向信息，顺时针0-360
+					.direction(100).latitude(location.getLatitude())
+					.longitude(location.getLongitude()).build();
+				LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+				Log.d("getLatitude", "" + location.getLatitude());
+				Log.d("getLongitude", "" + location.getLongitude());
+				
                 PersonBean personBean = new PersonBean();
-                personBean.setAddress(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
+                personBean.setAddress(location.getLatitude() + "," + location.getLongitude());
                 personBean.setObjectId(rcApp.getCurrentUser().getObjectId());
                 personBean.update(getApplicationContext());
-                break;
-            }else{
-                Log.d("Location", "Latitude: " + 0);
-                Log.d("Location", "location: " + 0);
-                break;
-            }
-        }
+		}
+
+		public void onReceivePoi(BDLocation poiLocation) {
+		}
 	}
 	
-	//创建位置监听器
-    private LocationListener locationListener = new LocationListener(){
-        //位置发生改变时调用
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.d("Location", "onLocationChanged");
-            Log.d("Location", "onLocationChanged Latitude" + location.getLatitude());
-            Log.d("Location", "onLocationChanged location" + location.getLongitude());
-        }
-
-        //provider失效时调用
-        @Override
-        public void onProviderDisabled(String provider) {
-            Log.d("Location", "onProviderDisabled");
-        }
-
-        //provider启用时调用
-        @Override
-        public void onProviderEnabled(String provider) {
-            Log.d("Location", "onProviderEnabled");
-        }
-
-        //状态改变时调用
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.d("Location", "onStatusChanged");
-        }
-    };
+	@Override
+	public void onDestroy() {
+		// 退出时销毁定位
+		mLocClient.stop();
+		super.onDestroy();
+	}
 }

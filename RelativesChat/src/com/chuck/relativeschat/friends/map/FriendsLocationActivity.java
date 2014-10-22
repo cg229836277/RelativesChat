@@ -146,10 +146,10 @@ public class FriendsLocationActivity extends BaseActivity implements OnGetGeoCod
 			mToast.showMyToast("抱歉，未能找到结果", Toast.LENGTH_SHORT);
 			return;
 		}
-		mBaiduMap.clear();
+//		mBaiduMap.clear();
 		mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result.getLocation()));
-		mToast.showMyToast(result.getAddress(), Toast.LENGTH_SHORT);
+//		mToast.showMyToast(result.getAddress(), Toast.LENGTH_SHORT);
 		System.out.println("地址是" + result.getAddress());
 	}
 

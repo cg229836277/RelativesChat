@@ -14,6 +14,7 @@ import com.chuck.relativeschat.base.RelativesChatApplication;
 import com.chuck.relativeschat.common.BmobConstants;
 import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.entity.ShareFileBean;
+import com.chuck.relativeschat.friends.map.FriendsLocationActivity;
 import com.chuck.relativeschat.service.GetUserLocationService;
 import com.chuck.relativeschat.share.activity.FriendShareActivity;
 import com.chuck.relativeschat.share.activity.ShareImageToFriendsActivity;
@@ -191,8 +192,8 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			intent = new Intent(this , FriendShareActivity.class);
 			break;
 		case R.id.music_layout:
-//			intent = new Intent(this , FriendsLocationActivity.class);
-			intent = new Intent(this , BaiduMapTestActivity.class);
+			intent = new Intent(this , FriendsLocationActivity.class);
+//			intent = new Intent(this , BaiduMapTestActivity.class);
 			break;
 		case R.id.main_menu_setting_layout:
 			intent = new Intent(this , SystemSettingActivity.class);
