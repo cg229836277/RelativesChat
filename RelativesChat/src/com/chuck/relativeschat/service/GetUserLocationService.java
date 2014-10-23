@@ -91,6 +91,8 @@ public class GetUserLocationService extends Service{
 				Log.d("getLatitude", "" + location.getLatitude());
 				Log.d("getLongitude", "" + location.getLongitude());
 				
+				rcApp.setCurrentUserLocation(ll);			
+				
                 PersonBean personBean = new PersonBean();
                 personBean.setAddress(location.getLatitude() + "," + location.getLongitude());
                 personBean.setObjectId(rcApp.getCurrentUser().getObjectId());

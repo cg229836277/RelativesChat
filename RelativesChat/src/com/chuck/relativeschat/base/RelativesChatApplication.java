@@ -7,6 +7,7 @@ import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
 
 import com.chuck.relativeschat.bean.UserInfoBean;
 import com.chuck.relativeschat.entity.PersonBean;
@@ -31,6 +32,7 @@ public class RelativesChatApplication extends Application {
 	private Map<String, BmobChatUser> contactList /*= new HashMap<String, BmobChatUser>()*/;
 	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
 	public UserInfoBean currentUserInfoData;
+	public LatLng currentUserLocation; 
 	
 	@Override
 	public void onCreate() {
@@ -132,5 +134,13 @@ public class RelativesChatApplication extends Application {
 
 	public void setCurrentUserInfoData(UserInfoBean currentUserInfoData) {
 		this.currentUserInfoData = currentUserInfoData;
+	}
+
+	public LatLng getCurrentUserLocation() {
+		return currentUserLocation;
+	}
+
+	public void setCurrentUserLocation(LatLng currentUserLocation) {
+		this.currentUserLocation = currentUserLocation;
 	}
 }

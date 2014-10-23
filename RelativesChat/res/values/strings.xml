@@ -67,7 +67,7 @@
     <string name="main_menu_user_photo">分享萌图片</string>
     <string name="main_menu_user_sound">分享声音</string>
     <string name="main_menu_user_video">分享短视频</string>
-    <string name="main_menu_user_music">分享好音乐</string>
+    <string name="main_menu_user_location">好友位置</string>
     <string name="main_menu_user_setting">设置</string>
     <string name="main_menu_user_no_user">暂时没有好友</string>
     <string name="main_menu_user_no_videos">暂时没有好友分享视频</string>

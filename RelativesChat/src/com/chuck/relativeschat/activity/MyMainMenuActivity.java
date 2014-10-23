@@ -46,7 +46,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 
 	private int[] parentViewId = {R.id.user_layout_child_1 , R.id.sound_layout,
 			R.id.photo_layout , R.id.main_menu_video_layout , R.id.share_layout,
-			R.id.music_layout , R.id.main_menu_setting_layout};
+			R.id.friends_map_layout , R.id.main_menu_setting_layout};
 	
 	private LinearLayout parentViewLayout;//正对多个icon的父视图
 	private LinearLayout userParentLayout;//好友图标的父视图，单独处理
@@ -85,7 +85,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		initImageView();
 		initVideoView();
 		initPhotoView();
-		initMusicView();
+		initFriendsMapView();
 		initSettingView();
 	}
 	
@@ -161,7 +161,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	 * @author chengang
 	 * @date 2014-8-15 上午10:44:28
 	 */
-	public void initMusicView(){
+	public void initFriendsMapView(){
 		
 	}
 	
@@ -191,7 +191,7 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		case R.id.share_layout:
 			intent = new Intent(this , FriendShareActivity.class);
 			break;
-		case R.id.music_layout:
+		case R.id.friends_map_layout:
 			intent = new Intent(this , FriendsLocationActivity.class);
 //			intent = new Intent(this , BaiduMapTestActivity.class);
 			break;
