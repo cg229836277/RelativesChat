@@ -283,46 +283,32 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
 		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
-			DialogTips dialog = new DialogTips(MyMainMenuActivity.this, "提示", "退出系统!", "确认", true, true);
-			dialog.SetOnSuccessListener(new DialogInterface.OnClickListener(){
-
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					logoutSystem();
-					deleteCacheVideoFile();
-					finish();
-				}				
-			});
-			
-			dialog.show();
-			dialog = null;
-			
+			logoutSystem();						
 			return true;
-		}
-		
+		}		
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	public void deleteCacheVideoFile(){
-		dialog.show();
-		File videoCacheFileDir = new File(BmobConstants.RECORD_VIDEO_CACHE_PATH);
-		File[] cacheVideoFiles = videoCacheFileDir.listFiles();
-		if(cacheVideoFiles != null && cacheVideoFiles.length > 0){
-			for(int i = 0 ; i < cacheVideoFiles.length ; i++){
-				if(cacheVideoFiles[i] != null && cacheVideoFiles[i].exists()){
-					cacheVideoFiles[i].delete();
-				}
-			}
-		}
-		dialog.dismiss();
-	}
-	
-	public void logoutSystem(){
-		BmobUserManager.getInstance(getApplicationContext()).logout();
-		rcApp.setContactList(null);
-		rcApp.setCurrentUser(null);
-		rcApp.setPersonDetailData(null);
-	}
+//	public void deleteCacheVideoFile(){
+//		dialog.show();
+//		File videoCacheFileDir = new File(BmobConstants.RECORD_VIDEO_CACHE_PATH);
+//		File[] cacheVideoFiles = videoCacheFileDir.listFiles();
+//		if(cacheVideoFiles != null && cacheVideoFiles.length > 0){
+//			for(int i = 0 ; i < cacheVideoFiles.length ; i++){
+//				if(cacheVideoFiles[i] != null && cacheVideoFiles[i].exists()){
+//					cacheVideoFiles[i].delete();
+//				}
+//			}
+//		}
+//		dialog.dismiss();
+//	}
+//	
+//	public void logoutSystem(){
+//		BmobUserManager.getInstance(getApplicationContext()).logout();
+//		rcApp.setContactList(null);
+//		rcApp.setCurrentUser(null);
+//		rcApp.setPersonDetailData(null);
+//	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -352,9 +338,17 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 			@Override
 			public void onSuccess(int arg0) {
 				if(StringUtils.isEmpty(flag)){
-					friendsShareNumber.setText("" + arg0);	
+					if(arg0 > 100){
+						friendsShareNumber.setText("+" + 99);	
+					}else{
+						friendsShareNumber.setText("" + arg0);
+					}
 				}else if(!StringUtils.isEmpty(flag) && flag.equals(ShareFileBean.VIDEO)){
-					shareVideoNumberText.setText("" + arg0);	
+					if(arg0 > 100){
+						shareVideoNumberText.setText("+" + 99);	
+					}else{
+						shareVideoNumberText.setText("" + arg0);	
+					}
 				}
 			}
 			

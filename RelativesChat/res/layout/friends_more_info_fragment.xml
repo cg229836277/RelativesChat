@@ -34,8 +34,18 @@
 	    	    android:layout_height="6dp"/>
 	    	
 	    	<include android:id="@+id/two_dimensional_scan_layout" 
-	    	    layout="@layout/simple_friends_list"  />	
+	    	    layout="@layout/simple_friends_list"  />
+	    		    		    	
+	    	<View android:layout_width="fill_parent"
+	    	    android:layout_height="6dp"/>
 	    	
+	    	<Button android:id="@+id/logout_btn"
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:gravity="center"
+	    	    style="@style/text_medium_white"
+	    	    android:text="@string/logout"
+	    	    android:background="@drawable/login_btn_background_out" />	    		    	
 	    </LinearLayout>
     </ScrollView>
 

@@ -30,6 +30,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @Title：FashionDIY
+ * @Description：
+ * @date 2014-10-23 下午2:45:36
+ * @author chengang
+ * @version 1.0
+ */
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private Button registBtn;
@@ -55,6 +63,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		bindEvent();
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @author chengang
+	 * @date 2014-10-23 下午2:19:51
+	 */
 	public void bindEvent(){
 		registBtn = (Button)findViewById(R.id.regist_account_btn);
 		registBtn.setOnClickListener(this);

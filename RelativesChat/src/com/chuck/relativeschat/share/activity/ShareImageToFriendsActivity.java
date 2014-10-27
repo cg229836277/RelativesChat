@@ -478,7 +478,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 		fileDataBean.setFileName(tempFile.getFilename());
 		fileDataBean.setFilePath(tempFile.getFileUrl());
 		fileDataBean.setFileType(ShareFileBean.PHOTO);
-		fileDataBean.setShareUser(userManager.getCurrentUserName());		
+		fileDataBean.setShareUser(rcApp.getCurrentUser().getUsername());		
 		if(!StringUtils.isEmpty(shareToUserName)){
 			fileDataBean.setShareTo(shareToUserName);
 			fileDataBean.setIsShareToAll("0");

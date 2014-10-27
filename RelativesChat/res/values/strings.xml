@@ -77,15 +77,5 @@
     <string name="redraw_image">重画</string>
     <string name="send">发送</string>
     <string name="save_to_local">本地保存</string>
-    <string name="title_activity_friend_share">FriendShareActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_watch_share_image">WatchShareImageActivity</string>
-    <string name="title_activity_feedback_friends_share">FeedbackFriendsShareActivity</string>
-    <string name="title_activity_share_sound_to_friends">ShareSoundToFriendsActivity</string>
-    <string name="title_activity_share_video_to_friends">ShareVideoToFriendsActivity</string>
-    <string name="title_activity_record_video_to_server">RecordVideoToServerActivity</string>
-    <string name="title_activity_review_recorded_video">ReviewRecordedVideoActivity</string>
-    <string name="title_activity_play_shared_video">PlaySharedVideoActivity</string>
-    <string name="title_activity_friends_location">FriendsLocationActivity</string>
-
+	<string name="logout">退出系统</string>
 </resources>

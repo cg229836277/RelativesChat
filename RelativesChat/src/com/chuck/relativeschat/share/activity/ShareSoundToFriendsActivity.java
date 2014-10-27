@@ -180,7 +180,7 @@ public class ShareSoundToFriendsActivity extends BaseActivity implements IXListV
 				shareBean.setFileType(ShareFileBean.SOUNG);
 				shareBean.setFilePath(file.getFileUrl());
 				shareBean.setFileName(file.getFilename());
-				shareBean.setShareUser(userManager.getCurrentUserName());
+				shareBean.setShareUser(rcApp.getCurrentUser().getUsername());
 				shareBean.setIsGoodNumber("0");
 				if(!StringUtils.isEmpty(shareToUserName)){
 					shareBean.setShareTo(shareToUserName);

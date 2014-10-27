@@ -92,7 +92,7 @@ public class ReviewRecordedVideoActivity extends BaseActivity {
 				shareBean.setFileType(ShareFileBean.VIDEO);
 				shareBean.setFilePath(file.getFileUrl());
 				shareBean.setFileName(file.getFilename());
-				shareBean.setShareUser(userManager.getCurrentUserName());
+				shareBean.setShareUser(rcApp.getCurrentUser().getUsername());
 				shareBean.setIsGoodNumber("0");
 				if(!StringUtils.isEmpty(shareToUserName)){
 					shareBean.setShareTo(shareToUserName);

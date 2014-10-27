@@ -133,7 +133,7 @@ public class FriendsLocationActivity extends BaseActivity{
 				
 				bd = BitmapDescriptorFactory.fromBitmap(dstbmp);
 
-				OverlayOptions oo = new MarkerOptions().position(ll).icon(bd).zIndex(100).draggable(true);
+				OverlayOptions oo = new MarkerOptions().position(ll).icon(bd).zIndex(12).draggable(true);
 				mMarker = (Marker) (mBaiduMap.addOverlay(oo));
 			}
 

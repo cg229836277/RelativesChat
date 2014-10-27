@@ -4,6 +4,7 @@ import cn.bmob.im.bean.BmobChatUser;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.base.RelativesChatApplication;
+import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.common.HeadViewLayout;
 import com.chuck.relativeschat.entity.PersonBean;
 import com.chuck.relativeschat.qrcodescan.activity.QrCodeScanActivity;
@@ -13,11 +14,13 @@ import com.chuck.relativeschat.tools.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.Bundle;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ public class SystemSettingActivity extends BaseActivity implements OnClickListen
 	private int[] viewIds = {R.id.current_user_info_layout , R.id.current_add_friends_layout , 
 			R.id.add_friends_message_layout , R.id.two_dimensional_scan_layout};
 	public static final int VIEWCOUNT = 3; 
+	private Button logoutBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,9 @@ public class SystemSettingActivity extends BaseActivity implements OnClickListen
 		rcApp = (RelativesChatApplication)getApplication();
 		
 		currentUser = rcApp.getCurrentUser();
+		
+		logoutBtn = (Button)findViewById(R.id.logout_btn);
+		logoutBtn.setOnClickListener(this);
 		
 		initView(false);
 	}
@@ -69,6 +76,9 @@ public class SystemSettingActivity extends BaseActivity implements OnClickListen
 			break;
 		case R.id.two_dimensional_scan_layout:
 			intent = new Intent(getApplicationContext() , QrCodeScanActivity.class);
+			break;
+		case R.id.logout_btn:
+			logoutSystem();
 			break;
 		default:
 			break;

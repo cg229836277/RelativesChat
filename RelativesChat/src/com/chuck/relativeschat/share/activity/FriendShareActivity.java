@@ -14,6 +14,7 @@ import com.chuck.relativeschat.adapter.FriendsBaseListAdapter;
 import com.chuck.relativeschat.bean.UserShareFileBean;
 import com.chuck.relativeschat.common.BitmapConcurrencyDealUtil;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.common.VideoThumbnailGenerateUtil;
 import com.chuck.relativeschat.common.ViewHolder;
 import com.chuck.relativeschat.entity.FileRemarkBean;
 import com.chuck.relativeschat.entity.ShareFileBean;
@@ -30,6 +31,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,6 +55,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 	private int PAGE_INDEX = 1;
 	private DisplayImageOptions options;
 	BitmapConcurrencyDealUtil dealUtil = null;
+	VideoThumbnailGenerateUtil videoDealUtil = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -244,6 +247,7 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 //			imageCache = new BitmapCacheUtil();
 			
 			dealUtil = new BitmapConcurrencyDealUtil(getApplicationContext());
+			videoDealUtil = new VideoThumbnailGenerateUtil(getApplicationContext());
 		}
 
 		@Override
@@ -282,6 +286,8 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 						fileType = "音乐";
 					}else if(fileType.equals(ShareFileBean.VIDEO)){
 						fileType = "短视频";
+						smallImageView.setTag(data);
+						setSmallImageView(data, smallImageView);
 					}else if(fileType.equals(ShareFileBean.SOUNG)){
 						fileType = "语音";
 						smallImageView.setVisibility(View.GONE);
@@ -313,7 +319,13 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			
 			switch (arg0.getId()) {
 			case R.id.share_small_image:
-				expandSmallImageView(arg0);
+				if(tempData != null && ShareFileBean.VIDEO.equals(tempData.getFileType())){
+					Intent playVideoIntent = new Intent(FriendShareActivity.this , PlaySharedVideoActivity.class);
+					playVideoIntent.putExtra(PlaySharedVideoActivity.VIDEO_URL, tempData.getFileUrl());
+					startActivity(playVideoIntent);
+				}else{			
+					expandSmallImageView(arg0);
+				}
 				break;
 			case R.id.feedback_share_layout:
 				
@@ -334,45 +346,12 @@ public class FriendShareActivity extends BaseActivity implements IXListViewListe
 			}
 		}
 		
-		public void setSmallImageView(UserShareFileBean data , final ImageView smallImage){		
-//			boolean isCacheExist = imageCache.loadBitmap(data.getFileUrl(), smallImage);
-//			if(!isCacheExist){
-//				imageLoader.displayImage(data.getFileUrl(), smallImage, options, new SimpleImageLoadingListener() {
-//					@Override
-//					public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//						String message = null;
-//						switch (failReason.getType()) {
-//							case IO_ERROR:
-//								message = "Input/Output error";
-//								break;
-//							case DECODING_ERROR:
-//								message = "Image can't be decoded";
-//								break;
-//							case NETWORK_DENIED:
-//								message = "Downloads are denied";
-//								break;
-//							case OUT_OF_MEMORY:
-//								message = "Out Of Memory error";
-//								break;
-//							case UNKNOWN:
-//								message = "Unknown error";
-//								break;
-//						}
-//						Toast.makeText(FriendShareActivity.this, message, Toast.LENGTH_SHORT).show();
-//					}
-//
-//					@Override
-//					public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//						smallImage.setTag(loadedImage);
-//						imageCache.addBitmapToMemoryCache(imageUri, loadedImage);
-////						BitmapUtils.decodeSampledBitmapFromResource(getResources(), R.id.share_small_image, 72, 72);
-//						Bitmap newBitmap = ThumbnailUtils.extractThumbnail(loadedImage, 72,72);
-//						smallImage.setImageBitmap(newBitmap);		
-//					}
-//				});
-//			}
-//			imageDownloader.download(data.getFileUrl(), smallImage);
-			dealUtil.loadBitmap(data.getFileUrl(), smallImage);
+		public void setSmallImageView(UserShareFileBean data , final ImageView smallImage){
+			if(ShareFileBean.PHOTO.equals(data.getFileType())){
+				dealUtil.loadBitmap(data.getFileUrl(), smallImage);
+			}else if(ShareFileBean.VIDEO.equals(data.getFileType())){
+				videoDealUtil.loadVideoBitmap(data.getFileUrl(), smallImage);
+			}
 		}
 		
 		public void remarkByGood(final UserShareFileBean data){
