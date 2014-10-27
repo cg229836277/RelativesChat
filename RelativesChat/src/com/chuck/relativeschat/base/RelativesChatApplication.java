@@ -15,6 +15,7 @@ import com.chuck.relativeschat.tools.SharePreferenceUtil;
 import com.chuck.relativeschat.tools.StringUtils;
 
 import android.app.Application;
+import android.util.DisplayMetrics;
 
 /**
  * @Title：SAFEYE@
@@ -33,12 +34,17 @@ public class RelativesChatApplication extends Application {
 	public boolean isExistMoreInfoMessage;//更多里面是否存在消息
 	public UserInfoBean currentUserInfoData;
 	public LatLng currentUserLocation; 
+	public int screenWidth;
+	public int screenHeight;
+	private DisplayMetrics dm = null;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
+		
+		dm =getResources().getDisplayMetrics();  
 		
 		SDKInitializer.initialize(this);		
 	}
@@ -142,5 +148,13 @@ public class RelativesChatApplication extends Application {
 
 	public void setCurrentUserLocation(LatLng currentUserLocation) {
 		this.currentUserLocation = currentUserLocation;
+	}
+	
+	public int getScreenWidth(){
+		return dm.widthPixels;
+	}
+	
+	public int getScreenHeight(){
+		return dm.heightPixels;
 	}
 }

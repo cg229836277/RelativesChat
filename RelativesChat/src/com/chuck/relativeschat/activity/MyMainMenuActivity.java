@@ -38,6 +38,7 @@ import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -217,7 +218,15 @@ public class MyMainMenuActivity extends BaseActivity implements OnClickListener{
 		
 		if(intent != null){
 			startActivityForResult(intent, 0);
-		}
+			overridePendingTransition(R.anim.top_in, R.anim.bottom_out);
+			
+//			TranslateAnimation transInAni = new TranslateAnimation(-(float)rcApp.getScreenHeight(), 0, 0, 0);
+//			TranslateAnimation transOutAni = new TranslateAnimation(0, 0, 0, (float)rcApp.getScreenHeight());
+//			transInAni.setDuration(600);
+//			transOutAni.setDuration(600);
+//			transOutAni.startNow();
+//			transInAni.startNow();			
+		}		
 	}
 	
 	public void initUserViewData(){

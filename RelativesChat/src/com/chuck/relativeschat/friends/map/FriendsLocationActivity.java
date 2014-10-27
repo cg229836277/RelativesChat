@@ -134,7 +134,9 @@ public class FriendsLocationActivity extends BaseActivity{
 				bd = BitmapDescriptorFactory.fromBitmap(dstbmp);
 
 				OverlayOptions oo = new MarkerOptions().position(ll).icon(bd).zIndex(12).draggable(true);
-				mMarker = (Marker) (mBaiduMap.addOverlay(oo));
+				if(mBaiduMap != null){
+					mMarker = (Marker) (mBaiduMap.addOverlay(oo));
+				}
 			}
 
 			@Override
@@ -160,9 +162,13 @@ public class FriendsLocationActivity extends BaseActivity{
 
 	@Override
 	protected void onDestroy() {
+		super.onDestroy();
 		// MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
 		mMapView.onDestroy();
-		super.onDestroy();
+		
+		if(mBaiduMap != null){
+			mBaiduMap = null;
+		}
 		// 回收 bitmap 资源
 		bd.recycle();
 		bdGround.recycle();
