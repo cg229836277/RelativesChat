@@ -192,11 +192,9 @@ public class MipcaCaptureActivity extends BaseActivity implements Callback {
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			mediaPlayer.setOnCompletionListener(beepListener);
 
-			AssetFileDescriptor file = getResources().openRawResourceFd(
-					R.raw.beep);
+			AssetFileDescriptor file = getResources().openRawResourceFd(R.raw.beep);
 			try {
-				mediaPlayer.setDataSource(file.getFileDescriptor(),
-						file.getStartOffset(), file.getLength());
+				mediaPlayer.setDataSource(file.getFileDescriptor(),file.getStartOffset(), file.getLength());
 				file.close();
 				mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
 				mediaPlayer.prepare();

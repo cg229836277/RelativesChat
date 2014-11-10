@@ -46,15 +46,16 @@ public class VideoThumbnailGenerateUtil {
 	 * @param imageView 显示略缩图的ImageView控件
 	 */
 	public void loadVideoBitmap(String url, ImageView imageView) {
-	   Bitmap bitmap = getBitmapFromCache(url);
-	   if (bitmap == null) {
-	       forceDownload(url, imageView);
-	   } else {
-		   imageView.setVisibility(View.VISIBLE);
-	       cancelPotentialDownload(url, imageView);	      
-//	       imageView.setTag(bitmap);
-	       imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, 72,72));
-	   }
+		System.out.println("正在获取视频的略缩图");
+		Bitmap bitmap = getBitmapFromCache(url);
+		if (bitmap == null) {
+			forceDownload(url, imageView);
+		} else {
+			imageView.setVisibility(View.VISIBLE);
+			cancelPotentialDownload(url, imageView);
+			// imageView.setTag(bitmap);
+			imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap,72, 72));
+		}
 	}
 	
 	/**
@@ -168,13 +169,19 @@ public class VideoThumbnailGenerateUtil {
 			private String url;
 
 		    public BitmapWorkerTask(ImageView imageView) {
+		    	if(imageView == null){
+		    		cancel(true);
+		    	}
 		        // Use a WeakReference to ensure the ImageView can be garbage collected
-		        imageViewReference = new WeakReference<ImageView>(imageView);
+	    		imageViewReference = new WeakReference<ImageView>(imageView);
 		    }
 
 		    // Decode image in background.
 		    @Override
 		    protected Bitmap doInBackground(String... params) {
+		    	if(isCancelled()){
+		    		return null;
+		    	}
 		    	url = params[0];
 		    	//获取在线视频的帧的图像，返回Bitmap
 		    	Bitmap tempBitmap = getVideoThumbnail(url);
@@ -259,7 +266,7 @@ public class VideoThumbnailGenerateUtil {
 		return null;
 	}
 	
-	public void destoryFmmrInstance(){
-		
+	public void stopGetVideoThumnail(){
+		BitmapWorkerTask stopTask = new BitmapWorkerTask(null);
 	}
 }

@@ -6,9 +6,12 @@ import java.net.URL;
 
 import com.chuck.relativeschat.R;
 import com.chuck.relativeschat.activity.BaseActivity;
+import com.chuck.relativeschat.common.DialogTips;
 import com.chuck.relativeschat.common.GetDownloadFileType;
 import com.chuck.relativeschat.common.HeadViewLayout;
+import com.chuck.relativeschat.tools.StringUtils;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -89,8 +92,7 @@ public class QrCodeScanActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				// 进入生成二维码的界面
-				intent.setClass(QrCodeScanActivity.this,
-						GenerateQRCodeActivity.class);
+				intent.setClass(QrCodeScanActivity.this,GenerateQRCodeActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -104,8 +106,7 @@ public class QrCodeScanActivity extends BaseActivity {
 				String textStr = mTextView.getText().toString();
 				System.out.println(textStr);
 				if (!textStr.isEmpty()) {
-					targetPath = Environment.getExternalStorageDirectory()
-							.toString();
+					targetPath = Environment.getExternalStorageDirectory().toString();
 
 					filePath = textStr;
 
@@ -126,11 +127,34 @@ public class QrCodeScanActivity extends BaseActivity {
 			if (resultCode == RESULT_OK) {
 				Bundle bundle = data.getExtras();
 				mTextView.setText(bundle.getString("result"));
-				mImageView.setImageBitmap((Bitmap) data
-						.getParcelableExtra("bitmap"));
+				mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
+				
+				if(!StringUtils.isEmpty(bundle.getString("result"))){
+					openWebsiteFromResult(bundle.getString("result"));
+				}
 			}
 			break;
 		}
+	}
+	
+	public void openWebsiteFromResult(final String scanString){
+		if(scanString.contains("http") || scanString.contains("https")){
+		DialogTips dialog = new DialogTips(QrCodeScanActivity.this, "提示", "是否打开该网址？", "确认", true, true);
+		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				Intent intent = new Intent();        
+		        intent.setAction("android.intent.action.VIEW");    
+		        Uri content_url = Uri.parse(scanString);   
+		        intent.setData(content_url);  
+		        startActivity(intent);
+			}				
+		});
+		
+		dialog.show();
+		dialog = null;
+		}		
 	}
 
 	public void getFileType() {
@@ -142,15 +166,12 @@ public class QrCodeScanActivity extends BaseActivity {
 			urlconnection = (HttpURLConnection) url.openConnection();
 			urlconnection.connect();
 			bis = new BufferedInputStream(urlconnection.getInputStream());
-			System.out.println("file type:"
-					+ HttpURLConnection.guessContentTypeFromStream(bis));
-			fillType = HttpURLConnection.guessContentTypeFromStream(bis)
-					.toString();
+			System.out.println("file type:" + HttpURLConnection.guessContentTypeFromStream(bis));
+			fillType = HttpURLConnection.guessContentTypeFromStream(bis).toString();
 
 			if (!fillType.isEmpty())// 判断成功
 			{
-				GetDownloadFileType myFileType = new GetDownloadFileType(
-						QrCodeScanActivity.this, fillType);
+				GetDownloadFileType myFileType = new GetDownloadFileType(QrCodeScanActivity.this, fillType);
 
 				String fileType = myFileType.getActualFileType();
 
@@ -193,8 +214,7 @@ public class QrCodeScanActivity extends BaseActivity {
 				.setIcon(android.R.drawable.ic_dialog_info)
 				.setSingleChoiceItems(str, 0,
 						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog,int which) {
 								dialog.dismiss();
 								finalType = str[which];
 							}

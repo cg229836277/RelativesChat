@@ -294,7 +294,7 @@ public class ShareVideoToFriendsActivity extends BaseActivity  implements IXList
 	protected void onDestroy() {
 		super.onDestroy();
 		if(dealUtil != null){
-			dealUtil.destoryFmmrInstance();
+			dealUtil.stopGetVideoThumnail();
 		}
 	}
 }
