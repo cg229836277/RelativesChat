@@ -538,7 +538,7 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-			case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// �����޸�ͷ��
+			case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA://
 				if (resultCode == RESULT_OK) {
 					if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 						return;

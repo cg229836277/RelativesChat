@@ -39,6 +39,12 @@ public class VideoThumbnailGenerateUtil {
 		this.mContext = context;
 	}
 	
+	/**
+	 * @author Chuck Chan
+	 * @date 2014-10-28 下午4:48:56
+	 * @param url 要加载资源的地址
+	 * @param imageView 显示略缩图的ImageView控件
+	 */
 	public void loadVideoBitmap(String url, ImageView imageView) {
 	   Bitmap bitmap = getBitmapFromCache(url);
 	   if (bitmap == null) {
@@ -51,13 +57,19 @@ public class VideoThumbnailGenerateUtil {
 	   }
 	}
 	
+	/**
+	 * @author Chuck Chan
+	 * @date 2014-10-28 下午4:53:49
+	 * @param url 资源地址
+	 * @param imageView 加载略缩图的ImageView控件
+	 */
 	private void forceDownload(String url, ImageView imageView) {
        // State sanity: url is guaranteed to never be null in DownloadedDrawable and cache keys.
        if (url == null) {
            imageView.setImageDrawable(null);
            return;
        }
-	
+       //判断是否需要下载
        if (cancelPotentialDownload(url, imageView)) {
 		   imageView.setVisibility(View.VISIBLE);
 		   BitmapWorkerTask task = new BitmapWorkerTask(imageView);
@@ -164,6 +176,7 @@ public class VideoThumbnailGenerateUtil {
 		    @Override
 		    protected Bitmap doInBackground(String... params) {
 		    	url = params[0];
+		    	//获取在线视频的帧的图像，返回Bitmap
 		    	Bitmap tempBitmap = getVideoThumbnail(url);
 		        return tempBitmap;
 		    }
@@ -179,6 +192,7 @@ public class VideoThumbnailGenerateUtil {
 		        if (imageViewReference != null && bitmap != null) {
 		            final ImageView imageView = imageViewReference.get();
 		            final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+		            //判断当前的异步对象是否与ImageView所在的异步对象是否相等，以此来防止加载错乱
 		            if (this == bitmapWorkerTask && imageView != null) {	            	
 //		            	imageView.setTag(bitmap);
 		     	       	imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, 72,72));
@@ -229,11 +243,9 @@ public class VideoThumbnailGenerateUtil {
 			if (generateBitmap != null) {
 				Bitmap b2 = fmmr.getFrameAtTime(4000000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC);
 				if (b2 != null) {
-					generateBitmap = b2;
-				}
-				if (generateBitmap.getWidth() > 640) {// 如果图片宽度规格超过640px,则进行压缩
-					generateBitmap = ThumbnailUtils.extractThumbnail(generateBitmap,
-							640, 480,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+					//获取到了Bitmap之后用android自带的ThumbnailUtils获取自定义大小的略缩图
+					generateBitmap = ThumbnailUtils.extractThumbnail(b2,
+							640, 640,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
 				}
 			}
 		} catch (IllegalArgumentException ex) {
