@@ -214,29 +214,19 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            	suofangX = imageList.get(0);
 	            	suofangY = imageList.get(1);
 	            	moveX = imageList.get(2);
-	            	moveY = imageList.get(3);
-//	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
-//	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
-//	            	if(suofangX > 0){
-//	            		startX = (startX-moveX) * suofangX;	            		
-	            		stopX = (stopX-moveX) * suofangX;	            		
-//	            	}
-//	            	if(suofangY > 0){
-//	            		startY = (startY-moveY) * suofangY;
-	            		stopY = (stopY-moveY) * suofangY;
-//	            	}
+	            	moveY = imageList.get(3); 
+	            	
+	            	stopX = (stopX-moveX) * suofangX;	            		
+	            	stopY = (stopY-moveY) * suofangY;
 	            }	        
 	            
 	            //根据两点坐标，绘制连线
 	            canvas.drawLine(startX, startY, stopX, stopY, paint);
-//	            System.out.println("起点X" + startX + " 起点Y" + startY + " 终点X" + stopX+ " 终点Y" + stopY);
 	            drawCanvasImage.invalidate();
 	            // 更新开始点的位置
 	            startX = stopX;
 	            startY = stopY;
-	            
-	            // 把图片展示到ImageView中
-//	            drawCanvasImage.setImageBitmap(baseBitmap);
+	           
 	            break;
 	        case MotionEvent.ACTION_UP:	        	
 	            stopX = event.getX();
@@ -247,17 +237,10 @@ public class ShareImageToFriendsActivity extends BaseActivity implements OnClick
 	            	suofangX = imageList.get(0);
 	            	suofangY = imageList.get(1);
 	            	moveX = imageList.get(2);
-	            	moveY = imageList.get(3);
-//	            	System.out.println("起点X" + startX + " 起点Y" + startY + "终点X" + stopX + " 终点Y" + 
-//	            			stopY + " 缩放X" + suofangX+ " 缩放Y" + suofangY + " 偏移X" + moveX+ " 偏移Y" + moveY);
-//	            	if(suofangX > 0){
-//	            		startX = (startX-moveX) * suofangX;	            		
-	            		stopX = (stopX-moveX) * suofangX;	            		
-//	            	}
-//	            	if(suofangY > 0){
-//	            		startY = (startY-moveY) * suofangY;
-	            		stopY = (stopY-moveY) * suofangY;
-//	            	}
+	            	moveY = imageList.get(3); 
+	            	
+	            	stopX = (stopX-moveX) * suofangX;	            		
+	            	stopY = (stopY-moveY) * suofangY;
 	            }
 	            
 	            canvas.drawLine(startX, startY, stopX, stopY, paint);
